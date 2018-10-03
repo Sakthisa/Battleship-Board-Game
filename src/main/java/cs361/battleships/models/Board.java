@@ -5,20 +5,26 @@ import java.util.List;
 
 public class Board {
 
+	private List<Square> BoardoccupiedSquares;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		// TODO Implement
+		BoardoccupiedSquares = new ArrayList<Square>();
 	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO Implement
 		int shipSize = ship.getShipSize();
+		List<Square> occupiedSquares = getBoardOccupiedSquares();
 		List<Square> squares = new ArrayList<Square>();
+		for(Square occupied : occupiedSquares){
+			if(occupied.getRow() == x || occupied.getColumn() == y){
+				return false;
+			}
+		}
 		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
 			return false;
 		}
@@ -27,6 +33,7 @@ public class Board {
 				// successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x + i, y));
+					occupiedSquares.add(new Square(x + i, y));
 				}
 
 				ship.setOccupiedSquares(squares);
@@ -37,6 +44,7 @@ public class Board {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x, (char)(y + i)));
+					occupiedSquares.add(new Square(x, (char)(y + i)));
 				}
 
 				ship.setOccupiedSquares(squares);
@@ -45,6 +53,10 @@ public class Board {
 		}
 
 		return false;
+	}
+
+	public List<Square> getBoardOccupiedSquares() {
+		return BoardoccupiedSquares;
 	}
 
 	/*
