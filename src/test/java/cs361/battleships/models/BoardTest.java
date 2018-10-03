@@ -50,4 +50,5 @@ public class BoardTest {
         Board board = new Board();
         assertTrue(board.placeShip(new Ship("BATTLESHIP"), 10, 'G', false));
     }
+
 }
