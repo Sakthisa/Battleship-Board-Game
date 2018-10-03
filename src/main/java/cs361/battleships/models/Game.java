@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static cs361.battleships.models.AtackStatus.*;
 
@@ -49,18 +50,24 @@ public class Game {
         return true;
     }
 
+    // This will be a random character from A-J to indicate a column
     private char randCol() {
-        // TODO implement
-        return 'X';
+        Random rand = new Random();
+        char randomColumn = (char)(rand.nextInt(10) + 'a');
+        return randomColumn;
     }
 
+
+    // This will be a random integer from 1-10 to indicate a row
     private int randRow() {
-        // TODO implement
-        return 0;
+        Random rand = new Random();
+        int randomRow = rand.nextInt(10) + 1;
+        return randomRow;
     }
 
+    // This will be either a random true or false boolean value (true for vertical, false for horizontal)
     private boolean randVertical() {
-        // TODO implement
-        return false;
+        Random rand = new Random();
+        return rand.nextBoolean();
     }
 }
