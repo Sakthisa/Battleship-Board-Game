@@ -17,14 +17,26 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		// TODO Implement
+		int shipSize = ship.getShipSize();
+		List<Square> squares = new ArrayList<Square>();
 		if (isVertical) {
-			if (x + (ship.getShipSize() - 1) <= 10) {
+			if (x + (shipSize - 1) <= 10) {
 				// successful
+				for (int i = 0; i < shipSize; i++) {
+					squares.add(new Square(x + i, y));
+				}
+
+				ship.setOccupiedSquares(squares);
 				return true;
 			}
 		} else {
-			if (y + (ship.getShipSize() - 1) <= 'J') {
+			if (y + (shipSize - 1) <= 'J') {
 				//successful
+				for (int i = 0; i < shipSize; i++) {
+					squares.add(new Square(x, (char)(y + i)));
+				}
+
+				ship.setOccupiedSquares(squares);
 				return true;
 			}
 		}
