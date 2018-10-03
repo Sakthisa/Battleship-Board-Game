@@ -11,9 +11,9 @@ public class Ship {
 
 	public Ship(String kind) {
 		//TODO implement
-		if (kind == "Minesweeper") {
+		if (kind == "MINESWEEPER") {
 			this.shipSize = 2;
-		} else if (kind == "Destroyer") {
+		} else if (kind == "DESTROYER") {
 			this.shipSize = 3;
 		} else {
 			this.shipSize = 4;
