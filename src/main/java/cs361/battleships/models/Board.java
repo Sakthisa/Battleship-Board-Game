@@ -17,6 +17,18 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		// TODO Implement
+		if (isVertical) {
+			if (x + (ship.getShipSize() - 1) <= 10) {
+				// successful
+				return true;
+			}
+		} else {
+			if (y + (ship.getShipSize() - 1) <= 'J') {
+				//successful
+				return true;
+			}
+		}
+
 		return false;
 	}
 
