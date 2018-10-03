@@ -23,11 +23,11 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		int shipSize = ship.getShipSize();
-		List<Square> occupiedSquares = getBoardOccupiedSquares();
+		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 		List<Square> squares = new ArrayList<Square>();
 		if(!isVertical){
 			for(int i = 0; i < shipSize; i++) {
-				for (Square occupied : occupiedSquares) {
+				for (Square occupied : BoardoccupiedSquares) {
 					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
 						return false;
 					}
@@ -36,7 +36,7 @@ public class Board {
 		}
 		else{
 			for(int i = 0; i < shipSize; i++) {
-				for (Square occupied : occupiedSquares) {
+				for (Square occupied : BoardoccupiedSquares) {
 					if (occupied.getRow() == x + i && occupied.getColumn() == y) {
 						return false;
 					}
@@ -52,7 +52,7 @@ public class Board {
 				// successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x + i, y));
-					occupiedSquares.add(new Square(x + i, y));
+					BoardoccupiedSquares.add(new Square(x + i, y));
 				}
 
 				ship.setOccupiedSquares(squares);
@@ -63,7 +63,7 @@ public class Board {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x, (char)(y + i)));
-					occupiedSquares.add(new Square(x, (char)(y + i)));
+					BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
 				}
 
 				ship.setOccupiedSquares(squares);
@@ -84,8 +84,8 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		List<Square> occupiedSquares = getBoardOccupiedSquares();
-		for(Square occupied : occupiedSquares){
+		//List<Square> occupiedSquares = getBoardOccupiedSquares();
+		for(Square occupied : BoardoccupiedSquares){
 			if(x == occupied.getRow() && y == occupied.getColumn()){
 				//HIT
 			}
