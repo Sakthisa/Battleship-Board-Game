@@ -17,6 +17,7 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+        int count = 0;
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
         if (!successful)
             return false;
@@ -26,6 +27,7 @@ public class Game {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
             opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            //opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -52,7 +54,7 @@ public class Game {
 
     private char randCol() {
         Random rand = new Random();
-        char randomColumn = (char)(rand.nextInt(10) + 'a');
+        char randomColumn = (char)(rand.nextInt(10) + 'A');
         return randomColumn;
     }
 

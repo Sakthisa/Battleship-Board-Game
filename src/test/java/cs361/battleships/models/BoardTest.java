@@ -56,11 +56,20 @@ public class BoardTest {
         Board board = new Board();
         assertTrue(board.placeShip(new Ship("BATTLESHIP"), 5, 'F', false));
         assertFalse(board.placeShip(new Ship("BATTLESHIP"), 3, 'H', true));
+        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 5, 'E', true));
     }
 
     @Test
     public void testValidGamePlacement(){
+        Game game = new Game();
+        assertTrue(game.placeShip(new Ship("BATTLESHIP"), 5, 'F', false));
 
+    }
+
+    @Test
+    public void testInvalidGamePlacement(){
+        Game game = new Game();
+        assertFalse(game.placeShip(new Ship("BATTLESHIP"), 11, 'F', false));
 
     }
 

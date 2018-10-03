@@ -38,10 +38,10 @@ public class Board {
 				}
 			}
 		}
-
 		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
 			return false;
 		}
+
 		if (isVertical) {
 			if (x + (shipSize - 1) <= 10) {
 				// successful
