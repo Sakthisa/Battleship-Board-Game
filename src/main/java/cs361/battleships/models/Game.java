@@ -53,7 +53,7 @@ public class Game {
     // This will be a random character from A-J to indicate a column
     private char randCol() {
         Random rand = new Random();
-        char randomColumn = (char)(rand.nextInt(10) + 'a');
+        char randomColumn = (char)(rand.nextInt(10) + 'A');
         return randomColumn;
     }
 
