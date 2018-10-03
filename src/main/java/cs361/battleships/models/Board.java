@@ -20,11 +20,25 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		List<Square> occupiedSquares = getBoardOccupiedSquares();
 		List<Square> squares = new ArrayList<Square>();
-		for(Square occupied : occupiedSquares){
-			if(occupied.getRow() == x || occupied.getColumn() == y){
-				return false;
+		if(!isVertical){
+			for(int i = 0; i < shipSize; i++) {
+				for (Square occupied : occupiedSquares) {
+					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
+						return false;
+					}
+				}
 			}
 		}
+		else{
+			for(int i = 0; i < shipSize; i++) {
+				for (Square occupied : occupiedSquares) {
+					if (occupied.getRow() == x + i && occupied.getColumn() == y) {
+						return false;
+					}
+				}
+			}
+		}
+
 		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
 			return false;
 		}
@@ -58,6 +72,8 @@ public class Board {
 	public List<Square> getBoardOccupiedSquares() {
 		return BoardoccupiedSquares;
 	}
+
+
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.

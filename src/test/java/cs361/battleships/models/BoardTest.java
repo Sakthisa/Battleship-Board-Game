@@ -54,8 +54,8 @@ public class BoardTest {
     @Test
     public void testInvalidOverlapPlacement(){
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 10, 'G', false));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 9, 'H', true));
+        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 5, 'F', false));
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 3, 'H', true));
     }
 
     @Test
