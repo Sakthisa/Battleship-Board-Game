@@ -79,7 +79,13 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		//TODO Implement
+		List<Square> occupiedSquares = getBoardOccupiedSquares();
+		for(Square occupied : occupiedSquares){
+			if(x == occupied.getRow() && y == occupied.getColumn()){
+				//HIT
+			}
+		}
+		//MISS
 		return null;
 	}
 
