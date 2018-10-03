@@ -11,7 +11,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 11, 'C', false));
     }
 
     @Test
@@ -19,4 +19,5 @@ public class BoardTest {
         Board board = new Board();
         assertTrue(board.placeShip(new Ship("MINESWEEPER"), 5, 'C', false));
     }
+
 }

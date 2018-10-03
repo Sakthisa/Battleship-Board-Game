@@ -19,6 +19,9 @@ public class Board {
 		// TODO Implement
 		int shipSize = ship.getShipSize();
 		List<Square> squares = new ArrayList<Square>();
+		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
+			return false;
+		}
 		if (isVertical) {
 			if (x + (shipSize - 1) <= 10) {
 				// successful
