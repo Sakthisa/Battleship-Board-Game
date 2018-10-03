@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
@@ -18,6 +19,7 @@ public class Ship {
 		} else {
 			this.shipSize = 4;
 		}
+		occupiedSquares = new ArrayList<Square>();
 	}
 
 	public int getShipSize() {
