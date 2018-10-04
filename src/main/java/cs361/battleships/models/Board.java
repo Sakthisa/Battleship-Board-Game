@@ -44,12 +44,12 @@ public class Board {
 				}
 			}
 		}
-		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
+		if (x > 9 || x < 0 || y > 'J' || y < 'A') {
 			return false;
 		}
 
 		if (isVertical) {
-			if (x + (shipSize - 1) <= 10) {
+			if (x + (shipSize - 1) < 10) {
 				// successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x + i, y));
