@@ -69,7 +69,9 @@ public class BoardTest {
     @Test
     public void testInvalidGamePlacement(){
         Game game = new Game();
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"), 11, 'F', false));
+        assertTrue(game.placeShip(new Ship("BATTLESHIP"), 1, 'A', false));
+        assertTrue(game.placeShip(new Ship("MINESWEEPER"), 5, 'B', true));
+        assertTrue(game.placeShip(new Ship("DESTROYER"), 7, 'F', false));
 
     }
 
