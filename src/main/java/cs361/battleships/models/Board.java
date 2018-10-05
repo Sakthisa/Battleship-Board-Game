@@ -88,16 +88,23 @@ public class Board {
 		Result result = new Result();
 		AtackStatus attackStatus;
 		Square square = new Square(x, y);
+
 		result.setLocation(square);
 
 		//Check for INVALID
 		if (x > 9 || x < 0 || y > 'J' || y < 'A') {
 			attackStatus = AtackStatus.INVALID;
+			result.setResult(attackStatus);
+			attackResult.add(result);
+			return result;
 		}
 
 		for(Result validSpot: attackResult){
 			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
 				attackStatus = AtackStatus.INVALID;
+				result.setResult(attackStatus);
+				attackResult.add(result);
+				return result;
 			}
 		}
 
