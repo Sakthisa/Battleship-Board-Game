@@ -1,6 +1,9 @@
 package cs361.battleships.models;
 
 public class Result {
+    private AtackStatus a;
+    private Ship s;
+    private Square sq;
 
 	public AtackStatus getResult() {
 		return a;
