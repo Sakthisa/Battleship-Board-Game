@@ -48,7 +48,7 @@ public class BoardTest {
     @Test
     public void testValidPlaceShipBattleship(){
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 10, 'G', false));
+        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 9, 'G', false));
     }
 
     @Test
