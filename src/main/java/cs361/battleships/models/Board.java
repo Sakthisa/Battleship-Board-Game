@@ -85,14 +85,51 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		//List<Square> occupiedSquares = getBoardOccupiedSquares();
-		for(Square occupied : BoardoccupiedSquares){
-			if(x == occupied.getRow() && y == occupied.getColumn()){
-				//HIT
+		Result result = new Result();
+		AtackStatus attackStatus;
+		Square square = new Square(x, y);
+		result.setLocation(square);
+
+		//Check for INVALID
+		if (x > 9 || x < 0 || y > 'J' || y < 'A') {
+			attackStatus = AtackStatus.INVALID;
+		}
+
+		for(Result validSpot: attackResult){
+			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
+				attackStatus = AtackStatus.INVALID;
 			}
 		}
-		//MISS
-		return null;
+
+		//Check for HIT, SUNK, SURRENDER
+		for(Ship occupiedShip : shipList){
+			for(Square occupied : occupiedShip.getOccupiedSquares()){
+				if(x == occupied.getRow() && y == occupied.getColumn()){
+					result.setShip(occupiedShip);
+					occupiedShip.getOccupiedSquares().remove(occupied);
+					if(occupiedShip.getOccupiedSquares().isEmpty() == true){
+						if(shipList.isEmpty() == true){
+							attackStatus = AtackStatus.SURRENDER;
+						}
+						else{
+							attackStatus = AtackStatus.SUNK;
+						}
+					}
+					else{
+						attackStatus = AtackStatus.HIT;
+					}
+					result.setResult(attackStatus);
+					attackResult.add(result);
+					return result;
+				}
+			}
+		}
+
+		//If not any other attack result then it is a miss
+		attackStatus = AtackStatus.MISS;
+		result.setResult(attackStatus);
+		attackResult.add(result);
+		return result;
 	}
 
 	public List<Ship> getShips() {
