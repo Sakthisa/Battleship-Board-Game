@@ -1,31 +1,30 @@
 package cs361.battleships.models;
 
 public class Result {
-
+    private AtackStatus a;
+    private Ship s;
+    private Square sq;
 	public AtackStatus getResult() {
-		//TODO implement
-		return null;
+		return a;
 	}
 
 	public void setResult(AtackStatus result) {
-		//TODO implement
+		a =  result;
 	}
 
 	public Ship getShip() {
-		//TODO implement
-		return null;
+		return s;
 	}
 
 	public void setShip(Ship ship) {
-		//TODO implement
+		s = ship;
 	}
 
 	public Square getLocation() {
-		//TODO implement
-		return null;
+		return sq;
 	}
 
 	public void setLocation(Square square) {
-		//TODO implement
+		sq =  square;
 	}
 }
