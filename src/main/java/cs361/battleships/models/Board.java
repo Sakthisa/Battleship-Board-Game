@@ -57,6 +57,7 @@ public class Board {
 				}
 
 				ship.setOccupiedSquares(squares);
+				shipList.add(ship);
 				return true;
 			}
 		} else {
@@ -68,6 +69,7 @@ public class Board {
 				}
 
 				ship.setOccupiedSquares(squares);
+				shipList.add(ship);
 				return true;
 			}
 		}
@@ -120,6 +122,7 @@ public class Board {
 						}
 						else{
 							attackStatus = AtackStatus.SUNK;
+							shipList.remove(occupiedShip);
 						}
 					}
 					else{
