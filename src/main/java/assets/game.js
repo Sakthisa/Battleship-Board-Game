@@ -65,9 +65,11 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex;
     let col = this.cellIndex;
+    console.log(col);
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
+
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {

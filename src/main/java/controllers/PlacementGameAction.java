@@ -20,7 +20,7 @@ public class PlacementGameAction {
     }
 
     public char getActionColumn() {
-        return y;
+        return (char)(y + 65);
     }
 
     public String getShipType() {
