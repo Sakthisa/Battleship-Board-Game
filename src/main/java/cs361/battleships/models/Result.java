@@ -19,6 +19,7 @@ public class Result {
 
 	public void setShip(Ship ship) {
 		//TODO implement
+        s = ship;
 	}
 
 	public Square getLocation() {
