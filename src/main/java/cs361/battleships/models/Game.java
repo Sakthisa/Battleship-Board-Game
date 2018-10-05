@@ -62,7 +62,7 @@ public class Game {
     // This will be a random integer from 1-10 to indicate a row
     private int randRow() {
         Random rand = new Random();
-        int randomRow = rand.nextInt(10) + 1;
+        int randomRow = rand.nextInt(9);
         return randomRow;
     }
 
