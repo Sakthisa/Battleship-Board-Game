@@ -117,12 +117,12 @@ public class Board {
 					result.setShip(occupiedShip);
 					occupiedShip.getOccupiedSquares().remove(occupied);
 					if(occupiedShip.getOccupiedSquares().isEmpty() == true){
+						shipList.remove(occupiedShip);
 						if(shipList.isEmpty() == true){
 							attackStatus = AtackStatus.SURRENDER;
 						}
 						else{
 							attackStatus = AtackStatus.SUNK;
-							shipList.remove(occupiedShip);
 						}
 					}
 					else{
