@@ -27,6 +27,7 @@ public class Board {
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 		Ship newShip = new Ship(ship.getKind());
 		List<Square> squares = new ArrayList<Square>();
+
 		if(!isVertical){
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
@@ -52,6 +53,7 @@ public class Board {
 		if (isVertical) {
 			if (x + (shipSize - 1) < 10) {
 				// successful
+                System.out.print(x);
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x + i, y));
 					BoardoccupiedSquares.add(new Square(x + i, y));
