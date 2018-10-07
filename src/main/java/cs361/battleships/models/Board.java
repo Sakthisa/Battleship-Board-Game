@@ -25,6 +25,7 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
+		Ship newShip = new Ship(ship.getKind());
 		List<Square> squares = new ArrayList<Square>();
 		if(!isVertical){
 			for(int i = 0; i < shipSize; i++) {
@@ -56,8 +57,8 @@ public class Board {
 					BoardoccupiedSquares.add(new Square(x + i, y));
 				}
 
-				ship.setOccupiedSquares(squares);
-				shipList.add(ship);
+				newShip.setOccupiedSquares(squares);
+				shipList.add(newShip);
 				return true;
 			}
 		} else {
@@ -68,8 +69,8 @@ public class Board {
 					BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
 				}
 
-				ship.setOccupiedSquares(squares);
-				shipList.add(ship);
+				newShip.setOccupiedSquares(squares);
+				shipList.add(newShip);
 				return true;
 			}
 		}

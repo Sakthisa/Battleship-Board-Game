@@ -75,4 +75,23 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testGame(){
+        Game game = new Game();
+        assertTrue(game.placeShip(new Ship("BATTLESHIP"), 1, 'A', false));
+        assertTrue(game.placeShip(new Ship("MINESWEEPER"), 5, 'B', true));
+        assertTrue(game.placeShip(new Ship("DESTROYER"), 7, 'F', false));
+        assertFalse(game.attack(11, 'A'));
+        assertTrue(game.attack(5, 'B'));
+        assertTrue(game.attack(6, 'B'));
+        assertTrue(game.attack(1, 'A'));
+        assertTrue(game.attack(1, 'B'));
+        assertTrue(game.attack(1, 'C'));
+        assertTrue(game.attack(1, 'D'));
+        assertTrue(game.attack(7, 'F'));
+        assertTrue(game.attack(7, 'G'));
+        assertTrue(game.attack(7, 'H'));
+
+    }
+
 }
