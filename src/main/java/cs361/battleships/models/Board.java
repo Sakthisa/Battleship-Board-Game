@@ -48,6 +48,7 @@ public class Board {
 			return false;
 		}
 
+
 		if (isVertical) {
 			if (x + (shipSize - 1) < 10) {
 				// successful
@@ -58,18 +59,26 @@ public class Board {
 
 				ship.setOccupiedSquares(squares);
 				shipList.add(ship);
+
+				for (Square occupied : BoardoccupiedSquares) {
+					System.out.println("SQUARE " + ": " + occupied.getRow() + " " + occupied.getColumn());
+				}
 				return true;
 			}
 		} else {
 			if (y + (shipSize - 1) <= 'J') {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
+					// change this area
 					squares.add(new Square(x, (char)(y + i)));
 					BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
 				}
 
 				ship.setOccupiedSquares(squares);
 				shipList.add(ship);
+				for (Square occupied : BoardoccupiedSquares) {
+					System.out.println("SQUARE " +  ": " + occupied.getRow() + " " + occupied.getColumn());
+				}
 				return true;
 			}
 		}
