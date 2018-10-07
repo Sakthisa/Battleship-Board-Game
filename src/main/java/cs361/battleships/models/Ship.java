@@ -9,6 +9,7 @@ public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
 	private int shipSize;
+	private String kind;
 
 	public Ship(String kind) {
 		//TODO implement
@@ -20,10 +21,15 @@ public class Ship {
 			this.shipSize = 4;
 		}
 		occupiedSquares = new ArrayList<Square>();
+		this.kind = kind;
 	}
 
 	public int getShipSize() {
 		return shipSize;
+	}
+
+	public String getKind() {
+		return kind;
 	}
 
 	public void setOccupiedSquares(List<Square> squares) {
