@@ -11,6 +11,10 @@ public class Ship {
 	private int shipSize;
 	private String kind;
 
+	public Ship() {
+		occupiedSquares = new ArrayList<>();
+	}
+
 	public Ship(String kind) {
 		//TODO implement
 		if (kind == "MINESWEEPER") {
