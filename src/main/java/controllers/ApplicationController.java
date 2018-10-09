@@ -26,7 +26,6 @@ public class ApplicationController {
         if (result) {
             return Results.json().render(game);
         } else {
-//            System.out.println(g.getActionRow() + " " + (char)g.getActionColumn() + " " + ship.getOccupiedSquares());
             return Results.badRequest();
         }
     }

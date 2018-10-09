@@ -11,11 +11,15 @@ public class Ship {
 	private int shipSize;
 	private String kind;
 
+	public Ship() {
+		occupiedSquares = new ArrayList<>();
+	}
+
 	public Ship(String kind) {
 		//TODO implement
-		if (kind == "MINESWEEPER") {
+		if (kind.equals("MINESWEEPER")) {
 			this.shipSize = 2;
-		} else if (kind == "DESTROYER") {
+		} else if (kind.equals("DESTROYER")) {
 			this.shipSize = 3;
 		} else {
 			this.shipSize = 4;
