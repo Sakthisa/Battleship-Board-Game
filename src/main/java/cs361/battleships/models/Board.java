@@ -26,8 +26,8 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
-		for(Ship item: shipList){
-			if(item.getKind() == ship.getKind()){
+		for(Ship item: shipList) {
+			if(item.getShipSize() == ship.getShipSize()) {
 				return false;
 			}
 		}
