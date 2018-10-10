@@ -13,15 +13,18 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
     public void testShipPlacement(){ // Test class for ship placement
         Game game = new Game(); // Creates new game
         assertTrue(game.placeShip(new Ship("MINESWEEPER"), 1, 'A', true)); // places minesweeper ship at 1A vertically
-        assertTrue(game.placeShip(new Ship("DESTROYER"), 1, 'A', true)); // places destroyer ship at 1A vertically (This test currently fails)
-        assertTrue(game.placeShip(new Ship("xyz"), 1, 'A', true)); // places other type ship at 1A vertically
-        assertFalse(game.placeShip(new Ship("MINESWEEPER"), 0, 'A', true)); // places minesweeper ship at 0A vertically (not possible)
-        assertFalse(game.placeShip(new Ship("MINESWEEPER"), 1, 'Z', true)); // places minesweeper ship at 1Z vertically (not possible)
-        assertTrue(game.placeShip(new Ship("MINESWEEPER"), 1, 'A', false)); // places minesweeper ship at 1A horizontally
-        assertTrue(game.placeShip(new Ship("DESTROYER"), 1, 'A', false)); // places destroyer ship at 1A horizontally
-        assertTrue(game.placeShip(new Ship("xyz"), 1, 'A', false)); // places other type ship at 1A vertically
-        assertTrue(game.placeShip(new Ship("MINESWEEPER"), 0, 'A', false)); // places minesweeper ship at 0A horizontally (not possible)
-        assertFalse(game.placeShip(new Ship("MINESWEEPER"), 1, 'Z', false)); // places minesweeper ship at 1Z horizontally (not possible)
+        assertTrue(game.placeShip(new Ship("DESTROYER"), 1, 'C', true)); // places destroyer ship at 1A vertically (This test currently fails)
+        assertTrue(game.placeShip(new Ship("xyz"), 1, 'F', true)); // places other type ship at 1A vertically
+        Game gamebp = new Game();
+        assertFalse(gamebp.placeShip(new Ship("MINESWEEPER"), 0, 'A', true)); // places minesweeper ship at 0A vertically (not possible)
+        assertFalse(gamebp.placeShip(new Ship("MINESWEEPER"), 1, 'Z', true)); // places minesweeper ship at 1Z vertically (not possible)
+        Game game2 = new Game();
+        assertTrue(game2.placeShip(new Ship("MINESWEEPER"), 1, 'A', false)); // places minesweeper ship at 1A horizontally
+        assertTrue(game2.placeShip(new Ship("DESTROYER"), 9, 'A', false)); // places destroyer ship at 1A horizontally
+        assertTrue(game2.placeShip(new Ship("xyz"), 8, 'A', false)); // places other type ship at 1A vertically
+        Game gamebph = new Game();
+        assertFalse(gamebph.placeShip(new Ship("MINESWEEPER"), 0, 'A', false)); // places minesweeper ship at 0A horizontally (not possible)
+        assertFalse(gamebph.placeShip(new Ship("MINESWEEPER"), 1, 'Z', false)); // places minesweeper ship at 1Z horizontally (not possible)
     }
 
     @Test
