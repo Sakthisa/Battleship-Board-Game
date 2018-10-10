@@ -15,6 +15,8 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertTrue(game.placeShip(new Ship("MINESWEEPER"), 1, 'A', true)); // places minesweeper ship at 1A vertically
         assertTrue(game.placeShip(new Ship("DESTROYER"), 1, 'C', true)); // places destroyer ship at 1A vertically (This test currently fails)
         assertTrue(game.placeShip(new Ship("xyz"), 1, 'F', true)); // places other type ship at 1A vertically
+        assertFalse(game.placeShip(new Ship("MINESWEEPER"), 1, 'J', true)); // places 4th ship on board (not possible)
+        assertFalse(game.placeShip(new Ship("MINESWEEPER"), 1, 'A', true)); // places ship in already chosen location (not possible)
         Game gamebp = new Game();
         assertFalse(gamebp.placeShip(new Ship("MINESWEEPER"), 0, 'A', true)); // places minesweeper ship at 0A vertically (not possible)
         assertFalse(gamebp.placeShip(new Ship("MINESWEEPER"), 1, 'Z', true)); // places minesweeper ship at 1Z vertically (not possible)
