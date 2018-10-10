@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class ShipTest {
 
     @Test
-    public void testShipConstructorMinesweeper() {
+    public void testValidShipConstructorMinesweeper() {
         Ship ship;
         ship = new Ship("MINESWEEPER");
         assertEquals("MINESWEEPER", ship.getKind());
@@ -31,7 +31,10 @@ public class ShipTest {
         Ship ship;
         ship = new Ship("DESTROYER");
         assertEquals("DESTROYER", ship.getKind());
+
     }
+
+
 
     @Test
     //tests both get and set occupied squares
