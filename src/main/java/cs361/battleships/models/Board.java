@@ -31,6 +31,10 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
+		if(!ship.getKind().equals("MINESWEEPER") && !ship.getKind().equals("DESTROYER") && !ship.getKind().equals("BATTLESHIP")){
+			return false;
+		}
+
 		for(Ship item: shipList){
 			if(item.getShipSize() == ship.getShipSize()){
 				return false;
