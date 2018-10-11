@@ -123,7 +123,7 @@ public class Board {
 
 		result.setLocation(square);
 
-		//Check for INVALID
+		//Check for INVALID x and y coordinates
 		if (!squareIsValid(square)) {
 			attackStatus = AtackStatus.INVALID;
 			result.setResult(attackStatus);
@@ -131,6 +131,7 @@ public class Board {
 			return result;
 		}
 
+		//Check if x and y has already been attacked
 		if (checkAttackRedundant(x, y, result)) return result;
 
 		//Check for HIT, SUNK, SURRENDER
@@ -145,6 +146,8 @@ public class Board {
 
 	private boolean checkKnownValidAttack(int x, char y, Result result) {
 		AtackStatus attackStatus;
+		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
+		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
 			for(Square occupied : occupiedShip.getOccupiedSquares()){
 				if(x == occupied.getRow() && y == occupied.getColumn()){
@@ -172,6 +175,7 @@ public class Board {
 	}
 
 	private boolean checkAttackRedundant(int x, char y, Result result) {
+		//Checks if a square has already been attacked
 		AtackStatus attackStatus;
 		for(Result validSpot: attackResult){
 			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
@@ -185,6 +189,7 @@ public class Board {
 	}
 
 	private boolean squareIsValid(Square square){
+		//Checks for a valid square in the 10x10 board rows denoted (1-10) cols (A-J)
 		int x = square.getRow();
 		char y = square.getColumn();
 
