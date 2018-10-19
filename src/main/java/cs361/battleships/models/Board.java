@@ -31,10 +31,12 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
+		// Check for anomaly where user can edit ship type somehow. Make sure that ship type is either minesweeper, destroyer, or battleship
 		if(!ship.getKind().equals("MINESWEEPER") && !ship.getKind().equals("DESTROYER") && !ship.getKind().equals("BATTLESHIP")){
 			return false;
 		}
 
+		// Check for the user trying to place multiple of the same ship type
 		for(Ship item: shipList){
 			if(item.getShipSize() == ship.getShipSize()){
 				return false;
@@ -58,6 +60,7 @@ public class Board {
 
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
 		if (isVertical) {
+			// If it is within the row bounds, then it is a successful placement
 			if (x + (shipSize - 1) <= 10) {
 				// successful
 				for (int i = 0; i < shipSize; i++) {
@@ -70,6 +73,7 @@ public class Board {
 				return true;
 			}
 		} else {
+			// If it is within the column bounds, then it is a successful placement
 			if (y + (shipSize - 1) <= 'J') {
 				//successful
 				for (int i = 0; i < shipSize; i++) {

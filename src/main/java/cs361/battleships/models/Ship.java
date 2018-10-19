@@ -8,7 +8,9 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
+	// shipSize is the amount of squares that it takes up.
 	private int shipSize;
+	// kind is the type of ship: 'MINESWEEPER' for example
 	private String kind;
 
 	public Ship() {
