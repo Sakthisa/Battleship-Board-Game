@@ -27,14 +27,24 @@ function makeGrid(table, isPlayer) {
 
 function markHits(board, elementId, surrenderText) {
     var oldListener;
+    // console.log(board);
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
             className = "miss";
-        else if (attack.result === "HIT")
+        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit";
+        else if (attack.result === "SUNK") {
+            console.log(attack)
+            var square;
+            for (square of attack.ship.occupiedSquares) {
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+                console.log(attack);
+            }
+            return;
+            // className = "hit";
+        }
         else if (attack.result === "SURRENDER"){
             alert(surrenderText);
             clearBoard();
