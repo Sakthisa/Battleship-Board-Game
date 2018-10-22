@@ -3,13 +3,22 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var count = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
         for (j=0; j<10; j++) {
             let column = document.createElement('td');
-            column.addEventListener("click", cellClick);
+            if(count >= 3 && isPlayer == true){
+
+            }
+            else if(count < 3 && isPlayer == false){
+
+            }
+            else{
+                column.addEventListener("click", cellClick);
+            }
             row.appendChild(column);
         }
         table.appendChild(row);
@@ -43,6 +52,7 @@ function clearBoard(){
 }
 
 function redrawGrid() {
+    count++;
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -52,7 +62,6 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        console.log(document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)]);
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
@@ -86,6 +95,7 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
             }
         });
     } else {
@@ -155,4 +165,5 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
+
 };
