@@ -3,6 +3,8 @@
 
 .battleGridPlayer {
     border: 1px solid black;
+    grid-row: 3 / 3;
+    grid-column: 1 / 1;
     border-spacing: 0px;
     margin-bottom: 30px;
     margin-right: auto;
@@ -28,6 +30,8 @@
 
 .battleGridOpponent {
     border: 1px solid black;
+    grid-row: 2 / 2;
+    grid-column: 1 / 1;
     border-spacing: 0px;
     margin-bottom: 30px;
     margin-left:auto;
@@ -93,6 +97,7 @@ td:hover {
 .buttonHolder{
     /* text-align: center; */
     grid-column: 1 / 1;
+    grid-row: row3-end;
     width: 75%;
     max-width: 750px;
     margin-left: auto;
@@ -135,32 +140,28 @@ td:hover {
     height: 100%;
     display: grid;
     grid-template-columns: 2fr .5fr .5fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 28px 1fr 1fr;
     column-gap: 3px;
+    /*overflow: hidden;*/
 }
-
-#opponent {
-    grid-row: 1 / 1;
-    grid-column: 1 / 1;
-}
-
-#player {
-    grid-row: 2 / 2;
-    grid-column: 1 / 1;
-}
-
 #results-container {
-    grid-row: 1 / span 2;
+    grid-row-start: 2;
     grid-column: 2 / span 3;
     border: 1.5px solid black;
     padding-left: 5px;
     padding-right: 5px;
     /* text-align: center; */
+    overflow: auto;
+    max-height: 400px;
 }
 
+.container-header {
+    grid-row: 1 / 1;
+    grid-column: 2 / span 3;
+}
 #player-results {
     grid-column-start: 2;
-    grid-row: 1 / span 2;
+    grid-row: 2 / span 3;
     /* border-right: 2px solid black; */
     width: 50%;
     margin: 0px;
@@ -170,7 +171,7 @@ td:hover {
 
 #opponent-results {
     grid-column-start: 3;
-    grid-row: 1 / span 2;
+    grid-row: 2 / span 3;
     width: 48%;
     /* margin-left: 5px; */
     display: inline-block;

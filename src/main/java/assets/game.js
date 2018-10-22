@@ -45,17 +45,15 @@ function markHits(board, elementId, surrenderText) {
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
-        console.log(elementId);
+
         if (elementId === "opponent") {
             html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
-            document.getElementById("player-results").insertAdjacentHTML("beforeend", html);
+            document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
 
         } else if (elementId === "player") {
             html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
-            document.getElementById("opponent-results").insertAdjacentHTML("beforeend", html);
+            document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
-        console.log(html);
-        
     }
 }
 
