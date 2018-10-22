@@ -3,13 +3,22 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var count = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
         for (j=0; j<10; j++) {
             let column = document.createElement('td');
-            column.addEventListener("click", cellClick);
+            if(count >= 3 && isPlayer == true){
+
+            }
+            else if(count < 3 && isPlayer == false){
+
+            }
+            else{
+                column.addEventListener("click", cellClick);
+            }
             row.appendChild(column);
         }
         table.appendChild(row);
@@ -17,6 +26,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    var oldListener;
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -25,13 +35,36 @@ function markHits(board, elementId, surrenderText) {
             className = "hit";
         else if (attack.result === "SUNK")
             className = "hit";
-        else if (attack.result === "SURRENDER")
+        else if (attack.result === "SURRENDER"){
             alert(surrenderText);
+            clearBoard();
+         }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
+    
+    if (board.attacks.length > 0) {
+        var result = board.attacks[board.attacks.length - 1];
+        var html = "<div class='result'><span";
+        console.log(elementId);
+        if (elementId === "opponent") {
+            html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            document.getElementById("player-results").insertAdjacentHTML("beforeend", html);
+
+        } else if (elementId === "player") {
+            html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            document.getElementById("opponent-results").insertAdjacentHTML("beforeend", html);
+        }
+        console.log(html);
+        
+    }
+}
+
+function clearBoard(){
+        location.reload();
 }
 
 function redrawGrid() {
+    count++;
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -74,6 +107,7 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
             }
         });
     } else {
@@ -143,4 +177,5 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
+
 };
