@@ -123,7 +123,6 @@ td:hover {
 .button:active {
   background-color: #302f2f;
   box-shadow: 0 5px #666;
-  transform: translateY(4px);
 }
 
 .logo img {
