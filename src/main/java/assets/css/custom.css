@@ -9,7 +9,12 @@
     margin-left: auto;
     width: 75%;
     max-width: 750px;
+    cursor: pointer;
 }
+
+/* .battleGridPlayer:active {
+    cursor: default;
+} */
 
 .battleGridPlayer tr {
     border: 1px solid black;
@@ -29,6 +34,7 @@
     margin-right:auto;
     width: 75%;
     max-width: 750px;
+    cursor: pointer;
 }
 
 .battleGridOpponent tr {
