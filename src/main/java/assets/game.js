@@ -13,6 +13,9 @@ function makeGrid(table, isPlayer) {
             if(count >= 3 && isPlayer == true){
 
             }
+            else if(count < 3 && isPlayer == false){
+
+            }
             else{
                 column.addEventListener("click", cellClick);
             }
