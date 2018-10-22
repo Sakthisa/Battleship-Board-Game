@@ -17,6 +17,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    var oldListener;
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -25,10 +26,16 @@ function markHits(board, elementId, surrenderText) {
             className = "hit";
         else if (attack.result === "SUNK")
             className = "hit";
-        else if (attack.result === "SURRENDER")
+        else if (attack.result === "SURRENDER"){
             alert(surrenderText);
+            clearBoard();
+         }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
+}
+
+function clearBoard(){
+        location.reload();
 }
 
 function redrawGrid() {
@@ -41,6 +48,7 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        console.log(document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)]);
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
