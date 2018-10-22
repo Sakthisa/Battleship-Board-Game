@@ -5,9 +5,10 @@
     border: 1px solid black;
     border-spacing: 0px;
     margin-bottom: 30px;
-    margin-left:auto;
-    margin-right:auto;
-
+    margin-right: auto;
+    margin-left: auto;
+    width: 75%;
+    max-width: 750px;
 }
 
 .battleGridPlayer tr {
@@ -26,6 +27,8 @@
     margin-bottom: 30px;
     margin-left:auto;
     margin-right:auto;
+    width: 75%;
+    max-width: 750px;
 }
 
 .battleGridOpponent tr {
@@ -35,7 +38,7 @@
 
 .battleGridOpponent td {
     border: 1px solid black;
-    width: 40px;
+    width: 40px; 
 }
 
 td:hover {
@@ -115,4 +118,32 @@ td:hover {
 .logo img {
     width: 100%;
     height: 100%;
+}
+
+#main {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+#opponent {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+
+#player {
+    grid-row: 2 / 2;
+    grid-column: 1 / 1;
+}
+
+#results-container {
+    grid-row: 1 / span 2;
+    grid-column: 2 / 2;
+    border: 1.5px solid black;
+}
+
+.container-header {
+    margin-top: 0px;
 }
