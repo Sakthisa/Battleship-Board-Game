@@ -50,18 +50,26 @@ function markHits(board, elementId, surrenderText) {
             clearBoard();
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+        console.log(board.attacks);
     });
     
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
+        var resultHTML = "<span class='attack-detail'><span class='";
 
+        if (result.result === "HIT")
+            resultHTML += "hitResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+        else if (result.result === "MISS")
+            resultHTML += "missResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+        else if (result.result === "SUNK")
+            resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
         if (elementId === "opponent") {
-            html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            html += " class='player-name'>PLAYER: </span>" + resultHTML;
             document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
 
         } else if (elementId === "player") {
-            html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            html += " class='opponent-name'>AI: </span>" + resultHTML;
             document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
     }
@@ -140,7 +148,18 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            if (url === "/attack") {
+                var html = "<div class='result'><span";
+                html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>INVALID ATTACK</span></div>";
+                document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+
+                html ="<div class='result'><span"
+                html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>INVALID ATTACK</span></div>";;
+                document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+            }
+            else {
+                alert("INVALID SHIP PLACEMENT");
+            }
             return;
         }
         handler(JSON.parse(req.responseText));
