@@ -116,14 +116,15 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                document.getElementById("place_battleship").style.display = "none";
+                document.getElementById("is_vertical").style.display = "none";
+                document.getElementById("place_destroyer").style.display = "none";
+                document.getElementById("place_minesweeper").style.display = "none";
                 document.getElementById("restart").style.visibility = "visible";
                 document.getElementById("restart").addEventListener("click", function(e){
                         location.reload();
                 });
-                document.getElementById("place_battleship").style.visibility = "hidden";
-                document.getElementById("is_vertical").style.visibility = "hidden";
-                document.getElementById("place_destroyer").style.visibility = "hidden";
-                document.getElementById("place_minesweeper").style.visibility = "hidden";
+
 
             }
         });
