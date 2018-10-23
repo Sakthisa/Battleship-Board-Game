@@ -40,8 +40,8 @@
     /*width: 75%;*/
     /*height: 75%;*/
     max-width: 750px;
-    cursor:url(crosshairOne.cur), auto;
-    
+    cursor:url(crosshairOne.cur) 16 18, auto;
+
 }
 
 .battleGridOpponent tr {
