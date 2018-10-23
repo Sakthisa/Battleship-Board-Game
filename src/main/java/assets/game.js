@@ -132,6 +132,16 @@ function cellClick() {
                 document.getElementById("restart").addEventListener("click", function(e){
                         location.reload();
                 });
+                resultscontain = document.getElementById("results-container");
+                resultscontain.innerHTML = "";
+                playerResults = document.createElement('div');
+                playerResults.setAttribute("id", "player-results");
+                playerResults.setAttribute("class", "individual-results");
+                opponentResults = document.createElement('div');
+                opponentResults.setAttribute("id", "opponent-results" );
+                opponentResults.setAttribute("class", "individual-results");
+                resultscontain.appendChild(playerResults);
+                resultscontain.appendChild(opponentResults);
 
 
             }
@@ -150,15 +160,17 @@ function sendXhr(method, url, data, handler) {
         if (req.status != 200) {
             if (url === "/attack") {
                 var html = "<div class='result'><span";
-                html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>INVALID ATTACK</span></div>";
+                html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
                 document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
 
                 html ="<div class='result'><span"
-                html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>INVALID ATTACK</span></div>";;
+                html += " class='opponent-name'>AI: </span>" + "<span class='error'>WAITING...</span></div>";;
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
             }
             else {
-                alert("INVALID SHIP PLACEMENT");
+                var html = "<div class='result'><span";
+                html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID SHIP PLACEMENT</span></div>";
+                document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
             }
             return;
         }

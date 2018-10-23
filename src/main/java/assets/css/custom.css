@@ -24,6 +24,10 @@
     height: 40px;
 }
 
+.error{
+    color: red;
+}
+
 .battleGridPlayer td {
     border: 1px solid black;
     width: 40px;
