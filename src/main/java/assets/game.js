@@ -4,6 +4,7 @@ var game;
 var shipType;
 var vertical;
 var count = 0;
+var vertical = false;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -27,7 +28,7 @@ function makeGrid(table, isPlayer) {
 
 function markHits(board, elementId, surrenderText) {
     var oldListener;
-    // console.log(board);
+
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -35,15 +36,14 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
             className = "hit";
         else if (attack.result === "SUNK") {
-            console.log(attack)
+
             var square;
             for (square of attack.ship.occupiedSquares) {
                 document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
                 document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
-                console.log(attack);
             }
             return;
-            // className = "hit";
+
         }
         else if (attack.result === "SURRENDER"){
             alert(surrenderText);
@@ -110,11 +110,20 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                document.getElementById("restart").style.visibility = "visible";
+                document.getElementById("restart").addEventListener("click", function(e){
+                        location.reload();
+                });
+                document.getElementById("place_battleship").style.visibility = "hidden";
+                document.getElementById("is_vertical").style.visibility = "hidden";
+                document.getElementById("place_destroyer").style.visibility = "hidden";
+                document.getElementById("place_minesweeper").style.visibility = "hidden";
 
             }
         });
@@ -144,7 +153,6 @@ function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
@@ -181,6 +189,17 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+    });
+    document.getElementById("is_vertical").addEventListener("click", function(e){
+       document.getElementById("is_vertical").innerHTML = "Horizontal";
+       if(vertical == true){
+          vertical = false;
+          document.getElementById("is_vertical").innerHTML = "Vertical";
+       }
+       else{
+          vertical = true;
+          document.getElementById("is_vertical").innerHTML = "Horizontal";
+       }
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
