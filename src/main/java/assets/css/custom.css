@@ -11,7 +11,7 @@
     margin-left: auto;
     /*width: 75%;*/
     max-width: 750px;
-    cursor: pointer;
+    cursor:pointer
     /*height: 75%;*/
 }
 
@@ -40,7 +40,8 @@
     /*width: 75%;*/
     /*height: 75%;*/
     max-width: 750px;
-    cursor: pointer;
+    cursor:url(crosshairOne.cur) 16 18, auto;
+
 }
 
 .battleGridOpponent tr {
@@ -54,11 +55,11 @@
 }
 
 td:hover {
-    background-color: gray;
+    background-color: #bcbcbc;
 }
 
 .placed {
-    background-color: gray;
+    background-color: #bcbcbc;
 }
 
 .occupied {
@@ -78,7 +79,10 @@ td:hover {
 }
 
 .sink {
-    background-color: red;
+    background-image: url(https://i.gyazo.com/163b826db507278a57706c194932ce32.png);
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
 
 .miss {
@@ -121,6 +125,11 @@ td:hover {
   border-radius: 15px;
   box-shadow: 0 9px #999;
   margin-bottom: 30px;
+}
+
+.button img{
+    max-width: 50%;
+    height: auto;
 }
 
 .button:hover {
@@ -194,6 +203,11 @@ td:hover {
 }
 
 .container-header {
+    text-align: center;
+}
+
+#restart{
+    visibility: hidden;
     text-align: center;
 }
 
