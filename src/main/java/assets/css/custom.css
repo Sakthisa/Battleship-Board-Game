@@ -24,6 +24,10 @@
     height: 40px;
 }
 
+.error{
+    color: red;
+}
+
 .battleGridPlayer td {
     border: 1px solid black;
     width: 40px;
@@ -40,7 +44,8 @@
     /*width: 75%;*/
     /*height: 75%;*/
     max-width: 750px;
-    cursor: pointer;
+    cursor:url(crosshairOne.cur) 16 18, auto;
+
 }
 
 .battleGridOpponent tr {
@@ -54,11 +59,11 @@
 }
 
 td:hover {
-    background-color: gray;
+    background-color: #bcbcbc;
 }
 
 .placed {
-    background-color: gray;
+    background-color: #bcbcbc;
 }
 
 .occupied {
@@ -78,7 +83,10 @@ td:hover {
 }
 
 .sink {
-    background-color: red;
+    background-image: url(https://i.gyazo.com/163b826db507278a57706c194932ce32.png);
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
 
 .miss {
@@ -123,6 +131,11 @@ td:hover {
   margin-bottom: 30px;
 }
 
+.button img{
+    max-width: 50%;
+    height: auto;
+}
+
 .button:hover {
   background-color: #302f2f
 }
@@ -144,7 +157,7 @@ td:hover {
     grid-template-columns: 2fr .5fr .5fr;
     grid-template-rows: 28px 1fr 1fr;
     column-gap: 3px;
-    /*overflow: hidden;*/
+    min-width: 0px;
 }
 #results-container {
     grid-row-start: 2;
@@ -152,7 +165,6 @@ td:hover {
     border: 1.5px solid black;
     padding-left: 5px;
     padding-right: 5px;
-    /* text-align: center; */
     overflow: auto;
     max-height: 400px;
 }
@@ -164,23 +176,24 @@ td:hover {
 #player-results {
     grid-column-start: 2;
     grid-row: 2 / span 3;
-    /* border-right: 2px solid black; */
     width: 50%;
     margin: 0px;
-    /* height: 100%; */
     display: inline-block;
+    overflow-x: hidden;
 }
 
 #opponent-results {
     grid-column-start: 3;
     grid-row: 2 / span 3;
     width: 48%;
-    /* margin-left: 5px; */
     display: inline-block;
+    overflow-x: hidden;
+    max-width: 48%;
 }
 
 .container-header {
     margin-top: 0px;
+    text-align: center;
 }
 
 .opponent-name {
@@ -193,7 +206,21 @@ td:hover {
     color: #40cc7a;
 }
 
-.container-header {
+#restart{
+    visibility: hidden;
     text-align: center;
 }
+
+.hitResult {
+    color: #193c93;
+    font-weight: bold;
+}
+.missResult {
+    color: #999999;
+}
+.sunkResult {
+    color: #840f5b;
+    font-weight: bold;
+}
+
 

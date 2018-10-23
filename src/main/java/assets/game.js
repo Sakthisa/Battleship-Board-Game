@@ -4,6 +4,7 @@ var game;
 var shipType;
 var vertical;
 var count = 0;
+var vertical = false;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -27,31 +28,48 @@ function makeGrid(table, isPlayer) {
 
 function markHits(board, elementId, surrenderText) {
     var oldListener;
+
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
             className = "miss";
-        else if (attack.result === "HIT")
+        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit";
+        else if (attack.result === "SUNK") {
+
+            var square;
+            for (square of attack.ship.occupiedSquares) {
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+            }
+            return;
+
+        }
         else if (attack.result === "SURRENDER"){
             alert(surrenderText);
             clearBoard();
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+        console.log(board.attacks);
     });
     
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
+        var resultHTML = "<span class='attack-detail'><span class='";
 
+        if (result.result === "HIT")
+            resultHTML += "hitResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+        else if (result.result === "MISS")
+            resultHTML += "missResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+        else if (result.result === "SUNK")
+            resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
         if (elementId === "opponent") {
-            html += " class='player-name'>PLAYER: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            html += " class='player-name'>PLAYER: </span>" + resultHTML;
             document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
 
         } else if (elementId === "player") {
-            html += " class='opponent-name'>AI: </span>" + "<span class='attack-detail'>" + result.result + " " + result.location.row + result.location.column + "</span></div>";
+            html += " class='opponent-name'>AI: </span>" + resultHTML;
             document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
     }
@@ -100,11 +118,31 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                document.getElementById("place_battleship").style.display = "none";
+                document.getElementById("is_vertical").style.display = "none";
+                document.getElementById("place_destroyer").style.display = "none";
+                document.getElementById("place_minesweeper").style.display = "none";
+                document.getElementById("restart").style.visibility = "visible";
+                document.getElementById("restart").addEventListener("click", function(e){
+                        location.reload();
+                });
+                resultscontain = document.getElementById("results-container");
+                resultscontain.innerHTML = "";
+                playerResults = document.createElement('div');
+                playerResults.setAttribute("id", "player-results");
+                playerResults.setAttribute("class", "individual-results");
+                opponentResults = document.createElement('div');
+                opponentResults.setAttribute("id", "opponent-results" );
+                opponentResults.setAttribute("class", "individual-results");
+                resultscontain.appendChild(playerResults);
+                resultscontain.appendChild(opponentResults);
+
 
             }
         });
@@ -120,7 +158,20 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            if (url === "/attack") {
+                var html = "<div class='result'><span";
+                html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
+                document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+
+                html ="<div class='result'><span"
+                html += " class='opponent-name'>AI: </span>" + "<span class='error'>WAITING...</span></div>";;
+                document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+            }
+            else {
+                var html = "<div class='result'><span";
+                html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID SHIP PLACEMENT</span></div>";
+                document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+            }
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -134,7 +185,6 @@ function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
@@ -171,6 +221,17 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+    });
+    document.getElementById("is_vertical").addEventListener("click", function(e){
+       document.getElementById("is_vertical").innerHTML = "Horizontal";
+       if(vertical == true){
+          vertical = false;
+          document.getElementById("is_vertical").innerHTML = "Vertical";
+       }
+       else{
+          vertical = true;
+          document.getElementById("is_vertical").innerHTML = "Horizontal";
+       }
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;

@@ -156,8 +156,8 @@ public class Board {
 			for(Square occupied : occupiedShip.getOccupiedSquares()){
 				if(x == occupied.getRow() && y == occupied.getColumn()){
 					result.setShip(occupiedShip);
-					occupiedShip.getOccupiedSquares().remove(occupied);
-					if(occupiedShip.getOccupiedSquares().isEmpty() == true){
+					occupiedShip.setHit();
+					if(occupiedShip.getHits() == occupiedShip.getShipSize()){
 						shipList.remove(occupiedShip);
 						if(shipList.isEmpty() == true){
 							attackStatus = AtackStatus.SURRENDER;
