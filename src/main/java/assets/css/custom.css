@@ -58,12 +58,9 @@
     width: 40px; 
 }
 
-/*td:hover {*/
-    /*background-color: #bcbcbc;*/
-/*}*/
-/*.hovered {*/
-    /*background-color: #bcbcbc;*/
-/*}*/
+.battleGridOpponent td:hover {
+    background-color: #bcbcbc;
+}
 
 .placed {
     background-color: #bcbcbc;

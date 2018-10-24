@@ -270,36 +270,6 @@ function initGame() {
           document.getElementById("is_vertical").innerHTML = "Horizontal";
        }
     });
-    // document.getElementById("player").addEventListener("mouseover", (e) => {
-    //    let cell = e.target;
-    //    let table = e.currentTarget;
-    //    let row = e.target.parentNode.rowIndex;
-    //    let col = e.cellIndex;
-    //    var displayError = false;
-    //    for (let i = 0; i < shipSize; i++) {
-    //        if(vertical) {
-    //            let tableRow = table.rows[row+i];
-    //            if (tableRow === undefined) {
-    //                // ship is over the edge; let the back end deal with it
-    //                //  displayError = true;
-    //                for (let j = (row + i - 1); j >= row; j--) {
-    //                    cell = table.rows[j].cells[col];
-    //                    cell.classList.add("error-place");
-    //                }
-    //                break;
-    //            }
-    //            cell = tableRow.cells[col];
-    //        } else {
-    //            cell = table.rows[row].cells[col+i];
-    //        }
-    //        if (cell === undefined) {
-    //            // ship is over the edge; let the back end deal with it
-    //            break;
-    //        }
-    //        cell.classList.toggle("hovered");
-    //    }
-    //
-    // });
 
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
