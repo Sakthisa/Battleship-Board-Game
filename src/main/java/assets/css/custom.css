@@ -58,12 +58,22 @@
     width: 40px; 
 }
 
-td:hover {
-    background-color: #bcbcbc;
-}
+/*td:hover {*/
+    /*background-color: #bcbcbc;*/
+/*}*/
+/*.hovered {*/
+    /*background-color: #bcbcbc;*/
+/*}*/
 
 .placed {
     background-color: #bcbcbc;
+}
+
+.error-place {
+    background-image: url("../red_x_new.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .occupied {
