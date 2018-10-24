@@ -25,6 +25,16 @@ function makeGrid(table, isPlayer) {
         }
         table.appendChild(row);
     }
+    if(isPlayer == true){
+            var caption = document.createElement('caption');
+            caption.innerHTML = "PLAYER";
+            table.appendChild(caption);
+    }
+    else{
+            var caption = document.createElement('caption');
+            caption.innerHTML = "OPPONENT";
+            table.appendChild(caption);
+    }
 }
 
 function markHits(board, elementId, surrenderText) {
