@@ -33,16 +33,36 @@ function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
-            className = "miss";
+            if(elementId === "opponent"){
+                className = "miss";
+            }
+            else{
+                className = "missPlayer"
+            }
+
         else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
-            className = "hit";
+            if(elementId === "opponent"){
+                className = "hit";
+            }
+            else{
+                className = "hitPlayer"
+            }
         else if (attack.result === "SUNK") {
 
             var square;
-            for (square of attack.ship.occupiedSquares) {
-                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+            if(elementId === "opponent"){
+                for (square of attack.ship.occupiedSquares) {
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+                }
             }
+            else{
+                for (square of attack.ship.occupiedSquares) {
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sinkPlayer");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hitPlayer")
+                }
+            }
+
             return;
 
         }
