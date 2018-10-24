@@ -255,42 +255,43 @@
 }
 
 .missError{
-        background-image: url(https://i.gyazo.com/47ec3289aaaba7330e8788b7bd8586b4.png);
-        background-size:     cover;
-        background-repeat:   no-repeat;
-        background-position: center center;
-}
-
-.hitError{
-        background-image: url(https://i.gyazo.com/301b186f5feb3e5f3f74a59453b64636.png);
-        background-size:     cover;
-        background-repeat:   no-repeat;
-        background-position: center center;
-
+    background-image: url(http://2.bp.blogspot.com/-S_9dNop-3V0/Uk_2YlzXBDI/AAAAAAAACU8/oo4F2FJpo-4/s640/AnimatedWater_005.png);
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
 
 .sinkError{
-        background-image: url(https://i.gyazo.com/c1cd4034d2c6c52c5e9f9138c2df8680.png);
+    background-image: url(https://i.gyazo.com/163b826db507278a57706c194932ce32.png);
+    background-size:     cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+.hitError{
+        background-image: url(https://i.gyazo.com/d017b472b30552859c7156773ba5c7ff.png);
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;
 }
 
-.miss:hover{
+
+.missError:hover{
         background-image: url(https://i.gyazo.com/47ec3289aaaba7330e8788b7bd8586b4.png);
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;
+        border-style: dotted;
 }
 
-.sink:hover{
+.sinkError:hover{
         background-image: url(https://i.gyazo.com/c1cd4034d2c6c52c5e9f9138c2df8680.png);
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;
 }
 
-.hit:hover{
+.hitError:hover{
         background-image: url(https://i.gyazo.com/301b186f5feb3e5f3f74a59453b64636.png);
         background-size:     cover;
         background-repeat:   no-repeat;
