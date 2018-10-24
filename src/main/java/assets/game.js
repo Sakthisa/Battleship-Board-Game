@@ -51,7 +51,6 @@ function markHits(board, elementId, surrenderText) {
             clearBoard();
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
-        console.log(board.attacks);
     });
     
     if (board.attacks.length > 0) {
@@ -136,6 +135,8 @@ function cellClick() {
                 document.getElementById("restart").addEventListener("click", function(e){
                         location.reload();
                 });
+
+                document.getElementsByClassName("container-header")[0].innerHTML = "ATTACK RESULTS";
                 resultscontain = document.getElementById("results-container");
                 resultscontain.innerHTML = "";
                 playerResults = document.createElement('div');
@@ -163,6 +164,27 @@ function sendXhr(method, url, data, handler) {
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
             if (url === "/attack") {
+                var row = data.x;
+                var col = data.y.charCodeAt(0)-64;
+                var opponentTable = document.getElementById("opponent");
+                for(var i = 0; i  < 11; i++){
+                    for(var j = 0; j < 11; j++){
+                        if(i == row && j == col){
+
+                            if(opponentTable.rows[i-1].cells[j-1].className == "miss"){
+                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "missError");
+                            }
+                            else if(opponentTable.rows[i-1].cells[j-1].className == "hit"){
+                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "hitError");
+                            }
+                            else if(opponentTable.rows[i-1].cells[j-1].className == "sink"){
+                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "sinkError");
+                            }
+
+                        }
+                    }
+                }
+
                 var html = "<div class='result'><span";
                 html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
                 document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
