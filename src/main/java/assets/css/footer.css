@@ -1,0 +1,24 @@
+ul.footer {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #333333;
+    overflow: hidden;
+    width: 100%;
+}
+
+li.framework {
+    float: left;
+}
+
+li.source {
+    float: right;
+}
+
+li.framework:hover {
+    background-color: #111;
+}
+
+li.source:hover {
+    background-color: #111;
+}
