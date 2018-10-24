@@ -115,7 +115,7 @@ function markHits(board, elementId, surrenderText) {
 
 
 
-        }, 2000);
+        }, 215);
     }
 
 
