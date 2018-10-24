@@ -8,6 +8,7 @@ ul.header {
 }
 
 li a{
+    font-family: Roboto;
     border: 1px solid #999999;
     display: block;
     color: #FFF;
@@ -21,7 +22,7 @@ li.home {
     float: left;
 }
 
-li.information {
+li.info {
     float: left;
 }
 
@@ -33,7 +34,7 @@ li.home:hover {
     background-color: #111;
 }
 
-li.information:hover {
+li.info:hover {
     background-color: #111;
 }
 
