@@ -255,11 +255,24 @@ function place(size) {
                     break;
                 }
                 cell = tableRow.cells[col];
+                if (cell.classList.contains('occupied')) {
+                    for (let j = (row + i - 1); j >= row; j--) {
+                        cell = table.rows[j].cells[col];
+                        cell.classList.toggle("error-place");
+                    }
+                    break;
+                }
             } else {
                 cell = table.rows[row].cells[col+i];
             }
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
+                for (let j = (col + i - 1); j >= col; j--) {
+                    cell = table.rows[row].cells[j];
+                    cell.classList.toggle("error-place");
+                }
+                break;
+            } else if (cell.classList.contains('occupied')) {
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
