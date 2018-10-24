@@ -103,6 +103,7 @@
     background-position: center center;
 }
 
+
 .logo{
         width: 500px;
         height: 200px;
@@ -247,6 +248,27 @@
 
 .sinkError{
         background-image: url(https://i.gyazo.com/c1cd4034d2c6c52c5e9f9138c2df8680.png);
+        background-size:     cover;
+        background-repeat:   no-repeat;
+        background-position: center center;
+}
+
+.miss:hover{
+        background-image: url(https://i.gyazo.com/47ec3289aaaba7330e8788b7bd8586b4.png);
+        background-size:     cover;
+        background-repeat:   no-repeat;
+        background-position: center center;
+}
+
+.sink:hover{
+        background-image: url(https://i.gyazo.com/c1cd4034d2c6c52c5e9f9138c2df8680.png);
+        background-size:     cover;
+        background-repeat:   no-repeat;
+        background-position: center center;
+}
+
+.hit:hover{
+        background-image: url(https://i.gyazo.com/301b186f5feb3e5f3f74a59453b64636.png);
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;

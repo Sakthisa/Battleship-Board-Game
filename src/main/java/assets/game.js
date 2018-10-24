@@ -167,23 +167,23 @@ function sendXhr(method, url, data, handler) {
                 var row = data.x;
                 var col = data.y.charCodeAt(0)-64;
                 var opponentTable = document.getElementById("opponent");
-                for(var i = 0; i  < 11; i++){
-                    for(var j = 0; j < 11; j++){
-                        if(i == row && j == col){
-
-                            if(opponentTable.rows[i-1].cells[j-1].className == "miss"){
-                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "missError");
-                            }
-                            else if(opponentTable.rows[i-1].cells[j-1].className == "hit"){
-                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "hitError");
-                            }
-                            else if(opponentTable.rows[i-1].cells[j-1].className == "sink"){
-                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "sinkError");
-                            }
-
-                        }
-                    }
-                }
+//                for(var i = 0; i  < 11; i++){
+//                    for(var j = 0; j < 11; j++){
+//                        if(i == row && j == col){
+//
+//                            if(opponentTable.rows[i-1].cells[j-1].className == "miss"){
+//                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "missError");
+//                            }
+//                            else if(opponentTable.rows[i-1].cells[j-1].className == "hit"){
+//                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "hitError");
+//                            }
+//                            else if(opponentTable.rows[i-1].cells[j-1].className == "sink"){
+//                                opponentTable.rows[i-1].cells[j-1].setAttribute("class", "sinkError");
+//                            }
+//
+//                        }
+//                    }
+//                }
 
                 var html = "<div class='result'><span";
                 html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
