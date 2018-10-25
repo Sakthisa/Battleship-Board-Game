@@ -8,18 +8,18 @@ var count = 0;
 var vertical = false;
 
 function makeGrid(table, isPlayer) {
-    var thC = "<tr><td></td>";
-    var thR;
-    for (i = 0; i < 10; i++) {
+    var thC = "<tr><th></th>";
+
+    for (let i = 0; i < 10; i++) {
         thC += "<th scope='col'>" + String.fromCharCode(65 + i) + "</th>";
         console.log(String.fromCharCode(65 + i));
     }
     thC += "</tr>";
     table.insertAdjacentHTML("beforeend", thC);
 
-    for (i=0; i<10; i++) {
+    for (let i=0; i<10; i++) {
         let row = document.createElement('tr');
-        let th = "<th scope='row'>" + i + "</th>";
+        let th = "<th scope='row'>" + (i + 1) + "</th>";
         row.insertAdjacentHTML("afterbegin", th);
         for (j=0; j<10; j++) {
 
@@ -106,11 +106,12 @@ function markHits(board, elementId, surrenderText) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
         var resultHTML = "<span class='attack-detail'><span class='";
-
+        let row = result.location.row - 1;
+        let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1)
         if (result.result === "HIT")
-            resultHTML += "hitResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+            resultHTML += "hitResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "MISS")
-            resultHTML += "missResult'>" + result.result + "</span>" + " " + result.location.row + result.location.column + "</span></div>";
+            resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "SUNK")
             resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
         if (elementId === "opponent") {
