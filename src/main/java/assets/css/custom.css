@@ -10,6 +10,7 @@ table{
 caption{
     font-size: 25px;
     font-weight: bold;
+    font-family: Roboto;
 }
 
 /* The Modal (background) */
@@ -256,6 +257,7 @@ caption{
   border-radius: 5px;
   box-shadow: 0 3px #999;
   margin-bottom: 30px;
+  font-family: Roboto;
 }
 
 #is_horizontal{
@@ -309,12 +311,15 @@ caption{
     max-height: 380px;
     margin-bottom: 50px;
     max-width: 40%
+    font-family: Roboto;
+
 }
 
 .container-header {
     grid-row: 1 / 1;
     grid-column: 2 / span 3;
-    float: center;
+
+    font-family: Roboto;
 }
 
 #player-results {
@@ -324,6 +329,7 @@ caption{
     margin: 0px;
     display: inline-block;
     overflow-x: hidden;
+    font-family: Roboto;
 }
 
 #opponent-results {
@@ -333,6 +339,7 @@ caption{
     display: inline-block;
     overflow-x: hidden;
     max-width: 48%;
+    font-family: Roboto;
 }
 
 .container-header {
@@ -343,11 +350,13 @@ caption{
 .opponent-name {
     font: 18px bold;
     color: #d44a4a;
+    font-family: Roboto;
 }
 
 .player-name {
     font: 18px bold;
     color: #40cc7a;
+    font-family: Roboto;
 }
 
 #restart{
