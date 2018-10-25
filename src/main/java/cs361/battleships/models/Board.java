@@ -61,7 +61,7 @@ public class Board {
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
-			if (x + (shipSize - 1) <= 10) {
+			if (x + (shipSize - 1) <= 11) {
 				// successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x + i, y));
@@ -74,7 +74,7 @@ public class Board {
 			}
 		} else {
 			// If it is within the column bounds, then it is a successful placement
-			if (y + (shipSize - 1) <= 'J') {
+			if (y + (shipSize - 1) <= 'K') {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
 					squares.add(new Square(x, (char)(y + i)));
@@ -200,11 +200,11 @@ public class Board {
 		int minX = 1;
 		char minY = 'A';
 
-		if(x < minX || x >= minX + this.getXDimension()){
+		if(x < minX || x > minX + this.getXDimension()){
 			return false;
 		}
 
-		if(y < minY || y >= minY + this.getYDimension()){
+		if(y < minY || y > minY + this.getYDimension()){
 			return false;
 		}
 		return true;

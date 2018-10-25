@@ -8,9 +8,21 @@ var count = 0;
 var vertical = false;
 
 function makeGrid(table, isPlayer) {
+    var thC = "<tr><td></td>";
+    var thR;
+    for (i = 0; i < 10; i++) {
+        thC += "<th scope='col'>" + String.fromCharCode(65 + i) + "</th>";
+        console.log(String.fromCharCode(65 + i));
+    }
+    thC += "</tr>";
+    table.insertAdjacentHTML("beforeend", thC);
+
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
+        let th = "<th scope='row'>" + i + "</th>";
+        row.insertAdjacentHTML("afterbegin", th);
         for (j=0; j<10; j++) {
+
             let column = document.createElement('td');
             if(count >= 3 && isPlayer == true){
 
@@ -112,8 +124,8 @@ function markHits(board, elementId, surrenderText) {
         setTimeout(function(){
             var opponentTable = document.getElementById("opponent");
             //console.log(opponentTable);
-             for(var i = 0; i  < 10; i++){
-                      for(var j = 0; j < 10; j++){
+             for(var i = 1; i  < 11; i++){
+                      for(var j = 1; j < 11; j++){
 
 
                           if(opponentTable.rows[i].cells[j].className === "miss"){
@@ -162,8 +174,8 @@ function redrawGrid() {
 var oldListener;
 function registerCellListener(f) {
     let el = document.getElementById("player");
-    for (i=0; i<10; i++) {
-        for (j=0; j<10; j++) {
+    for (i=1; i<11; i++) {
+        for (j=1; j<11; j++) {
             let cell = el.rows[i].cells[j];
             cell.removeEventListener("mouseover", oldListener);
             cell.removeEventListener("mouseout", oldListener);
@@ -323,8 +335,15 @@ function place(size) {
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
+            if (row === 0 || col === 0) {
+                break;
+            }
             if(vertical) {
                 let tableRow = table.rows[row+i];
+
+                if (tableRow === 0) {
+                    break;
+                }
                 if (tableRow === undefined) {
                     // ship is over the edge; let the back end deal with it
                     for (let j = (row + i - 1); j >= row; j--) {
@@ -344,6 +363,7 @@ function place(size) {
             } else {
                 cell = table.rows[row].cells[col+i];
             }
+
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
                 for (let j = (col + i - 1); j >= col; j--) {
