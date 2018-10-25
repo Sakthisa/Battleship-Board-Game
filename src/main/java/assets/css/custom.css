@@ -28,6 +28,10 @@ caption{
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+#endModal{
+    padding-top: 250px;
+}
+
 /* Modal Content */
 .modal-content {
     position: relative;
@@ -217,7 +221,6 @@ caption{
 
 .buttonHolder{
     /* text-align: center; */
-
 }
 
 
