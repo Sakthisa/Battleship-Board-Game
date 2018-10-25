@@ -54,7 +54,7 @@ public class Game {
     // This will be a random character from A-J to indicate a column
     private char randCol() {
         Random rand = new Random();
-        char randomColumn = (char)(rand.nextInt(10) + 'A');
+        char randomColumn = (char)(rand.nextInt(10) + 'B');
         return randomColumn;
     }
 
@@ -62,7 +62,7 @@ public class Game {
     // This will be a random integer from 1-10 to indicate a row
     private int randRow() {
         Random rand = new Random();
-        int randomRow = rand.nextInt(10) + 1;
+        int randomRow = rand.nextInt(10) + 2;
         return randomRow;
     }
 
