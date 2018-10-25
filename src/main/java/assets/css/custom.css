@@ -18,7 +18,7 @@ caption{
     grid-column: 1 / 1;
     border-spacing: 0px;
     cursor: pointer;
-    margin-right: 30px;
+    box-shadow: 10px 10px 8px #888888;
 
     /*height: 75%;*/
 }
@@ -48,6 +48,8 @@ caption{
     border-spacing: 0px;
     max-width: 60%;
     cursor:url(crosshairOne.cur) 16 18, auto;
+    margin-right: 30px;
+    box-shadow: 10px 10px 8px #888888;
 
 }
 
@@ -143,6 +145,7 @@ caption{
 
 }
 
+    /* Button Layout was used from W3Schools example code: https://www.w3schools.com/tags/tag_button.asp */
 
 .button {
   display: inline-block;
@@ -158,6 +161,22 @@ caption{
   border-radius: 15px;
   box-shadow: 0 9px #999;
   margin-bottom: 30px;
+}
+
+#is_horizontal{
+    background-color: black;
+}
+
+#is_horizontal:hover{
+    background-color: #302f2f
+}
+
+#is_vertical{
+    background-color: #565656;
+}
+
+#is_vertical:hover{
+    background-color: #302f2f
 }
 
 .button img{
