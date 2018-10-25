@@ -77,8 +77,10 @@ function markHits(board, elementId, surrenderText) {
 
         }
         else if (attack.result === "SURRENDER"){
-            alert(surrenderText);
-            clearBoard();
+            //alert(surrenderText);
+            //clearBoard();
+            displayVictoryDialogue();
+            return;
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
@@ -170,6 +172,48 @@ function registerCellListener(f) {
 // function errorPlace(var event) {
 //
 // }
+
+
+// Modal handlers from W3 Schools https://www.w3schools.com/howto/howto_css_modals.asp
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+var span2 = document.getElementsByClassName("close")[1];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal = document.getElementById('myModal');
+    modal.style.display = "block";
+}
+
+
+function displayVictoryDialogue(){
+    modal = document.getElementById('endModal');
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+span2.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
 
 function cellClick() {
     let row = this.parentNode.rowIndex+1;
