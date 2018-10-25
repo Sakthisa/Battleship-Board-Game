@@ -13,7 +13,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlacementMineSweeper() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 12, 'C', false));
     }
 
     //Checking valid Destroyer placement
@@ -27,7 +27,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlaceShipDestroyer(){
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("DESTROYER"), 10, 'I', false));
+        assertFalse(board.placeShip(new Ship("DESTROYER"), 12, 'I', false));
     }
 
     //Checking valid Destroyer placement
@@ -80,7 +80,7 @@ public class BoardTest {
         assertTrue(game.placeShip(new Ship("BATTLESHIP"), 1, 'A', false));
         assertTrue(game.placeShip(new Ship("MINESWEEPER"), 5, 'B', true));
         assertTrue(game.placeShip(new Ship("DESTROYER"), 7, 'F', false));
-        assertFalse(game.attack(11, 'A'));
+        assertFalse(game.attack(12, 'A'));
         assertTrue(game.attack(5, 'B'));
         assertTrue(game.attack(6, 'B'));
         assertTrue(game.attack(1, 'A'));
