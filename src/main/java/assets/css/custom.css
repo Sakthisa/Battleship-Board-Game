@@ -12,13 +12,11 @@ table{
 caption{
     font-size: 25px;
     font-weight: bold;
-    /*font-family: Roboto;*/
 }
 
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
-    /*font-family: roboto;*/
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 15px; /* Location of the box */
@@ -264,7 +262,6 @@ th {
   border-radius: 5px;
   box-shadow: 0 3px #999;
   margin-bottom: 30px;
-  /*font-family: Roboto;*/
 }
 
 #is_horizontal{
@@ -315,39 +312,28 @@ th {
     padding-right: 5px;
     overflow: auto;
     height: 380px;
-    max-height: 380px;
+    max-height: 472px;
     /*margin-bottom: 50px;*/
     margin-left: 10px;
-    max-width: 40%
-    /*font-family: Roboto;*/
-
+    max-width: 40%;
 }
 
 .container-header {
-    /*grid-row: 1 / 1;*/
-    /*grid-column: 2 / span 3;*/
     margin-bottom: 0px;
-    /*font-family: Roboto;*/
 }
 
 #player-results {
-    /*grid-column-start: 2;*/
-    /*grid-row: 2 / span 3;*/
     width: 50%;
     margin: 0px;
     display: inline-block;
     overflow-x: hidden;
-    /*font-family: Roboto;*/
 }
 
 #opponent-results {
-    /*grid-column-start: 3;*/
-    /*grid-row: 2 / span 3;*/
     width: 48%;
     display: inline-block;
     overflow-x: hidden;
     max-width: 48%;
-    /*font-family: Roboto;*/
 }
 
 .container-header {
@@ -358,13 +344,11 @@ th {
 .opponent-name {
     font: 18px bold;
     color: #d44a4a;
-    /*font-family: Roboto;*/
 }
 
 .player-name {
     font: 18px bold;
     color: #40cc7a;
-    /*font-family: Roboto;*/
 }
 
 #restart{
@@ -435,5 +419,6 @@ th {
     height: auto !important;
     margin-bottom: 20px;
     width: 100%;
+    overflow: auto;
 }
 
