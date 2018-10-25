@@ -187,6 +187,8 @@ btn.onclick = function() {
     modal.style.display = "block";
 }
 
+
+//TODO: change this to toggle a different window
 function displayVictoryDialogue(){
     modal.style.display = "block";
 }
