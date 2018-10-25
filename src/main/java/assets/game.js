@@ -247,6 +247,9 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                document.getElementsByClassName("buttonHolder")[0].children.item(3).setAttribute("id", "is_vertical")
+                document.getElementsByClassName("buttonHolder")[0].children.item(3).innerHTML = "Vertical";
+
                 document.getElementById("place_battleship").style.display = "none";
                 document.getElementById("is_vertical").style.display = "none";
                 document.getElementById("place_destroyer").style.display = "none";
@@ -267,6 +270,8 @@ function cellClick() {
                 opponentResults.setAttribute("class", "individual-results");
                 resultscontain.appendChild(playerResults);
                 resultscontain.appendChild(opponentResults);
+
+
 
 
             }
@@ -377,14 +382,17 @@ function initGame() {
        registerCellListener(place(4));
     });
     document.getElementById("is_vertical").addEventListener("click", function(e){
-       document.getElementById("is_vertical").innerHTML = "Horizontal";
+       //document.getElementById("is_vertical").innerHTML = "Horizontal";
        if(vertical == true){
           vertical = false;
-          document.getElementById("is_vertical").innerHTML = "Vertical";
+          document.getElementById("is_horizontal").innerHTML = "Vertical";
+          document.getElementById("is_horizontal").setAttribute("id", "is_vertical");
        }
        else{
           vertical = true;
           document.getElementById("is_vertical").innerHTML = "Horizontal";
+          document.getElementById("is_vertical").setAttribute("id", "is_horizontal");
+
        }
     });
 
