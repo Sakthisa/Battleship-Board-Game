@@ -79,7 +79,12 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SURRENDER"){
             //alert(surrenderText);
             //clearBoard();
+            if(surrenderText == false){
+                console.log(document.getElementsByClassName("win-message"));
+                document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
+            }
             displayVictoryDialogue();
+
             return;
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -106,7 +111,7 @@ function markHits(board, elementId, surrenderText) {
         }
         setTimeout(function(){
             var opponentTable = document.getElementById("opponent");
-            console.log(opponentTable);
+            //console.log(opponentTable);
              for(var i = 0; i  < 10; i++){
                       for(var j = 0; j < 10; j++){
 
@@ -150,8 +155,8 @@ function redrawGrid() {
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    markHits(game.opponentsBoard, "opponent", true);
+    markHits(game.playersBoard, "player", false);
 }
 
 var oldListener;
@@ -176,6 +181,7 @@ function registerCellListener(f) {
 
 // Modal handlers from W3 Schools https://www.w3schools.com/howto/howto_css_modals.asp
 // Get the modal
+var endGame = 0;
 var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
@@ -186,6 +192,7 @@ var span = document.getElementsByClassName("close")[0];
 
 var span2 = document.getElementsByClassName("close")[1];
 
+
 // When the user clicks the button, open the modal
 btn.onclick = function() {
     modal = document.getElementById('myModal');
@@ -194,23 +201,36 @@ btn.onclick = function() {
 
 
 function displayVictoryDialogue(){
+    endGame = 1;
     modal = document.getElementById('endModal');
     modal.style.display = "block";
+    console.log(document.getElementsByClassName("win-message"));
 }
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
+    if(endGame == 1){
+        location.reload();
+    }
     modal.style.display = "none";
 }
 
 span2.onclick = function() {
+     if(endGame == 1){
+            location.reload();
+     }
     modal.style.display = "none";
 }
 
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
+
     if (event.target == modal) {
         modal.style.display = "none";
+        if(endGame == 1){
+            location.reload();
+        }
     }
 }
 

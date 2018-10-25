@@ -29,7 +29,8 @@ caption{
 }
 
 #endModal{
-    padding-top: 250px;
+    padding-top: 150px;
+    bottom: 100px;
 }
 
 /* Modal Content */
@@ -68,6 +69,20 @@ caption{
 
 .close:hover,
 .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close-info {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-info:hover,
+.close-info:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
