@@ -173,6 +173,8 @@ function registerCellListener(f) {
 //
 // }
 
+
+// Modal handlers from W3 Schools https://www.w3schools.com/howto/howto_css_modals.asp
 // Get the modal
 var modal = document.getElementById('myModal');
 
