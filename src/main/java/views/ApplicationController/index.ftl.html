@@ -4,9 +4,6 @@
 <div class = "logo">
     <img src="https://fanart.tv/fanart/movies/44833/hdmovielogo/battleship-50a17dbf5095e.png" alt="BattleShip Logo">
 </div>
-<!-- Trigger/Open The Modal -->
-
-<button id="myBtn">Open Modal</button>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -15,14 +12,38 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close">&times;</span>
-            <h2>Modal Header</h2>
+            <h2>How to Play Battleship</h2>
         </div>
         <div class="modal-body">
-            <p>Some text in the Modal Body</p>
-            <p>Some other text...</p>
+            <h2>Game Objective</h2>
+            <ul>
+                <li> The object of Battleship is to try and sink all of the other player's before they sink all of your ships. </li>
+                <li> All of the other player's ships are somewhere on his/her board.</li>
+                <li> You try and hit them by calling out the coordinates of one of the squares on the board. </li>
+                <li> The other player also tries to hit your ships by calling out coordinates. </li>
+            <li> Neither you nor the other player can see the other's board so you must try to guess where they are. </li>
+            <li> Each board in the physical game has two grids:
+                <ol> <li> The lower (horizontal) section for the player's ships </li>
+                    <li> The upper part (vertical during play) for recording the player's guesses. </li>
+                </ol>
+            </li>
+            </ul>
+            <h2>Starting a New Game</h2>
+            <ul>
+                <li> Each player places the 3 ships somewhere on their board. The ships can only be placed vertically
+                    or horizontally. Diagonal placement is not allowed. </li>
+                <li> No part of a ship may hang off the edge of the board. Ships may not overlap each other. No ships may be placed on another ship.</li>
+                <li> Once the guessing begins, the players may not move the ships. The 3 ships are: Battleship (4), Cruiser (3) and Destroyer (2).  </li>
+            </ul>
+            <h2>Playing the Game</h2>
+            <ul>
+                <li> Player's take turns guessing by calling out the coordinates. The opponent responds with "hit" or "miss" as appropriate. </li>
+                <li> When all of the squares that one your ships occupies have been hit, the ship will be sunk. You should announce "hit and sunk".</li>
+                <li>As soon as all of one player's ships have been sunk, the game ends.  </li>
+            </ul>
         </div>
         <div class="modal-footer">
-            <h3>Modal Footer</h3>
+            <h3></h3>
         </div>
     </div>
 
@@ -58,6 +79,10 @@
         <button class="button" id = "place_battleship" >Place Battleship</button>
         <button class="button" id= "is_vertical">Vertical</button>
         <button class="button" id= "restart">Restart</button>
+        <!-- Trigger/Open The Modal -->
+    </div>
+    <div class = "instructionSpace">
+        <button class="button" id="myBtn">Instructions</button>
     </div>
 </div>
 
