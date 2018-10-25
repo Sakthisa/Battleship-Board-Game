@@ -95,7 +95,7 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         Game game = new Game(); // Creates new game
         assertTrue(game.attack(1, 'A')); // attacks at 1A
         assertTrue(game.attack(10, 'J')); // attacks at 10J
-        assertFalse(game.attack(11, 'A'));  // attacks at 11A (not possible)
+        assertFalse(game.attack(12, 'A'));  // attacks at 11A (not possible)
         assertFalse(game.attack(1, 'Z')); // attacks at 1Z (not possible)
         assertFalse(game.attack(1, 'a')); // attacks at 1a (with lowercase so not possible)
         assertFalse(game.attack(-1, 'A')); // attacks at -1A (not possible to have negative coordinates)
