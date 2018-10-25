@@ -19,9 +19,11 @@ caption{
     font-family: roboto;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 25px; /* Location of the box */
+    padding-top: 15px; /* Location of the box */
     left: 0;
     top: 0;
+    right: 0;
+    bottom: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
@@ -38,7 +40,7 @@ caption{
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    margin: auto;
+    margin: auto auto 25px auto;
     padding: 0;
     border: 1px solid #888;
     width: 80%;
@@ -46,8 +48,10 @@ caption{
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
 }
+
+
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
@@ -107,6 +111,7 @@ caption{
     height: 0px;
     background-color: #333333;
     color: white;
+    /*margin-bottom: 15px;*/
 }
 
 .battleGridPlayer {
