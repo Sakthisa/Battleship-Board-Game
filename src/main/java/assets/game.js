@@ -77,8 +77,10 @@ function markHits(board, elementId, surrenderText) {
 
         }
         else if (attack.result === "SURRENDER"){
-            alert(surrenderText);
-            clearBoard();
+            //alert(surrenderText);
+            //clearBoard();
+            displayVictoryDialogue();
+            return;
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
@@ -182,6 +184,10 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+function displayVictoryDialogue(){
     modal.style.display = "block";
 }
 
