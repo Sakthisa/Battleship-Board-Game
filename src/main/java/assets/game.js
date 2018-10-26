@@ -37,6 +37,7 @@ function makeGrid(table, isPlayer) {
         }
         table.appendChild(row);
     }
+    //Create table headers
     if(isPlayer == true){
             var caption = document.createElement('caption');
             caption.innerHTML = "PLAYER";
@@ -88,6 +89,7 @@ function markHits(board, elementId, surrenderText) {
             return;
 
         }
+        //When a surrender occurs, a modal will popup and display the win message
         else if (attack.result === "SURRENDER"){
             //alert(surrenderText);
             //clearBoard();
@@ -122,6 +124,8 @@ function markHits(board, elementId, surrenderText) {
             html += " class='opponent-name'>AI: </span>" + resultHTML;
             document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
+
+        //Create an error hover effect on already attacked spaces after 215 ms
         setTimeout(function(){
             var opponentTable = document.getElementById("opponent");
             //console.log(opponentTable);
@@ -151,6 +155,7 @@ function markHits(board, elementId, surrenderText) {
 
 }
 
+//Resets the website
 function clearBoard(){
         location.reload();
 }
@@ -260,9 +265,12 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
+                //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
                 document.getElementsByClassName("buttonHolder")[0].children.item(3).setAttribute("id", "is_vertical")
                 document.getElementsByClassName("buttonHolder")[0].children.item(3).innerHTML = "Vertical";
 
+                //Remove place ship buttons and adding a restart button
                 document.getElementById("place_battleship").style.display = "none";
                 document.getElementById("is_vertical").style.display = "none";
                 document.getElementById("place_destroyer").style.display = "none";
@@ -272,6 +280,7 @@ function cellClick() {
                         location.reload();
                 });
 
+                //Clearing out the results box and preparing it for the attack phase results
                 document.getElementsByClassName("container-header")[0].innerHTML = "ATTACK RESULTS";
                 resultscontain = document.getElementById("results-container");
                 resultscontain.innerHTML = "";
@@ -305,7 +314,7 @@ function sendXhr(method, url, data, handler) {
                 var row = data.x;
                 var col = data.y.charCodeAt(0)-64;
 
-
+                //Displays an invalid attack if there is an error
                 var html = "<div class='result'><span";
                 html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
                 document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
@@ -314,6 +323,7 @@ function sendXhr(method, url, data, handler) {
                 html += " class='opponent-name'>AI: </span>" + "<span class='error'>WAITING...</span></div>";;
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
             }
+            //Displays an invalid placement if there is an error
             else {
                 var html = "<div class='result'><span";
                 html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID SHIP PLACEMENT</span></div>";
@@ -402,6 +412,7 @@ function initGame() {
         shipSize = 4;
        registerCellListener(place(4));
     });
+    //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function(e){
        //document.getElementById("is_vertical").innerHTML = "Horizontal";
        if(vertical == true){
