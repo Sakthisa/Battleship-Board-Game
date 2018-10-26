@@ -323,14 +323,14 @@ th {
 }
 
 #player-results {
-    width: 50%;
+    width: 55%;
     margin: 0px;
     display: inline-block;
     overflow-x: hidden;
 }
 
 #opponent-results {
-    width: 48%;
+    width: 45%;
     display: inline-block;
     overflow-x: hidden;
     max-width: 48%;
@@ -368,6 +368,13 @@ th {
     font-weight: bold;
 }
 
+
+.result {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 .missError{
     background-image: url(http://2.bp.blogspot.com/-S_9dNop-3V0/Uk_2YlzXBDI/AAAAAAAACU8/oo4F2FJpo-4/s640/AnimatedWater_005.png);
     background-size:     cover;
