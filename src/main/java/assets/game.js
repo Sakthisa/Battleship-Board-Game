@@ -71,7 +71,7 @@ function markHits(board, elementId, surrenderText) {
                 className = "hitPlayer"
             }
         else if (attack.result === "SUNK") {
-
+            // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
             var square;
             if(elementId === "opponent"){
                 for (square of attack.ship.occupiedSquares) {
@@ -104,18 +104,24 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
     
+    // DISPLAY THE ATTACK RESULT IN THE RESULTS CONTAINER.
+    // COLOR-CODE DIFFERENT ATTACK RESULTS
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
         var resultHTML = "<span class='attack-detail'><span class='";
+
         let row = result.location.row - 1;
-        let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1)
+        let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
+
         if (result.result === "HIT")
             resultHTML += "hitResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "MISS")
             resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "SUNK")
             resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
+        
+        // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
         if (elementId === "opponent") {
             html += " class='player-name'>PLAYER: </span>" + resultHTML;
             document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
@@ -284,18 +290,17 @@ function cellClick() {
                 document.getElementsByClassName("container-header")[0].innerHTML = "ATTACK RESULTS";
                 resultscontain = document.getElementById("results-container");
                 resultscontain.innerHTML = "";
+
                 playerResults = document.createElement('div');
                 playerResults.setAttribute("id", "player-results");
                 playerResults.setAttribute("class", "individual-results");
+
                 opponentResults = document.createElement('div');
                 opponentResults.setAttribute("id", "opponent-results" );
                 opponentResults.setAttribute("class", "individual-results");
+
                 resultscontain.appendChild(playerResults);
                 resultscontain.appendChild(opponentResults);
-
-
-
-
             }
         });
     } else {
@@ -344,6 +349,7 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         let table = document.getElementById("player");
+
         for (let i=0; i<size; i++) {
             let cell;
             if (row === 0 || col === 0) {
@@ -356,7 +362,7 @@ function place(size) {
                     break;
                 }
                 if (tableRow === undefined) {
-                    // ship is over the edge; let the back end deal with it
+                    // ship is over the edge, mark the visible squares with red X's
                     for (let j = (row + i - 1); j >= row; j--) {
                         cell = table.rows[j].cells[col];
                         cell.classList.toggle("error-place");
@@ -364,6 +370,7 @@ function place(size) {
                     break;
                 }
                 cell = tableRow.cells[col];
+                // If cell is occupied, then we can't place there either, so mark visible square with red X's
                 if (cell.classList.contains('occupied')) {
                     for (let j = (row + i - 1); j >= row; j--) {
                         cell = table.rows[j].cells[col];
@@ -376,13 +383,14 @@ function place(size) {
             }
 
             if (cell === undefined) {
-                // ship is over the edge; let the back end deal with it
+                // ship is over the edge, so mark visible squares with red X's
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
                 }
                 break;
             } else if (cell.classList.contains('occupied')) {
+                // If cell is occupied, then we can't place there either, so mark visible square with red X's
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
@@ -397,6 +405,7 @@ function place(size) {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
@@ -412,6 +421,7 @@ function initGame() {
         shipSize = 4;
        registerCellListener(place(4));
     });
+    
     //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function(e){
        //document.getElementById("is_vertical").innerHTML = "Horizontal";
