@@ -7,28 +7,17 @@ import java.util.List;
 
 public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares;
+	@JsonProperty protected List<Square> occupiedSquares;
 	// shipSize is the amount of squares that it takes up.
-	private int shipSize;
-	private int hits;
+	protected int shipSize;
+	protected int hits;
+	protected Square captainsQuarter;
 	// kind is the type of ship: 'MINESWEEPER' for example
-	private String kind;
+	protected String kind;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
-	}
-
-	public Ship(String kind) {
-		//TODO implement
-		if (kind.equals("MINESWEEPER")) {
-			this.shipSize = 2;
-		} else if (kind.equals("DESTROYER")) {
-			this.shipSize = 3;
-		} else {
-			this.shipSize = 4;
-		}
-		occupiedSquares = new ArrayList<Square>();
-		this.kind = kind;
+		this.hits = 0;
 	}
 
 	public int getShipSize() {
@@ -42,6 +31,7 @@ public class Ship {
 	public void setHit() {hits += 1;}
 
 	public int getHits() { return hits;}
+
 	public void setOccupiedSquares(List<Square> squares) {
 		for (Square item : squares) {
 			occupiedSquares.add(item);

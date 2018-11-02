@@ -15,21 +15,21 @@ public class ShipTest {
     @Test
     public void testValidShipConstructorMinesweeper() {
         Ship ship;
-        ship = new Ship("MINESWEEPER");
+        ship = new Minesweeper();
         assertEquals("MINESWEEPER", ship.getKind());
     }
 
     @Test
     public void testShipConstructorDestroyer() {
         Ship ship;
-        ship = new Ship("DESTROYER");
+        ship = new Destroyer();
         assertEquals("DESTROYER", ship.getKind());
     }
 
     @Test
     public void testShipConstructorBattleship() {
         Ship ship;
-        ship = new Ship("DESTROYER");
+        ship = new Destroyer();
         assertEquals("DESTROYER", ship.getKind());
 
     }
@@ -39,16 +39,13 @@ public class ShipTest {
     @Test
     //tests both get and set occupied squares
     public void testShipSizes(){
-        Ship ship = new Ship("BATTLESHIP");
+        Ship ship = new Battleship();
         assertEquals(ship.getShipSize(), 4);
 
-        ship = new Ship("DESTROYER");
+        ship = new Destroyer();
         assertEquals(ship.getShipSize(), 3);
 
-        ship = new Ship("badname");
-        assertEquals(ship.getShipSize(), 4);
-
-        ship = new Ship("MINESWEEPER");
+        ship = new Minesweeper();
         assertEquals(ship.getShipSize(),2);
     }
 
