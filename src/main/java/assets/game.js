@@ -6,6 +6,7 @@ var shipSize = 1;
 var vertical;
 var count = 0;
 var vertical = false;
+var attackType = "REG";
 
 function makeGrid(table, isPlayer) {
     var thC = "<tr><th></th>";
@@ -177,23 +178,29 @@ function redrawGrid() {
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+
+    game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+       document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
+    }));
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
 }
 
 var oldListener;
-function registerCellListener(f) {
-    let el = document.getElementById("player");
-    for (i=1; i<11; i++) {
-        for (j=1; j<11; j++) {
-            let cell = el.rows[i].cells[j];
-            cell.removeEventListener("mouseover", oldListener);
-            cell.removeEventListener("mouseout", oldListener);
-            cell.addEventListener("mouseover", f);
-            cell.addEventListener("mouseout", f);
+function registerCellListener(f, board) {
+    if (board !== "none") {
+        let el = document.getElementById(board);
+        for (i = 1; i < 11; i++) {
+            for (j = 1; j < 11; j++) {
+                let cell = el.rows[i].cells[j];
+                cell.removeEventListener("mouseover", oldListener);
+                cell.removeEventListener("mouseout", oldListener);
+                cell.addEventListener("mouseover", f);
+                cell.addEventListener("mouseout", f);
+            }
         }
+        oldListener = f;
     }
-    oldListener = f;
 }
 
 // function errorPlace(var event) {
@@ -267,7 +274,7 @@ function cellClick() {
             placedShips++;
             if (placedShips == 3) {
                 isSetup = false;
-                registerCellListener((e) => {});
+                // registerCellListener((e) => {});
 
                 //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
                 document.getElementsByClassName("buttonHolder")[0].children.item(3).setAttribute("id", "is_vertical")
@@ -279,6 +286,7 @@ function cellClick() {
                 document.getElementById("place_destroyer").style.display = "none";
                 document.getElementById("place_minesweeper").style.display = "none";
                 document.getElementById("restart").style.visibility = "visible";
+                document.getElementById("radar").style.visibility = "visible";
                 document.getElementById("restart").addEventListener("click", function(e){
                         location.reload();
                 });
@@ -400,6 +408,51 @@ function place(size) {
     }
 }
 
+function attack() {
+    return function () {
+        let row = this.parentNode.rowIndex;
+        let col = this.cellIndex;
+        let table = document.getElementById("opponent");
+
+
+        if (attackType === "RADAR") {
+            let tableRow;
+            let cell;
+            let i;
+            for (i = 0; i < 5; i++) {
+                if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                    continue;
+                }
+                tableRow = table.rows[row - 2 + i];
+                if (tableRow != undefined) {
+                    cell = tableRow.cells[col];
+                    cell.classList.toggle("placed");
+                }
+                if (i === 1 || i === 3) {
+                    if (tableRow.cells[col - 1] != undefined) {
+                        tableRow.cells[col - 1].classList.toggle("placed");
+                    }
+                    if (tableRow.cells[col + 1] != undefined) {
+                        tableRow.cells[col + 1].classList.toggle("placed");
+                    }
+                }
+            }
+            tableRow = table.rows[row];
+            for (i = 0; i < 5; i++) {
+                if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                    continue;
+                }
+                cell = tableRow.cells[col - 2 + i];
+                if (cell != undefined) {
+                    cell.classList.toggle("placed");
+                }
+
+            }
+
+        }
+    }
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -407,18 +460,30 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
-       registerCellListener(place(2));
+       registerCellListener(place(2), "player");
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
         shipSize = 3;
-       registerCellListener(place(3));
+       registerCellListener(place(3), "player");
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         shipSize = 4;
-       registerCellListener(place(4));
+       registerCellListener(place(4), "player");
     });
+    document.getElementById("radar").addEventListener("click", (e) => {
+       let rad = e.target.classList.toggle("btn-toggle");
+       if (rad) {
+           attackType = "RADAR";
+           registerCellListener(attack(), "opponent");
+       } else {
+           attackType = "REG";
+           console.log("HERE");
+           registerCellListener((e) => {}, "none");
+       }
+    });
+
     
     //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function(e){
