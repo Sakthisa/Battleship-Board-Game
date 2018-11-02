@@ -17,6 +17,7 @@ public class Ship {
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
+		this.hits = 0;
 	}
 
 	public int getShipSize() {
