@@ -12,7 +12,6 @@ function makeGrid(table, isPlayer) {
 
     for (let i = 0; i < 10; i++) {
         thC += "<th scope='col'>" + String.fromCharCode(65 + i) + "</th>";
-        console.log(String.fromCharCode(65 + i));
     }
     thC += "</tr>";
     table.insertAdjacentHTML("beforeend", thC);
@@ -94,7 +93,6 @@ function markHits(board, elementId, surrenderText) {
             //alert(surrenderText);
             //clearBoard();
             if(surrenderText == false){
-                console.log(document.getElementsByClassName("win-message"));
                 document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
             }
             displayVictoryDialogue();
@@ -134,7 +132,7 @@ function markHits(board, elementId, surrenderText) {
         //Create an error hover effect on already attacked spaces after 215 ms
         setTimeout(function(){
             var opponentTable = document.getElementById("opponent");
-            //console.log(opponentTable);
+
              for(var i = 1; i  < 11; i++){
                       for(var j = 1; j < 11; j++){
 
@@ -228,7 +226,6 @@ function displayVictoryDialogue(){
     endGame = 1;
     modal = document.getElementById('endModal');
     modal.style.display = "block";
-    console.log(document.getElementsByClassName("win-message"));
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -315,6 +312,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
+            console.log(req.responseText);
             if (url === "/attack") {
                 var row = data.x;
                 var col = data.y.charCodeAt(0)-64;

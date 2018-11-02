@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Ship {
+public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares;
+	@JsonProperty protected List<Square> occupiedSquares;
 	// shipSize is the amount of squares that it takes up.
 	protected int shipSize;
 	protected int hits;
@@ -18,19 +18,6 @@ public abstract class Ship {
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
-
-//	public Ship(String kind) {
-//		//TODO implement
-//		if (kind.equals("MINESWEEPER")) {
-//			this.shipSize = 2;
-//		} else if (kind.equals("DESTROYER")) {
-//			this.shipSize = 3;
-//		} else {
-//			this.shipSize = 4;
-//		}
-//		occupiedSquares = new ArrayList<Square>();
-//		this.kind = kind;
-//	}
 
 	public int getShipSize() {
 		return shipSize;
@@ -43,6 +30,7 @@ public abstract class Ship {
 	public void setHit() {hits += 1;}
 
 	public int getHits() { return hits;}
+
 	public void setOccupiedSquares(List<Square> squares) {
 		for (Square item : squares) {
 			occupiedSquares.add(item);

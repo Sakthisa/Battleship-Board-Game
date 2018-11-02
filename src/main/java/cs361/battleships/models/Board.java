@@ -37,13 +37,20 @@ public class Board {
 		}
 
 		// Check for the user trying to place multiple of the same ship type
-		for(Ship item: shipList){
+		for(Ship item : shipList){
 			if(item.getShipSize() == ship.getShipSize()){
 				return false;
 			}
 		}
 
-		Ship newShip = new Ship(ship.getKind());
+		Ship newShip;
+		if (ship.getKind().equals("MINESWEEPER")) {
+			newShip = new Minesweeper();
+		} else if (ship.getKind().equals("DESTROYER")) {
+			newShip = new Destroyer();
+		} else {
+			newShip = new Battleship();
+		}
 		List<Square> squares = new ArrayList<Square>();
 
 		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
