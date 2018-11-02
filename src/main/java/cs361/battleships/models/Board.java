@@ -32,9 +32,9 @@ public class Board {
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
 		// Check for anomaly where user can edit ship type somehow. Make sure that ship type is either minesweeper, destroyer, or battleship
-		if(!ship.getKind().equals("MINESWEEPER") && !ship.getKind().equals("DESTROYER") && !ship.getKind().equals("BATTLESHIP")){
-			return false;
-		}
+//		if(!ship.getKind().equals("MINESWEEPER") && !ship.getKind().equals("DESTROYER") && !ship.getKind().equals("BATTLESHIP")){
+//			return false;
+//		}
 
 		// Check for the user trying to place multiple of the same ship type
 		for(Ship item : shipList){
