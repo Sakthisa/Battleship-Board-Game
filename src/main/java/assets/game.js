@@ -408,6 +408,12 @@ function place(size) {
     }
 }
 
+/***********************************************
+ * attack()
+ * For showing the radar on the opponent's board when they are HOVERING.
+ * This function is called by registerCellListener()
+ * @returns {Function}
+ */
 function attack() {
     return function () {
         let row = this.parentNode.rowIndex;
@@ -472,16 +478,18 @@ function initGame() {
         shipSize = 4;
        registerCellListener(place(4), "player");
     });
+
+    // Event listener for the radar button
     document.getElementById("radar").addEventListener("click", (e) => {
-       let rad = e.target.classList.toggle("btn-toggle");
-       if (rad) {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let rad = e.target.classList.toggle("btn-toggle");
+        if (rad) {
            attackType = "RADAR";
            registerCellListener(attack(), "opponent");
-       } else {
+        } else {
            attackType = "REG";
-           console.log("HERE");
            registerCellListener((e) => {}, "none");
-       }
+        }
     });
 
     
