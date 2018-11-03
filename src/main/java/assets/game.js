@@ -6,8 +6,9 @@ var shipSize = 1;
 var vertical;
 var count = 0;
 var vertical = false;
-var attackType = "REG";
+var isRadar = false;
 var numSunk = 0;
+var radarsUsed = 0;
 
 function makeGrid(table, isPlayer) {
     var thC = "<tr><th></th>";
@@ -314,8 +315,17 @@ function cellClick() {
             }
         });
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function(data) {
             game = data;
+            if (isRadar) {
+                radarsUsed++;
+                isRadar = false;
+                document.getElementById("radar").classList.toggle("btn-toggle");
+            }
+            if (radarsUsed === 2) {
+                document.getElementById("radar").style.display = "none";
+            }
+
             redrawGrid();
         })
     }
@@ -426,7 +436,7 @@ function attack() {
         let table = document.getElementById("opponent");
 
 
-        if (attackType === "RADAR") {
+        if (isRadar) {
             let tableRow;
             let cell;
             let i;
@@ -489,10 +499,10 @@ function initGame() {
         // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let rad = e.target.classList.toggle("btn-toggle");
         if (rad) {
-           attackType = "RADAR";
+           isRadar = true;
            registerCellListener(attack(), "opponent");
         } else {
-           attackType = "REG";
+           isRadar = false;
            registerCellListener((e) => {}, "none");
         }
     });
