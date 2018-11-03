@@ -7,6 +7,7 @@ var vertical;
 var count = 0;
 var vertical = false;
 var attackType = "REG";
+var numSunk = 0;
 
 function makeGrid(table, isPlayer) {
     var thC = "<tr><th></th>";
@@ -117,13 +118,18 @@ function markHits(board, elementId, surrenderText) {
             resultHTML += "hitResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "MISS")
             resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
-        else if (result.result === "SUNK")
+        else if (result.result === "SUNK") {
+            numSunk++;
             resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
+        }
         
         // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
         if (elementId === "opponent") {
             html += " class='player-name'>PLAYER: </span>" + resultHTML;
             document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+            if (numSunk === 1) {
+                document.getElementById("radar").style.visibility = "visible";
+            }
 
         } else if (elementId === "player") {
             html += " class='opponent-name'>AI: </span>" + resultHTML;
@@ -272,7 +278,7 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
-            if (placedShips == 3) {
+            if (placedShips === 3) {
                 isSetup = false;
                 // registerCellListener((e) => {});
 
@@ -286,7 +292,6 @@ function cellClick() {
                 document.getElementById("place_destroyer").style.display = "none";
                 document.getElementById("place_minesweeper").style.display = "none";
                 document.getElementById("restart").style.visibility = "visible";
-                document.getElementById("radar").style.visibility = "visible";
                 document.getElementById("restart").addEventListener("click", function(e){
                         location.reload();
                 });
