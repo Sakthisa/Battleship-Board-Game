@@ -91,7 +91,6 @@ public class BoardTest {
         assertTrue(game.attack(7, 'G', false));
         assertTrue(game.attack(7, 'H', false));
         //NEED BETTER TEST CASES
-        assertFalse(game.attack(5, 'B', true));
 
     }
 
