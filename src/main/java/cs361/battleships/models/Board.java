@@ -144,6 +144,8 @@ public class Board {
 
 		// If attacking with radar...
 		if (isRadar) {
+			// First check to see if a ship has been sunk
+			if (!shipHasBeenSunk(result)) return result;
 			// Check to see if two radars have already been placed
 			if (checkTooManyRadars(result)) return result;
 
@@ -166,6 +168,16 @@ public class Board {
 		return result;
 	}
 
+	private boolean shipHasBeenSunk(Result result) {
+		for (Result res : attackResult) {
+			if (res.getResult() == AtackStatus.SUNK) {
+				return true;
+			}
+		}
+		result.setResult(AtackStatus.INVALID);
+		return false;
+	}
+	
 	private boolean checkTooManyRadars(Result result) {
 		AtackStatus attackStatus;
 		int nRadars = 0;

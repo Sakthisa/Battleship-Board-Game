@@ -80,12 +80,12 @@ public class BoardTest {
         assertTrue(game.placeShip(new Battleship(), 1, 'A', false));
         assertTrue(game.placeShip(new Minesweeper(), 5, 'B', true));
         assertTrue(game.placeShip(new Destroyer(), 7, 'F', false));
-        assertFalse(game.attack(12, 'A', true));
+        assertFalse(game.attack(12, 'A', false));
         assertTrue(game.attack(5, 'B', false));
         assertTrue(game.attack(6, 'B', false));
         assertTrue(game.attack(1, 'A', false));
         assertTrue(game.attack(1, 'B', false));
-        assertTrue(game.attack(1, 'C',true));
+        assertTrue(game.attack(1, 'C',false));
         assertTrue(game.attack(1, 'D', false));
         assertTrue(game.attack(7, 'F', false));
         assertTrue(game.attack(7, 'G', false));
