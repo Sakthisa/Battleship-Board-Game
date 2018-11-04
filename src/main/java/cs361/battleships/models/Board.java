@@ -11,14 +11,15 @@ public class Board {
 	private List<Result> attackResult;
 	private int xDimension;
 	private int yDimension;
+	private	int shipsSunk;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		BoardoccupiedSquares = new ArrayList<Square>();
-		shipList = new ArrayList<Ship>();
-		attackResult = new ArrayList<Result>();
-
+		this.BoardoccupiedSquares = new ArrayList<Square>();
+		this.shipList = new ArrayList<Ship>();
+		this.attackResult = new ArrayList<Result>();
+		this.shipsSunk = 0;
 		//In future these should be taken as args to the board constructor
 		setYDimension(10);
 		setXDimension(10);
@@ -156,7 +157,7 @@ public class Board {
 		}
 
 		//Check if x and y has already been attacked
-		if (checkAttackRedundant(x, y, result)) return result;
+//		if (checkAttackRedundant(x, y, result)) return result;
 
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
@@ -198,31 +199,56 @@ public class Board {
 		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
-			for(Square occupied : occupiedShip.getOccupiedSquares()){
-				if(x == occupied.getRow() && y == occupied.getColumn()){
-					result.setShip(occupiedShip);
-					occupiedShip.setHit();
-					if(occupiedShip.getHits() == occupiedShip.getShipSize()){
-						shipList.remove(occupiedShip);
-						if(shipList.isEmpty() == true){
-							attackStatus = AtackStatus.SURRENDER;
+			// only execute if ship is not sunk
+			if (! occupiedShip.getSunk()) {
+				for(Square occupied : occupiedShip.getOccupiedSquares()) {
+					if (x == occupied.getRow() && y == occupied.getColumn()) {
+						result.setShip(occupiedShip);
+						// If square has already been hit max times, then don't add it to ship hit count
+						if (occupied.getTimesHit() < occupied.getMaxHits()) {
+							occupiedShip.setHit();
 						}
-						else{
-							attackStatus = AtackStatus.SUNK;
+
+						occupied.setTimesHit();
+						if (occupiedShip.getHits() == occupiedShip.getShipSize()) {
+							setShipsSunk();
+							occupiedShip.setSunk(true);
+
+							if (this.shipsSunk == 3) {
+								attackStatus = AtackStatus.SURRENDER;
+							} else {
+								attackStatus = AtackStatus.SUNK;
+							}
+						} else {
+							attackStatus = AtackStatus.HIT;
 						}
+						result.setResult(attackStatus);
+						attackResult.add(result);
+						return true;
+
 					}
-					else{
-						attackStatus = AtackStatus.HIT;
-					}
-					result.setResult(attackStatus);
-					attackResult.add(result);
-					return true;
 				}
+			} else {
+				for(Square occupied : occupiedShip.getOccupiedSquares()) {
+					if (x == occupied.getRow() && y == occupied.getColumn()) {
+						result.setShip(occupiedShip);
+						result.setResult(AtackStatus.SUNK);
+						attackResult.add(result);
+						return true;
+					}
+				}
+
 			}
 		}
 		return false;
 	}
 
+	private void setShipsSunk() {
+		this.shipsSunk++;
+	}
+	public int getShipsSunk() {
+		return shipsSunk;
+	}
 	private boolean checkAttackRedundant(int x, char y, Result result) {
 		//Checks if a square has already been attacked
 		AtackStatus attackStatus;

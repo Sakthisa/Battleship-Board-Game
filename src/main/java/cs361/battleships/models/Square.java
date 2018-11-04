@@ -6,7 +6,7 @@ public class Square {
 	protected int row;
 	protected char column;
 	protected String type;
-	protected int hitCount;
+	protected int maxHits;
 	protected int timesHit;
 
 	public Square() {
@@ -17,14 +17,14 @@ public class Square {
 		this.column = column;
 		this.timesHit = 0;
 		this.type = "N";
-		this.hitCount = 1;
+		this.maxHits = 1;
 	}
 
-	public int getHitCount(){
-		return hitCount;
+	public int getMaxHits(){
+		return maxHits;
 	}
-	public void setTimesHit(int timesHit){
-		this.timesHit = timesHit;
+	public void setTimesHit(){
+		this.timesHit++;
 	}
 	public int getTimesHit(){
 		return timesHit;

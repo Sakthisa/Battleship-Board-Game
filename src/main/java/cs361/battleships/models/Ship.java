@@ -14,10 +14,12 @@ public class Ship {
 	protected Square captainsQuarter;
 	// kind is the type of ship: 'MINESWEEPER' for example
 	protected String kind;
+	protected boolean sunk;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 		this.hits = 0;
+		this.sunk = false;
 	}
 
 	public int getShipSize() {
@@ -41,4 +43,7 @@ public class Ship {
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
+
+	public void setSunk(boolean sunk) { this.sunk = sunk; }
+	public boolean getSunk() { return this.sunk; }
 }
