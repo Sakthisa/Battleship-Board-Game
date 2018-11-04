@@ -6,6 +6,9 @@ var shipSize = 1;
 var vertical;
 var count = 0;
 var vertical = false;
+var isRadar = false;
+var numSunk = 0;
+var radarsUsed = 0;
 
 function makeGrid(table, isPlayer) {
     var thC = "<tr><th></th>";
@@ -53,40 +56,41 @@ function markHits(board, elementId, surrenderText) {
     var oldListener;
 
     board.attacks.forEach((attack) => {
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
         let className;
-        if (attack.result === "MISS")
-            if(elementId === "opponent"){
+        if (attack.result === "MISS") {
+            if (elementId === "opponent") {
                 className = "miss";
             }
-            else{
+            else {
                 className = "missPlayer"
             }
-
-        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
+        }
+        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
             if(elementId === "opponent"){
                 className = "hit";
             }
             else{
                 className = "hitPlayer"
             }
+        }
         else if (attack.result === "SUNK") {
             // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
             var square;
+            document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
             if(elementId === "opponent"){
                 for (square of attack.ship.occupiedSquares) {
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                 }
             }
             else{
                 for (square of attack.ship.occupiedSquares) {
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sinkPlayer");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hitPlayer")
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hitPlayer");
                 }
             }
-
             return;
-
         }
         //When a surrender occurs, a modal will popup and display the win message
         else if (attack.result === "SURRENDER"){
@@ -97,6 +101,61 @@ function markHits(board, elementId, surrenderText) {
             }
             displayVictoryDialogue();
 
+            return;
+         }
+         // If there is a radar used there, then make it show.
+        else if (attack.result === "RADAR") {
+             let table = document.getElementById(elementId);
+             let row = attack.location.row - 1;
+             let col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+            let tableRow;
+            let cell;
+            let i;
+            for (i = 0; i < 5; i++) {
+                if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                    continue;
+                }
+                tableRow = table.rows[row - 2 + i];
+                if (tableRow != undefined) {
+                    cell = tableRow.cells[col];
+                    if (cell.classList.contains("opp-occupied")) {
+                        cell.classList.add("found");
+                    } else {
+                        cell.classList.add("placed");
+                    }
+                }
+                if (i === 1 || i === 3) {
+                    if (tableRow.cells[col - 1] != undefined && col - 1 != 0) {
+                        if (tableRow.cells[col - 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col - 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col - 1].classList.add("placed");
+                        }
+                    }
+                    if (tableRow.cells[col + 1] != undefined && col + 1 != 0) {
+                        if (tableRow.cells[col + 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col + 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col + 1].classList.add("placed");
+                        }
+                    }
+                }
+            }
+            tableRow = table.rows[row];
+            for (i = 0; i < 5; i++) {
+                if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                    continue;
+                }
+                cell = tableRow.cells[col - 2 + i];
+                if (cell != undefined) {
+                    if (cell.classList.contains("opp-occupied")) {
+                        cell.classList.add("found");
+                    } else {
+                        cell.classList.add("placed");
+                    }
+                }
+
+            }
             return;
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -116,13 +175,18 @@ function markHits(board, elementId, surrenderText) {
             resultHTML += "hitResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "MISS")
             resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
-        else if (result.result === "SUNK")
+        else if (result.result === "SUNK") {
+            numSunk++;
             resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
+        }
         
         // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
         if (elementId === "opponent") {
             html += " class='player-name'>PLAYER: </span>" + resultHTML;
             document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+            if (numSunk === 1) {
+                document.getElementById("radar").style.visibility = "visible";
+            }
 
         } else if (elementId === "player") {
             html += " class='opponent-name'>AI: </span>" + resultHTML;
@@ -177,23 +241,30 @@ function redrawGrid() {
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+
+    game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+       document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
+    }));
+    console.log(game.opponentsBoard);
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
 }
 
 var oldListener;
-function registerCellListener(f) {
-    let el = document.getElementById("player");
-    for (i=1; i<11; i++) {
-        for (j=1; j<11; j++) {
-            let cell = el.rows[i].cells[j];
-            cell.removeEventListener("mouseover", oldListener);
-            cell.removeEventListener("mouseout", oldListener);
-            cell.addEventListener("mouseover", f);
-            cell.addEventListener("mouseout", f);
+function registerCellListener(f, board) {
+    if (board !== "none") {
+        let el = document.getElementById(board);
+        for (i = 1; i < 11; i++) {
+            for (j = 1; j < 11; j++) {
+                let cell = el.rows[i].cells[j];
+                cell.removeEventListener("mouseover", oldListener);
+                cell.removeEventListener("mouseout", oldListener);
+                cell.addEventListener("mouseover", f);
+                cell.addEventListener("mouseout", f);
+            }
         }
+        oldListener = f;
     }
-    oldListener = f;
 }
 
 // function errorPlace(var event) {
@@ -265,9 +336,9 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
-            if (placedShips == 3) {
+            if (placedShips === 3) {
                 isSetup = false;
-                registerCellListener((e) => {});
+                // registerCellListener((e) => {});
 
                 //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
                 document.getElementsByClassName("buttonHolder")[0].children.item(3).setAttribute("id", "is_vertical")
@@ -301,8 +372,17 @@ function cellClick() {
             }
         });
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function(data) {
             game = data;
+            if (isRadar) {
+                radarsUsed++;
+                isRadar = false;
+                document.getElementById("radar").classList.toggle("btn-toggle");
+            }
+            if (radarsUsed === 2) {
+                document.getElementById("radar").style.display = "none";
+            }
+
             redrawGrid();
         })
     }
@@ -400,6 +480,57 @@ function place(size) {
     }
 }
 
+/***********************************************
+ * attack()
+ * For showing the radar on the opponent's board when they are HOVERING.
+ * This function is called by registerCellListener()
+ * @returns {Function}
+ */
+function attack() {
+    return function () {
+        let row = this.parentNode.rowIndex;
+        let col = this.cellIndex;
+        let table = document.getElementById("opponent");
+
+
+        if (isRadar) {
+            let tableRow;
+            let cell;
+            let i;
+            for (i = 0; i < 5; i++) {
+                if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                    continue;
+                }
+                tableRow = table.rows[row - 2 + i];
+                if (tableRow != undefined) {
+                    cell = tableRow.cells[col];
+                    cell.classList.toggle("placed");
+                }
+                if (i === 1 || i === 3) {
+                    if (tableRow.cells[col - 1] != undefined) {
+                        tableRow.cells[col - 1].classList.toggle("placed");
+                    }
+                    if (tableRow.cells[col + 1] != undefined) {
+                        tableRow.cells[col + 1].classList.toggle("placed");
+                    }
+                }
+            }
+            tableRow = table.rows[row];
+            for (i = 0; i < 5; i++) {
+                if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                    continue;
+                }
+                cell = tableRow.cells[col - 2 + i];
+                if (cell != undefined) {
+                    cell.classList.toggle("placed");
+                }
+
+            }
+
+        }
+    }
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -407,18 +538,32 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
-       registerCellListener(place(2));
+       registerCellListener(place(2), "player");
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
         shipSize = 3;
-       registerCellListener(place(3));
+       registerCellListener(place(3), "player");
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         shipSize = 4;
-       registerCellListener(place(4));
+       registerCellListener(place(4), "player");
     });
+
+    // Event listener for the radar button
+    document.getElementById("radar").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let rad = e.target.classList.toggle("btn-toggle");
+        if (rad) {
+           isRadar = true;
+           registerCellListener(attack(), "opponent");
+        } else {
+           isRadar = false;
+           registerCellListener((e) => {}, "none");
+        }
+    });
+
     
     //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function(e){

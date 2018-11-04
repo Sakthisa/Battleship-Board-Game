@@ -127,11 +127,16 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public Result attack(int x, char y) {
+	public Result attack(int x, char y, boolean isRadar) {
 		Result result = new Result();
 		AtackStatus attackStatus;
 		Square square = new Square(x, y);
 
+		if (isRadar) {
+			for (int i = 0; i < 5; i++) {
+
+			}
+		}
 		result.setLocation(square);
 
 		//Check for INVALID x and y coordinates

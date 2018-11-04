@@ -168,9 +168,13 @@ th {
 .battleGridOpponent td:hover {
     background-color: #bcbcbc;
 }
+.found {
+    background-color: black;
+}
 
 .placed {
     background-color: #bcbcbc;
+    background-image: none !important;
 }
 
 .error-place {
@@ -368,7 +372,6 @@ th {
     font-weight: bold;
 }
 
-
 .result {
     width: 100%;
     text-overflow: ellipsis;
@@ -427,5 +430,13 @@ th {
     margin-bottom: 20px;
     width: 100%;
     overflow: auto;
+}
+
+#radar  {
+    visibility: hidden;
+}
+
+.btn-toggle {
+    background-color: #333333;
 }
 
