@@ -99,5 +99,13 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertFalse(game.attack(-1, 'A')); // attacks at -1A (not possible to have negative coordinates)
     }
 
+    @Test
+    public void testMultipleRadar() {
+        Game game = new Game();
+        assertTrue(game.attack(3, 'A', true));
+        assertTrue(game.attack(5, 'B', true));
+        assertFalse(game.attack(6, 'C', true));
+    }
+
 
 }
