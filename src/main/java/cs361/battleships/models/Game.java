@@ -12,7 +12,7 @@ public class Game {
 
     @JsonProperty private Board playersBoard = new Board();
     @JsonProperty private Board opponentsBoard = new Board();
-
+    private int opponentRadars;
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -47,7 +47,7 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
-        } while(opponentAttackResult.getResult() == INVALID); //Supposed to be != or ==
+        } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
     }

@@ -132,16 +132,22 @@ public class Board {
 		AtackStatus attackStatus;
 		Square square = new Square(x, y);
 
-		if (isRadar) {
-			for (int i = 0; i < 5; i++) {
-
-			}
-		}
 		result.setLocation(square);
 
 		//Check for INVALID x and y coordinates
 		if (!squareIsValid(square)) {
 			attackStatus = AtackStatus.INVALID;
+			result.setResult(attackStatus);
+			attackResult.add(result);
+			return result;
+		}
+
+		// If attacking with radar...
+		if (isRadar) {
+			// Check to see if two radars have already been placed
+			if (checkTooManyRadars(result)) return result;
+
+			attackStatus = AtackStatus.RADAR;
 			result.setResult(attackStatus);
 			attackResult.add(result);
 			return result;
@@ -158,6 +164,21 @@ public class Board {
 		result.setResult(attackStatus);
 		attackResult.add(result);
 		return result;
+	}
+
+	private boolean checkTooManyRadars(Result result) {
+		AtackStatus attackStatus;
+		int nRadars = 0;
+
+		for (Result res : attackResult) {
+			if (res.getResult() == AtackStatus.RADAR) nRadars++;
+		}
+
+		if (nRadars >= 2) {
+			result.setResult(AtackStatus.INVALID);
+			return true;
+		}
+		return false;
 	}
 
 	private boolean checkKnownValidAttack(int x, char y, Result result) {
