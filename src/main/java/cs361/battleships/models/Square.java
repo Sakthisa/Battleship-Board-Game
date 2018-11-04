@@ -3,8 +3,11 @@ package cs361.battleships.models;
 @SuppressWarnings("unused")
 public class Square {
 
-	private int row;
-	private char column;
+	protected int row;
+	protected char column;
+	protected String type;
+	protected int hitCount;
+	protected int timesHit;
 
 	public Square() {
 	}
@@ -12,6 +15,19 @@ public class Square {
 	public Square(int row, char column) {
 		this.row = row;
 		this.column = column;
+		this.timesHit = 0;
+		this.type = "N";
+		this.hitCount = 1;
+	}
+
+	public int getHitCount(){
+		return hitCount;
+	}
+	public void setTimesHit(int timesHit){
+		this.timesHit = timesHit;
+	}
+	public int getTimesHit(){
+		return timesHit;
 	}
 
 	public char getColumn() {
@@ -28,5 +44,9 @@ public class Square {
 
 	public void setRow(int row) {
 		this.row = row;
+	}
+
+	public String getType(){
+		return type;
 	}
 }
