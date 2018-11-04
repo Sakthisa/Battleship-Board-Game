@@ -56,40 +56,41 @@ function markHits(board, elementId, surrenderText) {
     var oldListener;
 
     board.attacks.forEach((attack) => {
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
         let className;
-        if (attack.result === "MISS")
-            if(elementId === "opponent"){
+        if (attack.result === "MISS") {
+            if (elementId === "opponent") {
                 className = "miss";
             }
-            else{
+            else {
                 className = "missPlayer"
             }
-
-        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink"))
+        }
+        else if (attack.result === "HIT" && ! document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
             if(elementId === "opponent"){
                 className = "hit";
             }
             else{
                 className = "hitPlayer"
             }
+        }
         else if (attack.result === "SUNK") {
             // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
             var square;
+            document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
             if(elementId === "opponent"){
                 for (square of attack.ship.occupiedSquares) {
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit")
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                 }
             }
             else{
                 for (square of attack.ship.occupiedSquares) {
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sinkPlayer");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hitPlayer")
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hitPlayer");
                 }
             }
-
             return;
-
         }
         //When a surrender occurs, a modal will popup and display the win message
         else if (attack.result === "SURRENDER"){
@@ -100,6 +101,61 @@ function markHits(board, elementId, surrenderText) {
             }
             displayVictoryDialogue();
 
+            return;
+         }
+         // If there is a radar used there, then make it show.
+        else if (attack.result === "RADAR") {
+             let table = document.getElementById(elementId);
+             let row = attack.location.row - 1;
+             let col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+            let tableRow;
+            let cell;
+            let i;
+            for (i = 0; i < 5; i++) {
+                if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                    continue;
+                }
+                tableRow = table.rows[row - 2 + i];
+                if (tableRow != undefined) {
+                    cell = tableRow.cells[col];
+                    if (cell.classList.contains("opp-occupied")) {
+                        cell.classList.add("found");
+                    } else {
+                        cell.classList.add("placed");
+                    }
+                }
+                if (i === 1 || i === 3) {
+                    if (tableRow.cells[col - 1] != undefined && col - 1 != 0) {
+                        if (tableRow.cells[col - 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col - 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col - 1].classList.add("placed");
+                        }
+                    }
+                    if (tableRow.cells[col + 1] != undefined && col + 1 != 0) {
+                        if (tableRow.cells[col + 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col + 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col + 1].classList.add("placed");
+                        }
+                    }
+                }
+            }
+            tableRow = table.rows[row];
+            for (i = 0; i < 5; i++) {
+                if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                    continue;
+                }
+                cell = tableRow.cells[col - 2 + i];
+                if (cell != undefined) {
+                    if (cell.classList.contains("opp-occupied")) {
+                        cell.classList.add("found");
+                    } else {
+                        cell.classList.add("placed");
+                    }
+                }
+
+            }
             return;
          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -189,6 +245,7 @@ function redrawGrid() {
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
        document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
     }));
+    console.log(game.opponentsBoard);
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
 }
