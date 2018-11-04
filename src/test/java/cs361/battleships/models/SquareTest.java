@@ -36,8 +36,9 @@ public class SquareTest { // Covers 66% of lines within the Square.java class.
         CaptainQuarter cq = new CaptainQuarter(5, 'B'); // Sets captain quarter 5B
         cq.setRow(6); //Sets captain quarter row to 6
         cq.setColumn('D'); //Sets captain quarter column to D
-        cq.setTimesHit(2); // Sets captain quarter timesHit to 2
-        sq.setTimesHit(1); // Sets normal square timeHit to 2
+        cq.setTimesHit(); // Sets captain quarter timesHit to 2
+        cq.setTimesHit();
+        sq.setTimesHit(); // Sets normal square timeHit to 1
         sq.setRow(2); // sets row to 2.
         sq.setColumn('B'); // sets column to B.
         assertTrue(2 == sq.getRow()); // checks if row is equal to 2.
@@ -62,7 +63,7 @@ public class SquareTest { // Covers 66% of lines within the Square.java class.
         assertFalse("N" == cq.getType()); // See if N is the normal square type
         assertFalse("CQ" == sq.getType()); // See if CQ is the normal square type (false)
         assertTrue("N" == sq.getType()); // See if N is the captain quarter type (false)
-        assertTrue(1 == sq.getHitCount()); //See if 1 is the hit count for normal square type
-        assertTrue(2 == cq.getHitCount()); //See if 2 is the hit count for captain quarter
+        assertTrue(1 == sq.getMaxHits()); //See if 1 is the hit count for normal square type
+        assertTrue(2 == cq.getMaxHits()); //See if 2 is the hit count for captain quarter
     }
 }

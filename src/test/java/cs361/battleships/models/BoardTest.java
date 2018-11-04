@@ -106,4 +106,12 @@ public class BoardTest {
 
     }
 
+    // Check to make sure that redundant attacks are valid
+    @Test
+    public void testRedundant() {
+        Game game = new Game();
+        assertTrue(game.attack(7, 'F', false));
+        assertTrue(game.attack(7, 'F', false));
+    }
+
 }

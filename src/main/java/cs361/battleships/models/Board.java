@@ -156,9 +156,6 @@ public class Board {
 			return result;
 		}
 
-		//Check if x and y has already been attacked
-//		if (checkAttackRedundant(x, y, result)) return result;
-
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
 
