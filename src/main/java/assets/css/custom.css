@@ -214,30 +214,6 @@ th {
     background-position: center center;
 }
 
-
-.hitPlayer {
-        background-image: url(https://i.gyazo.com/d017b472b30552859c7156773ba5c7ff.png);
-        background-size:     cover;
-        background-repeat:   no-repeat;
-        background-position: center center;
-
-}
-
-.sinkPlayer {
-    background-image: url(https://i.gyazo.com/163b826db507278a57706c194932ce32.png);
-    background-size:     cover;
-    background-repeat:   no-repeat;
-    background-position: center center;
-}
-
-.missPlayer {
-    background-image: url(http://2.bp.blogspot.com/-S_9dNop-3V0/Uk_2YlzXBDI/AAAAAAAACU8/oo4F2FJpo-4/s640/AnimatedWater_005.png);
-    background-size:     cover;
-    background-repeat:   no-repeat;
-    background-position: center center;
-}
-
-
 .logo{
         width: 500px;
         height: 200px;
@@ -372,6 +348,11 @@ th {
     font-weight: bold;
 }
 
+.radarResult {
+    color: #302f2f;
+    font-weight: bold;
+}
+
 .result {
     width: 100%;
     text-overflow: ellipsis;
@@ -432,8 +413,13 @@ th {
     overflow: auto;
 }
 
-#radar  {
+#radar-btn {
     visibility: hidden;
+}
+
+.radar-square {
+    background-color: #23468c;
+    background-image: none !important;
 }
 
 .btn-toggle {

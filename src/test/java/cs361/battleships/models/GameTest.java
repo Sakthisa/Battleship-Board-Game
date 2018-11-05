@@ -2,9 +2,7 @@ package cs361.battleships.models;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class GameTest { // This class has 100% coverage of all lines in Game.java
@@ -98,5 +96,31 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertFalse(game.attack(1, 'a', false)); // attacks at 1a (with lowercase so not possible)
         assertFalse(game.attack(-1, 'A', false)); // attacks at -1A (not possible to have negative coordinates)
     }
+
+    @Test
+    public void testMultipleRadar() {
+        Game game = new Game();
+        Board board = new Board();
+        board.placeShip(new Destroyer(), 1, 'A', false);
+        board.placeShip(new Minesweeper(), 3, 'A', false);
+        board.placeShip(new Battleship(), 5, 'A', false);
+        assert (AtackStatus.HIT == board.attack(1, 'A', false).getResult());
+        assert (AtackStatus.HIT == board.attack(1, 'B', false).getResult());
+        assert (AtackStatus.SUNK == board.attack(1, 'C', false).getResult());
+        assert (AtackStatus.RADAR == board.attack(4, 'D', true).getResult());
+        assert (AtackStatus.RADAR == board.attack(6, 'A', true).getResult());
+        assert (AtackStatus.INVALID == board.attack(2, 'C', true).getResult());
+    }
+
+    @Test
+    public void testEarlyRadar() {
+        Game game = new Game();
+        game.placeShip(new Destroyer(), 1, 'A', false);
+        game.placeShip(new Minesweeper(), 3, 'A', false);
+        game.placeShip(new Battleship(), 5, 'A', false);
+        assertTrue(game.attack(1, 'A', false));
+        assertFalse(game.attack(2, 'C', true));
+    }
+
 
 }

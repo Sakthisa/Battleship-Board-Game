@@ -28,4 +28,9 @@ public enum AtackStatus {
 	 */
 	INVALID,
 
+	/**
+	 * A radar has been used
+	 */
+	RADAR,
+
 }
