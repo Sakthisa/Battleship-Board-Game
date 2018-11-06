@@ -38,14 +38,17 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y, boolean isRadar) {
+        System.out.println("PLAYER:");
         Result playerAttack = opponentsBoard.attack(x, y, isRadar);
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
         Result opponentAttackResult;
+        System.out.println("OPPONENT:");
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
+
             opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
         } while(opponentAttackResult.getResult() == INVALID);
 
