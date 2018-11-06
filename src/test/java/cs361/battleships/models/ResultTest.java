@@ -30,4 +30,21 @@ public class ResultTest {
         r.setResult(a);
         assertEquals(AtackStatus.SURRENDER, r.getResult());
     }
+
+    @Test
+    public void testResultShip(){
+        Result r = new Result();
+        Ship s = new Ship();
+        r.setShip(s);
+        assertEquals(s, r.getShip());
+        s = new Battleship();
+        r.setShip(s);
+        assertEquals(s, r.getShip());
+        s = new Destroyer();
+        r.setShip(s);
+        assertEquals(s, r.getShip());
+        s = new Minesweeper();
+        r.setShip(s);
+        assertEquals(s, r.getShip());
+    }
 }
