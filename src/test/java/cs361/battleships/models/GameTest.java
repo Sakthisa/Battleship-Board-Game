@@ -105,8 +105,9 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Minesweeper(), 3, 'A', false);
         board.placeShip(new Battleship(), 5, 'A', false);
         assert (AtackStatus.HIT == board.attack(1, 'A', false).getResult());
-        assert (AtackStatus.HIT == board.attack(1, 'B', false).getResult());
-        assert (AtackStatus.SUNK == board.attack(1, 'C', false).getResult());
+        assert (AtackStatus.MISS == board.attack(1, 'B', false).getResult());
+        assert (AtackStatus.HIT == board.attack(1, 'C', false).getResult());
+        assert (AtackStatus.SUNK == board.attack(1, 'B', false).getResult());
         assert (AtackStatus.RADAR == board.attack(4, 'D', true).getResult());
         assert (AtackStatus.RADAR == board.attack(6, 'A', true).getResult());
         assert (AtackStatus.INVALID == board.attack(2, 'C', true).getResult());

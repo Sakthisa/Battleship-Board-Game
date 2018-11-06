@@ -71,9 +71,18 @@ function markHits(board, elementId, surrenderText) {
             document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
 
             for (square of attack.ship.occupiedSquares) {
-                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                //console.log(square);
+                if(square.type == "CQ"){
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+
+                }
+                else{
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                }
             }
+
 
             return;
         }
@@ -200,30 +209,30 @@ function displayResults(board, elementId) {
             document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
 
-        //Create an error hover effect on already attacked spaces after 215 ms
-        setTimeout(function () {
-            var opponentTable = document.getElementById("opponent");
-
-            for (var i = 1; i < 11; i++) {
-                for (var j = 1; j < 11; j++) {
-
-
-                    if (opponentTable.rows[i].cells[j].className === "miss") {
-                        opponentTable.rows[i].cells[j].setAttribute("class", "missError");
-                    }
-                    else if (opponentTable.rows[i].cells[j].className === "hit") {
-                        opponentTable.rows[i].cells[j].setAttribute("class", "hitError");
-                    }
-                    else if (opponentTable.rows[i].cells[j].className === "sink") {
-                        opponentTable.rows[i].cells[j].setAttribute("class", "sinkError");
-                    }
-
-
-                }
-            }
-
-
-        }, 215);
+//        //Create an error hover effect on already attacked spaces after 215 ms
+//        setTimeout(function () {
+//            var opponentTable = document.getElementById("opponent");
+//
+//            for (var i = 1; i < 11; i++) {
+//                for (var j = 1; j < 11; j++) {
+//
+//
+//                    if (opponentTable.rows[i].cells[j].className === "miss") {
+//                        opponentTable.rows[i].cells[j].setAttribute("class", "missError");
+//                    }
+//                    else if (opponentTable.rows[i].cells[j].className === "hit") {
+//                        opponentTable.rows[i].cells[j].setAttribute("class", "hitError");
+//                    }
+//                    else if (opponentTable.rows[i].cells[j].className === "sink") {
+//                        opponentTable.rows[i].cells[j].setAttribute("class", "sinkError");
+//                    }
+//
+//
+//                }
+//            }
+//
+//
+//        }, 215);
     }
 
 }
@@ -250,7 +259,13 @@ function redrawGrid() {
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
     }));
-    console.log(game.opponentsBoard);
+    for(square of game.playersBoard.boardOccupiedSquares){
+        console.log(square);
+        if(square.type == "CQ"){
+            console.log(square);
+            console.log(document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_place"));
+        }
+    }
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
 }
@@ -404,7 +419,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function (event) {
         if (req.status != 200) {
-            console.log(req.responseText);
+            //console.log(req.responseText);
             if (url === "/attack") {
                 var row = data.x;
                 var col = data.y.charCodeAt(0) - 64;
