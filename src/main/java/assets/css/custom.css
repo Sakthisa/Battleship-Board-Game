@@ -174,7 +174,7 @@ th {
 
 .placed {
     background-color: #bcbcbc;
-    background-image: none !important;
+    background-image: none;
 }
 
 .error-place {

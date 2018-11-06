@@ -126,22 +126,19 @@ function markHits(board, elementId, surrenderText) {
 
                 // Now place the 4 squares diagonal to middle
                 if (i === 1 || i === 3) {
-                    if (!(tableRow.cells[col - 1].classList.contains("hit") || tableRow.cells[col - 1].classList.contains("miss") || tableRow.cells[col - 1].classList.contains("sink"))) {
-                        if (tableRow.cells[col - 1] != undefined && col - 1 != 0) {
-                            if (tableRow.cells[col - 1].classList.contains("opp-occupied")) {
-                                tableRow.cells[col - 1].classList.add("found");
-                            } else {
-                                tableRow.cells[col - 1].classList.add("radar-square");
-                            }
+                    if ((tableRow.cells[col - 1] != undefined && col - 1 != 0) && !(tableRow.cells[col - 1].classList.contains("hit") || tableRow.cells[col - 1].classList.contains("miss") || tableRow.cells[col - 1].classList.contains("sink"))) {
+                        if (tableRow.cells[col - 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col - 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col - 1].classList.add("radar-square");
                         }
+
                     }
-                    if (!(tableRow.cells[col + 1].classList.contains("hit") || tableRow.cells[col + 1].classList.contains("miss") || tableRow.cells[col + 1].classList.contains("sink"))) {
-                        if (tableRow.cells[col + 1] != undefined && col + 1 != 0) {
-                            if (tableRow.cells[col + 1].classList.contains("opp-occupied")) {
-                                tableRow.cells[col + 1].classList.add("found");
-                            } else {
-                                tableRow.cells[col + 1].classList.add("radar-square");
-                            }
+                    if (tableRow.cells[col + 1] != undefined && !(tableRow.cells[col + 1].classList.contains("hit") || tableRow.cells[col + 1].classList.contains("miss") || tableRow.cells[col + 1].classList.contains("sink"))) {
+                        if (tableRow.cells[col + 1].classList.contains("opp-occupied")) {
+                            tableRow.cells[col + 1].classList.add("found");
+                        } else {
+                            tableRow.cells[col + 1].classList.add("radar-square");
                         }
                     }
                 }
@@ -535,7 +532,7 @@ function attack() {
                     cell.classList.toggle("placed");
                 }
                 if (i === 1 || i === 3) {
-                    if (tableRow.cells[col - 1] != undefined) {
+                    if (tableRow.cells[col - 1] != undefined && col - 1 != 0) {
                         tableRow.cells[col - 1].classList.toggle("placed");
                     }
                     if (tableRow.cells[col + 1] != undefined) {
