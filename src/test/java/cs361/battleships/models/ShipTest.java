@@ -49,5 +49,44 @@ public class ShipTest {
         assertEquals(ship.getShipSize(),2);
     }
 
+    @Test
+    public void testHit(){
+        Ship s = new Ship();
+        assertEquals(0, s.getHits());
+        s.setHit();
+        assertEquals(1, s.getHits());
+        s.setHit();
+        assertEquals(2, s.getHits());
+        Battleship b = new Battleship();
+        assertEquals(0, b.getHits());
+        b.setHit();
+        assertEquals(1, b.getHits());
+        b.setHit();
+        assertEquals(2, b.getHits());
+        b.setHit();
+        assertEquals(3, b.getHits());
+        b.setHit();
+        assertEquals(4, b.getHits());
+        b.setHit();
+        assertEquals(5, b.getHits());
+        Destroyer d = new Destroyer();
+        assertEquals(0, d.getHits());
+        d.setHit();
+        assertEquals(1, d.getHits());
+        d.setHit();
+        assertEquals(2, d.getHits());
+        d.setHit();
+        assertEquals(3, d.getHits());
+        d.setHit();
+        assertEquals(4, d.getHits());
+        Minesweeper m = new Minesweeper();
+        assertEquals(0, m.getHits());
+        m.setHit();
+        assertEquals(1, m.getHits());
+        m.setHit();
+        assertEquals(2, m.getHits());
+        m.setHit();
+        assertEquals(3, m.getHits());
+    }
 
 }
