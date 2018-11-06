@@ -54,6 +54,10 @@ public class Board {
 		}
 		List<Square> squares = new ArrayList<Square>();
 
+		if(!squareIsValid(new Square(x, y))){
+			return false;
+		}
+
 		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
 
 		//Sets new ship if it is able to be placed
@@ -66,25 +70,25 @@ public class Board {
 
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
-			if (x + (shipSize - 1) <= 11) {
+			if ((x + (shipSize - 1) <= 11)) {
 				System.out.println("X and Y " + x + y);
 				for (int i = 0; i < shipSize; i++) {
 					if(i == 0 && newShip.getKind().equals("MINESWEEPER")) {
 
 						squares.add(new CaptainQuarter(x, y));
-						BoardoccupiedSquares.add(new Square(x + i, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x, y));
 						//System.out.println("CQ SPOT MINESWEEPER VERTICAL: " + x + y);
 					}
 					else if(i == 1 && newShip.getKind().equals("DESTROYER") && isVertical){
 
 						squares.add(new CaptainQuarter(x+i, y));
-						BoardoccupiedSquares.add(new Square(x + i, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
 						//System.out.println("CQ SPOT Destroyer VERT: " + (x+i) + y);
 					}
 					else if(i == 2 && newShip.getKind().equals("BATTLESHIP") && isVertical){
 
 						squares.add(new CaptainQuarter(x+i, y));
-						BoardoccupiedSquares.add(new Square(x + i, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
 						//System.out.println("CQ SPOT battleship VERT: " + (x+i) + y);
 					}
 					else{
@@ -98,7 +102,7 @@ public class Board {
 			}
 		} else {
 			// If it is within the column bounds, then it is a successful placement
-			if (y + (shipSize - 1) <= 'K') {
+			if ((y + (shipSize - 1) <= 'K')) {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
 					if(i == 0 && newShip.getKind().equals("MINESWEEPER")) {

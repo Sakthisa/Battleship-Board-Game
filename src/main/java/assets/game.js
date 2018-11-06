@@ -74,6 +74,7 @@ function markHits(board, elementId, surrenderText) {
                 //console.log(square);
                 if(square.type == "CQ"){
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
                 }
@@ -90,6 +91,19 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SURRENDER") {
             //alert(surrenderText);
             //clearBoard();
+            for (square of attack.ship.occupiedSquares) {
+                //console.log(square);
+                if(square.type == "CQ"){
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+
+                }
+                else{
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                }
+            }
             if (surrenderText == false) {
                 document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
             }
