@@ -54,11 +54,10 @@ public class Board {
 		}
 		List<Square> squares = new ArrayList<Square>();
 
-		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
-
 		if (!squareIsValid(new Square(x, y))) {
 			return false;
 		}
+		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
 
 		//Sets new ship if it is able to be placed
 		if (setNewShip(x, y, isVertical, shipSize, newShip, squares)) return true;

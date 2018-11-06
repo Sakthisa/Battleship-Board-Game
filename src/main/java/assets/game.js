@@ -68,7 +68,6 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SUNK") {
             // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
             var square;
-            document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
 
             for (square of attack.ship.occupiedSquares) {
                 document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
@@ -79,8 +78,11 @@ function markHits(board, elementId, surrenderText) {
         }
         //When a surrender occurs, a modal will popup and display the win message
         else if (attack.result === "SURRENDER") {
-            //alert(surrenderText);
-            //clearBoard();
+            
+            for (square of attack.ship.occupiedSquares) {
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+            }
             if (surrenderText == false) {
                 document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
             }
