@@ -54,9 +54,10 @@ public class Board {
 		}
 		List<Square> squares = new ArrayList<Square>();
 
-		if (!squareIsValid(new Square(x, y))) {
+		if(!squareIsValid(new Square(x, y))){
 			return false;
 		}
+
 		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
 
 		//Sets new ship if it is able to be placed
@@ -66,26 +67,63 @@ public class Board {
 	}
 
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
+
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
-			if (x + (shipSize - 1) <= 11) {
-				// successful
+			if ((x + (shipSize - 1) <= 11)) {
+				System.out.println("X and Y " + x + y);
 				for (int i = 0; i < shipSize; i++) {
-					squares.add(new Square(x + i, y));
-					BoardoccupiedSquares.add(new Square(x + i, y));
-				}
+					if(i == 0 && newShip.getKind().equals("MINESWEEPER")) {
 
+						squares.add(new CaptainQuarter(x, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x, y));
+						//System.out.println("CQ SPOT MINESWEEPER VERTICAL: " + x + y);
+					}
+					else if(i == 1 && newShip.getKind().equals("DESTROYER") && isVertical){
+
+						squares.add(new CaptainQuarter(x+i, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
+						//System.out.println("CQ SPOT Destroyer VERT: " + (x+i) + y);
+					}
+					else if(i == 2 && newShip.getKind().equals("BATTLESHIP") && isVertical){
+
+						squares.add(new CaptainQuarter(x+i, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
+						//System.out.println("CQ SPOT battleship VERT: " + (x+i) + y);
+					}
+					else{
+						squares.add(new Square(x + i, y));
+						BoardoccupiedSquares.add(new Square(x + i, y));
+					}
+				}
 				newShip.setOccupiedSquares(squares);
 				shipList.add(newShip);
 				return true;
 			}
 		} else {
 			// If it is within the column bounds, then it is a successful placement
-			if (y + (shipSize - 1) <= 'K') {
+			if ((y + (shipSize - 1) <= 'K')) {
 				//successful
 				for (int i = 0; i < shipSize; i++) {
-					squares.add(new Square(x, (char)(y + i)));
-					BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
+					if(i == 0 && newShip.getKind().equals("MINESWEEPER")) {
+						squares.add(new CaptainQuarter(x, y));
+						BoardoccupiedSquares.add(new CaptainQuarter(x, y));
+						//System.out.println("CQ SPOT MINESWEEPER HORIZONTAL: " + x + y);
+					}
+					else if(i == 1 && newShip.getKind().equals("DESTROYER")){
+						squares.add(new CaptainQuarter(x, (char)(y+i)));
+						BoardoccupiedSquares.add(new CaptainQuarter(x, (char)(y + i)));
+						//System.out.println("CQ SPOT Destroyer HORI: " + x + ((char)(y+i)));
+					}
+					else if(i == 2 && newShip.getKind().equals("BATTLESHIP")){
+						squares.add(new CaptainQuarter(x, (char)(y+i)));
+						BoardoccupiedSquares.add(new CaptainQuarter(x, (char)(y + i)));
+						//System.out.println("CQ SPOT battleship HORI: " + x + ((char)(y+i)));
+					}
+					else{
+						squares.add(new Square(x, (char)(y + i)));
+						BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
+					}
 				}
 
 				newShip.setOccupiedSquares(squares);
@@ -101,6 +139,10 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
+						//System.out.println("X: " + x);
+						//System.out.println("Occupied X: " + occupied.getRow());
+						//System.out.println("Y: " + (char)(y + i));
+						//System.out.println("Occupied Y: " + occupied.getColumn());
 						return true;
 					}
 				}
@@ -155,6 +197,10 @@ public class Board {
 			return result;
 		}
 
+//		if(checkAttackRedundant(x, y, result)){
+//			return result;
+//		}
+
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
 
@@ -204,20 +250,34 @@ public class Board {
 						if (occupied.getTimesHit() < occupied.getMaxHits()) {
 							occupiedShip.setHit();
 						}
+						if(occupiedShip.getKind().equals("MINESWEEPER")){
+							occupied.setMaxHits(1);
+						}
 
 						occupied.setTimesHit();
-						if (occupiedShip.getHits() == occupiedShip.getShipSize()) {
-							setShipsSunk();
+						//System.out.println("squareType: " + occupied.getType());
+						//System.out.println("TimesHit: " + occupied.getTimesHit());
+						//System.out.println("MaxHit: " + occupied.getMaxHits());
+						attackStatus = AtackStatus.HIT;
+						if(occupied.getType().equals("CQ") && occupied.getTimesHit() == occupied.getMaxHits()){
+							//System.out.println("SUNK SHIP BY CQ");
 							occupiedShip.setSunk(true);
-
-							if (this.shipsSunk == 3) {
+							setShipsSunk();
+							//System.out.println("shipsSunk 1: " + this.shipsSunk);
+							attackStatus = AtackStatus.SUNK;
+							if(this.shipsSunk == 3){
 								attackStatus = AtackStatus.SURRENDER;
-							} else {
-								attackStatus = AtackStatus.SUNK;
 							}
-						} else {
-							attackStatus = AtackStatus.HIT;
 						}
+						 else{
+							if(occupied.getType().equals("N")){
+								attackStatus = AtackStatus.HIT;
+							}
+							if(occupied.getType().equals("CQ") && occupied.getTimesHit() == 1){
+								attackStatus = AtackStatus.MISS;
+							}
+						}
+						//System.out.println("attackStatus: " + attackStatus);
 						result.setResult(attackStatus);
 						attackResult.add(result);
 						return true;

@@ -13,7 +13,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlacementMineSweeper() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Minesweeper(), 12, 'C', false));
+        assertFalse(board.placeShip(new Minesweeper(), 13, 'C', false));
     }
 
     //Checking valid Destroyer placement
