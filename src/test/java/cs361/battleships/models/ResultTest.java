@@ -47,4 +47,14 @@ public class ResultTest {
         r.setShip(s);
         assertEquals(s, r.getShip());
     }
+
+    @Test
+    public void testLocationShip(){
+        Result r = new Result();
+        Square sq = new Square();
+        r.setLocation(sq);
+        Square sqi = new Square(0, 'A');
+        r.setLocation(sqi);
+        assertEquals(sqi, r.getLocation());
+    }
 }
