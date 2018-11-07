@@ -10,6 +10,20 @@ var isRadar = false;
 var numSunk = 0;
 var radarsUsed = 0;
 
+function containsCQ(board, row, col) {
+
+    if (board != null) {
+        console.log(board)
+        for (sq of board.boardOccupiedSquares) {
+            console.log((sq.row).toString() + sq.column.charCodeAt(0) - 'A'.charCodeAt(0) + " " + row.toString() + col.toString());
+            if (sq.type[0] === 'C' && row === sq.row && col === sq.column.charCodeAt(0) - 'A'.charCodeAt(0)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function makeGrid(table, isPlayer) {
     var thC = "<tr><th></th>";
 
@@ -58,6 +72,7 @@ function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         // Remove the radar class to start so that if a user attacked a spot within the radar, it would appear over the grey square
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
+        document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found")
         let className;
         if (attack.result === "MISS") {
             className = "miss";
@@ -68,7 +83,6 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SUNK") {
             // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
             var square;
-            document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("placed");
 
             for (square of attack.ship.occupiedSquares) {
                 //console.log(square);
@@ -80,6 +94,7 @@ function markHits(board, elementId, surrenderText) {
                 }
                 else{
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                 }
             }
@@ -101,6 +116,7 @@ function markHits(board, elementId, surrenderText) {
                 }
                 else{
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                 }
             }
@@ -128,8 +144,8 @@ function markHits(board, elementId, surrenderText) {
                 if (tableRow != undefined) {
                     cell = tableRow.cells[col];
                     // Only mark with the placed class if there doesn't already exist an attack there
-                    if (!(cell.classList.contains("hit") || cell.classList.contains("miss") || cell.classList.contains("sink"))) {
-                        if (cell.classList.contains("opp-occupied")) {
+                    if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place") ) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
+                        if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
                             cell.classList.add("found");
                         }
                         else {
@@ -140,16 +156,16 @@ function markHits(board, elementId, surrenderText) {
 
                 // Now place the 4 squares diagonal to middle
                 if (i === 1 || i === 3) {
-                    if ((tableRow.cells[col - 1] != undefined && col - 1 != 0) && !(tableRow.cells[col - 1].classList.contains("hit") || tableRow.cells[col - 1].classList.contains("miss") || tableRow.cells[col - 1].classList.contains("sink"))) {
-                        if (tableRow.cells[col - 1].classList.contains("opp-occupied")) {
+                    if ((tableRow.cells[col - 1] != undefined && col - 1 != 0) && !(tableRow.cells[col - 1].classList.contains("hit") || (tableRow.cells[col - 1].classList.contains("miss") && !tableRow.cells[col - 1].classList.contains("opp_cq_place")) || tableRow.cells[col - 1].classList.contains("sink") || tableRow.cells[col - 1].classList.contains("cq_sink"))) {
+                        if (tableRow.cells[col - 1].classList.contains("opp-occupied") || tableRow.cells[col - 1].classList.contains("occupied")) {
                             tableRow.cells[col - 1].classList.add("found");
                         } else {
                             tableRow.cells[col - 1].classList.add("radar-square");
                         }
 
                     }
-                    if (tableRow.cells[col + 1] != undefined && !(tableRow.cells[col + 1].classList.contains("hit") || tableRow.cells[col + 1].classList.contains("miss") || tableRow.cells[col + 1].classList.contains("sink"))) {
-                        if (tableRow.cells[col + 1].classList.contains("opp-occupied")) {
+                    if (tableRow.cells[col + 1] != undefined && !(tableRow.cells[col + 1].classList.contains("hit") || (tableRow.cells[col + 1].classList.contains("miss") && !tableRow.cells[col + 1].classList.contains("opp_cq_place")) || tableRow.cells[col + 1].classList.contains("sink") || tableRow.cells[col + 1].classList.contains("cq_sink"))) {
+                        if (tableRow.cells[col + 1].classList.contains("opp-occupied") || tableRow.cells[col + 1].classList.contains("occupied")) {
                             tableRow.cells[col + 1].classList.add("found");
                         } else {
                             tableRow.cells[col + 1].classList.add("radar-square");
@@ -166,8 +182,8 @@ function markHits(board, elementId, surrenderText) {
                 cell = tableRow.cells[col - 2 + i];
                 if (cell != undefined) {
                     // If no other attack exists in this location, then we can mark it with a radar class
-                    if (!(cell.classList.contains("hit") || cell.classList.contains("miss") || cell.classList.contains("sink"))) {
-                        if (cell.classList.contains("opp-occupied")) {
+                    if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place")) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
+                        if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
                             cell.classList.add("found");
                         } else {
                             cell.classList.add("radar-square");
@@ -199,7 +215,8 @@ function displayResults(board, elementId) {
         else if (result.result === "MISS")
             resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
         else if (result.result === "SUNK") {
-            numSunk++;
+            if (elementId === "opponent")
+                numSunk++;
             resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
         }
         else if (result.result === "RADAR") {
@@ -268,6 +285,7 @@ function redrawGrid() {
     }));
 
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        // for testing
         document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
     }));
     for(square of game.playersBoard.boardOccupiedSquares){
@@ -275,6 +293,14 @@ function redrawGrid() {
         if(square.type == "CQ"){
             console.log(square);
             console.log(document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_place"));
+        }
+    }
+
+    for(square of game.opponentsBoard.boardOccupiedSquares){
+        console.log(square);
+        if(square.type == "CQ"){
+            console.log(square);
+            console.log(document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp_cq_place"));
         }
     }
     markHits(game.opponentsBoard, "opponent", true);
