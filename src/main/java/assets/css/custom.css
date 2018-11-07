@@ -170,6 +170,7 @@ th {
 }
 .found {
     background-color: black;
+    background-image: none !important;
 }
 
 .placed {
