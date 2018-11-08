@@ -70,7 +70,6 @@ public class Board {
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
 			if ((x + (shipSize - 1) <= 11)) {
-				System.out.println("X and Y " + x + y);
 				placeShipVertical(x, y, isVertical, shipSize, newShip, squares);
 				newShip.setOccupiedSquares(squares);
 				shipList.add(newShip);
@@ -96,7 +95,6 @@ public class Board {
 			if(newShip.getShipSize() - i == 2) {
 				squares.add(new CaptainQuarter(x + i, y));
 				BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
-				//System.out.println("CQ SPOT MINESWEEPER VERTICAL: " + x + y);
 			}
 			else{
 				squares.add(new Square(x + i, y));
@@ -111,7 +109,6 @@ public class Board {
 			if(newShip.getShipSize() - i == 2) { // think about using rand to place the ship
 				squares.add(new CaptainQuarter(x, (char) (y + i)));
 				BoardoccupiedSquares.add(new CaptainQuarter(x, (char) (y + i))); // consider not using new a second time
-				//System.out.println("CQ SPOT MINESWEEPER HORIZONTAL: " + x + y);
 			}
 			else{ // normal square
 				squares.add(new Square(x, (char)(y + i)));
@@ -125,10 +122,6 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
-						//System.out.println("X: " + x);
-						//System.out.println("Occupied X: " + occupied.getRow());
-						//System.out.println("Y: " + (char)(y + i));
-						//System.out.println("Occupied Y: " + occupied.getColumn());
 						return true;
 					}
 				}
@@ -255,15 +248,12 @@ public class Board {
 						}
 
 						occupied.setTimesHit();
-						//System.out.println("squareType: " + occupied.getType());
-						//System.out.println("TimesHit: " + occupied.getTimesHit());
-						//System.out.println("MaxHit: " + occupied.getMaxHits());
+
 						attackStatus = AtackStatus.HIT;
 						if(isCqSink(occupied)){
-							//System.out.println("SUNK SHIP BY CQ");
 							occupiedShip.setSunk(true);
 							setShipsSunk();
-							//System.out.println("shipsSunk 1: " + this.shipsSunk);
+
 							attackStatus = AtackStatus.SUNK;
 							if(this.shipsSunk == 3){
 								attackStatus = AtackStatus.SURRENDER;
@@ -277,7 +267,7 @@ public class Board {
 								attackStatus = AtackStatus.MISS;
 							}
 						}
-						//System.out.println("attackStatus: " + attackStatus);
+
 						result.setResult(attackStatus);
 						attackResult.add(result);
 						return true;

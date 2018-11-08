@@ -13,9 +13,7 @@ var radarsUsed = 0;
 function containsCQ(board, row, col) {
 
     if (board != null) {
-        console.log(board)
         for (sq of board.boardOccupiedSquares) {
-            console.log((sq.row).toString() + sq.column.charCodeAt(0) - 'A'.charCodeAt(0) + " " + row.toString() + col.toString());
             if (sq.type[0] === 'C' && row === sq.row && col === sq.column.charCodeAt(0) - 'A'.charCodeAt(0)) {
                 return true;
             }
@@ -85,7 +83,6 @@ function markHits(board, elementId, surrenderText) {
             var square;
 
             for (square of attack.ship.occupiedSquares) {
-                //console.log(square);
                 if(square.type == "CQ"){
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
@@ -104,10 +101,7 @@ function markHits(board, elementId, surrenderText) {
         }
         //When a surrender occurs, a modal will popup and display the win message
         else if (attack.result === "SURRENDER") {
-            //alert(surrenderText);
-            //clearBoard();
             for (square of attack.ship.occupiedSquares) {
-                //console.log(square);
                 if(square.type == "CQ"){
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
                     document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
@@ -448,7 +442,6 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function (event) {
         if (req.status != 200) {
-            //console.log(req.responseText);
             if (url === "/attack") {
                 var row = data.x;
                 var col = data.y.charCodeAt(0) - 64;
