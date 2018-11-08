@@ -61,9 +61,8 @@ public class Board {
 		if (checkSquareOccupied(x, y, isVertical, shipSize)) return false;
 
 		//Sets new ship if it is able to be placed
-		if (setNewShip(x, y, isVertical, shipSize, newShip, squares)) return true;
+		return setNewShip(x, y, isVertical, shipSize, newShip, squares);
 
-		return false;
 	}
 
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
@@ -236,6 +235,7 @@ public class Board {
 		return false;
 	}
 
+	// This method is a behemoth because of all of the checks, these could be factored into class methods from other classes
 	private boolean checkKnownValidAttack(int x, char y, Result result) {
 		AtackStatus attackStatus;
 		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
@@ -259,7 +259,7 @@ public class Board {
 						//System.out.println("TimesHit: " + occupied.getTimesHit());
 						//System.out.println("MaxHit: " + occupied.getMaxHits());
 						attackStatus = AtackStatus.HIT;
-						if(occupied.getType().equals("CQ") && occupied.getTimesHit() == occupied.getMaxHits()){
+						if(isCqSink(occupied)){
 							//System.out.println("SUNK SHIP BY CQ");
 							occupiedShip.setSunk(true);
 							setShipsSunk();
@@ -297,6 +297,10 @@ public class Board {
 			}
 		}
 		return false;
+	}
+
+	private boolean isCqSink(Square occupied) {
+		return occupied.getType().equals("CQ") && occupied.getTimesHit() == occupied.getMaxHits();
 	}
 
 	private void setShipsSunk() {
