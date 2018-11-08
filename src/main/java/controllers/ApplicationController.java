@@ -41,7 +41,16 @@ public class ApplicationController {
 
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
-        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), g.isRadar());
+        boolean result;
+        // standard attack
+        if(!g.isRadar()){
+            result = game.attack(g.getActionRow(), g.getActionColumn());
+        }
+        // radar click
+        else{
+            result = game.radarAttack(g.getActionRow(), g.getActionColumn());
+        }
+
         if (result) {
             return Results.json().render(game);
         } else {
