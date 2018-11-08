@@ -2,8 +2,6 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static cs361.battleships.models.AtackStatus.*;
@@ -26,7 +24,7 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randBool());
         } while (!opponentPlacedSuccessfully);
 
 
@@ -39,7 +37,14 @@ public class Game {
 	 */
     public boolean attack(int x, char  y, boolean isRadar) {
         System.out.println("PLAYER:");
-        Result playerAttack = opponentsBoard.attack(x, y, isRadar);
+        Result playerAttack;
+        if(!isRadar) {
+            playerAttack = opponentsBoard.attack(x, y);
+        }
+        else{
+            playerAttack = opponentsBoard.radarAttack(x, y);
+        }
+
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
@@ -48,8 +53,7 @@ public class Game {
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-
-            opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
+            opponentAttackResult = playersBoard.attack(randRow(), randCol());
         } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
@@ -71,7 +75,7 @@ public class Game {
     }
 
     // This will be either a random true or false boolean value (true for vertical, false for horizontal)
-    private boolean randVertical() {
+    private boolean randBool() {
         Random rand = new Random();
         return rand.nextBoolean();
     }
