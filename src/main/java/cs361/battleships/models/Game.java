@@ -35,15 +35,26 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y, boolean isRadar) {
+    public boolean attack(int x, char  y) {
         System.out.println("PLAYER:");
         Result playerAttack;
-        if(!isRadar) {
-            playerAttack = opponentsBoard.attack(x, y);
+        playerAttack = opponentsBoard.attack(x, y);
+
+        if (playerAttack.getResult() == INVALID) {
+            return false;
         }
-        else{
-            playerAttack = opponentsBoard.radarAttack(x, y);
-        }
+        System.out.println("OPPONENT:");
+
+        // opponent's board is attacked until a valid result is reached
+        opponentAttack();
+
+        return true;
+    }
+
+    public boolean radarAttack(int x, char  y) {
+        System.out.println("PLAYER:");
+        Result playerAttack;
+        playerAttack = opponentsBoard.radarAttack(x, y);
 
         if (playerAttack.getResult() == INVALID) {
             return false;

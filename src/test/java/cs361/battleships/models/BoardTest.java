@@ -80,16 +80,16 @@ public class BoardTest {
         assertTrue(game.placeShip(new Battleship(), 1, 'A', false));
         assertTrue(game.placeShip(new Minesweeper(), 5, 'B', true));
         assertTrue(game.placeShip(new Destroyer(), 7, 'F', false));
-        assertFalse(game.attack(12, 'A', false));
-        assertTrue(game.attack(5, 'B', false));
-        assertTrue(game.attack(6, 'B', false));
-        assertTrue(game.attack(1, 'A', false));
-        assertTrue(game.attack(1, 'B', false));
-        assertTrue(game.attack(1, 'C',false));
-        assertTrue(game.attack(1, 'D', false));
-        assertTrue(game.attack(7, 'F', false));
-        assertTrue(game.attack(7, 'G', false));
-        assertTrue(game.attack(7, 'H', false));
+        assertFalse(game.attack(12, 'A'));
+        assertTrue(game.attack(5, 'B'));
+        assertTrue(game.attack(6, 'B'));
+        assertTrue(game.attack(1, 'A'));
+        assertTrue(game.attack(1, 'B'));
+        assertTrue(game.attack(1, 'C'));
+        assertTrue(game.attack(1, 'D'));
+        assertTrue(game.attack(7, 'F'));
+        assertTrue(game.attack(7, 'G'));
+        assertTrue(game.attack(7, 'H'));
         //NEED BETTER TEST CASES
 
     }
@@ -110,8 +110,8 @@ public class BoardTest {
     @Test
     public void testRedundant() {
         Game game = new Game();
-        assertTrue(game.attack(7, 'F', false));
-        assertTrue(game.attack(7, 'F', false));
+        assertTrue(game.attack(7, 'F'));
+        assertTrue(game.attack(7, 'F'));
     }
 
 }

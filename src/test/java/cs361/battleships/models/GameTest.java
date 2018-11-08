@@ -36,8 +36,8 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         Ship ship = new Minesweeper();
         Game game = new Game();
 
-        assertFalse(game.attack(20, 'D', false));
-        assertFalse(game.attack(-5, 'D', false));
+        assertFalse(game.attack(20, 'D'));
+        assertFalse(game.attack(-5, 'D'));
     }
 
     @Test
@@ -45,8 +45,8 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         Ship ship = new Minesweeper();
         Game game = new Game();
 
-        assertFalse(game.attack(4, 'X', false));
-        assertFalse(game.attack(4, '1', false));
+        assertFalse(game.attack(4, 'X'));
+        assertFalse(game.attack(4, '1'));
     }
 
     @Test
@@ -54,16 +54,16 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         Ship ship = new Minesweeper();
         Game game = new Game();
 
-        assertTrue(game.attack(10, 'A', false));
-        assertTrue(game.attack(1, 'B', false));
-        assertTrue(game.attack(2, 'C', false));
-        assertTrue(game.attack(3, 'D', false));
-        assertTrue(game.attack(4, 'E', false));
-        assertTrue(game.attack(5, 'F', false));
-        assertTrue(game.attack(6, 'G', false));
-        assertTrue(game.attack(7, 'H', false));
-        assertTrue(game.attack(8, 'I', false));
-        assertTrue(game.attack(9, 'J', false));
+        assertTrue(game.attack(10, 'A'));
+        assertTrue(game.attack(1, 'B'));
+        assertTrue(game.attack(2, 'C'));
+        assertTrue(game.attack(3, 'D'));
+        assertTrue(game.attack(4, 'E'));
+        assertTrue(game.attack(5, 'F'));
+        assertTrue(game.attack(6, 'G'));
+        assertTrue(game.attack(7, 'H'));
+        assertTrue(game.attack(8, 'I'));
+        assertTrue(game.attack(9, 'J'));
 
     }
   
@@ -89,12 +89,12 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
     @Test
     public void testAttack(){ // Test class to test attacks from player and AI
         Game game = new Game(); // Creates new game
-        assertTrue(game.attack(1, 'A', false)); // attacks at 1A
-        assertTrue(game.attack(10, 'J', false)); // attacks at 10J
-        assertFalse(game.attack(12, 'A', false));  // attacks at 11A (not possible)
-        assertFalse(game.attack(1, 'Z', false)); // attacks at 1Z (not possible)
-        assertFalse(game.attack(1, 'a', false)); // attacks at 1a (with lowercase so not possible)
-        assertFalse(game.attack(-1, 'A', false)); // attacks at -1A (not possible to have negative coordinates)
+        assertTrue(game.attack(1, 'A')); // attacks at 1A
+        assertTrue(game.attack(10, 'J')); // attacks at 10J
+        assertFalse(game.attack(12, 'A'));  // attacks at 11A (not possible)
+        assertFalse(game.attack(1, 'Z')); // attacks at 1Z (not possible)
+        assertFalse(game.attack(1, 'a')); // attacks at 1a (with lowercase so not possible)
+        assertFalse(game.attack(-1, 'A')); // attacks at -1A (not possible to have negative coordinates)
     }
 
     @Test
@@ -119,8 +119,8 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         game.placeShip(new Destroyer(), 1, 'A', false);
         game.placeShip(new Minesweeper(), 3, 'A', false);
         game.placeShip(new Battleship(), 5, 'A', false);
-        assertTrue(game.attack(1, 'A', false));
-        assertFalse(game.attack(2, 'C', true));
+        assertTrue(game.attack(1, 'A'));
+        assertFalse(game.radarAttack(2, 'C'));
     }
 
     @Test
