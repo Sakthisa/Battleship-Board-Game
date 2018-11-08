@@ -281,28 +281,20 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        if(square.type == "CQ"){
+            document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_place");
+        }
         document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
 
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         // for testing
+        if(square.type == "CQ"){
+            document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp_cq_place");
+        }
         document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
     }));
-    for(square of game.playersBoard.boardOccupiedSquares){
-        console.log(square);
-        if(square.type == "CQ"){
-            console.log(square);
-            console.log(document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_place"));
-        }
-    }
 
-    for(square of game.opponentsBoard.boardOccupiedSquares){
-        console.log(square);
-        if(square.type == "CQ"){
-            console.log(square);
-            console.log(document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp_cq_place"));
-        }
-    }
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
 }
