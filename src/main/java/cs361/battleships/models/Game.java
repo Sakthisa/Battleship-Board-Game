@@ -48,15 +48,26 @@ public class Game {
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
-        Result opponentAttackResult;
         System.out.println("OPPONENT:");
+
+        // opponent's board is attacked until a valid result is reached
+        opponentAttack();
+
+        return true;
+    }
+
+    private void opponentAttack() {
+        Result opponentAttackResult;
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
+            if(randBool()) {
+                opponentAttackResult = playersBoard.attack(randRow(), randCol());
+            }
+            else{
+                opponentAttackResult = playersBoard.radarAttack(randRow(), randCol());
+            }
         } while(opponentAttackResult.getResult() == INVALID);
-
-        return true;
     }
 
     // This will be a random character from A-J to indicate a column
