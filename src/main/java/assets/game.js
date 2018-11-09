@@ -211,7 +211,7 @@ function displayResults(board, elementId) {
         else if (result.result === "SUNK") {
             if (elementId === "opponent")
                 numSunk++;
-            resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + "</span></div>";
+            resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + " CQ" + "</span></div>";
         }
         else if (result.result === "RADAR") {
             resultHTML += "radarResult'>" + result.result + "</span> PLACED</span></div>";
