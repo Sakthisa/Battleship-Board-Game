@@ -32,11 +32,6 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
-		// Check for anomaly where user can edit ship type somehow. Make sure that ship type is either minesweeper, destroyer, or battleship
-//		if(!ship.getKind().equals("MINESWEEPER") && !ship.getKind().equals("DESTROYER") && !ship.getKind().equals("BATTLESHIP")){
-//			return false;
-//		}
-
 		// Check for the user trying to place multiple of the same ship type
 		for(Ship item : shipList){
 			if(item.getShipSize() == ship.getShipSize()){
@@ -45,13 +40,7 @@ public class Board {
 		}
 
 		Ship newShip;
-		if (ship.getKind().equals("MINESWEEPER")) {
-			newShip = new Minesweeper();
-		} else if (ship.getKind().equals("DESTROYER")) {
-			newShip = new Destroyer();
-		} else {
-			newShip = new Battleship();
-		}
+		newShip = CreateShip(ship);
 		List<Square> squares = new ArrayList<Square>();
 
 		if(!squareIsValid(new Square(x, y))){
@@ -63,6 +52,18 @@ public class Board {
 		//Sets new ship if it is able to be placed
 		return setNewShip(x, y, isVertical, shipSize, newShip, squares);
 
+	}
+
+	private Ship CreateShip(Ship ship) {
+		Ship newShip;
+		if (ship.getKind().equals("MINESWEEPER")) {
+			newShip = new Minesweeper();
+		} else if (ship.getKind().equals("DESTROYER")) {
+			newShip = new Destroyer();
+		} else {
+			newShip = new Battleship();
+		}
+		return newShip;
 	}
 
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
@@ -162,9 +163,6 @@ public class Board {
 			attackResult.add(result);
 			return result;
 		}
-//		if(checkAttackRedundant(x, y, result)){
-//			return result;
-//		}
 
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
@@ -238,55 +236,69 @@ public class Board {
 			if (!occupiedShip.getSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
-						result.setShip(occupiedShip);
-						// If square has already been hit max times, then don't add it to ship hit count
-						if (occupied.getTimesHit() < occupied.getMaxHits()) {
-							occupiedShip.setHit();
-						}
-						if(occupiedShip.getKind().equals("MINESWEEPER")){
-							occupied.setMaxHits(1);
-						}
-
-						occupied.setTimesHit();
-
-						attackStatus = AtackStatus.HIT;
-						if(isCqSink(occupied)){
-							occupiedShip.setSunk(true);
-							setShipsSunk();
-
-							attackStatus = AtackStatus.SUNK;
-							if(this.shipsSunk == 3){
-								attackStatus = AtackStatus.SURRENDER;
-							}
-						}
-						 else{
-							if(occupied.getType().equals("N")){
-								attackStatus = AtackStatus.HIT;
-							}
-							if(occupied.getType().equals("CQ") && occupied.getTimesHit() == 1){
-								attackStatus = AtackStatus.MISS;
-							}
-						}
-
-						result.setResult(attackStatus);
-						attackResult.add(result);
-						return true;
+						return AttackOccupied(result, occupiedShip, occupied);
 
 					}
 				}
 			} else {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
-					if (x == occupied.getRow() && y == occupied.getColumn()) {
-						result.setShip(occupiedShip);
-						result.setResult(AtackStatus.SUNK);
-						attackResult.add(result);
-						return true;
-					}
+					if (SunkResult(x, y, result, occupiedShip, occupied)) return true;
 				}
 
 			}
 		}
 		return false;
+	}
+
+	private boolean SunkResult(int x, char y, Result result, Ship occupiedShip, Square occupied) {
+		if (x == occupied.getRow() && y == occupied.getColumn()) {
+			result.setShip(occupiedShip);
+			result.setResult(AtackStatus.SUNK);
+			attackResult.add(result);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean AttackOccupied(Result result, Ship occupiedShip, Square occupied) {
+		AtackStatus attackStatus;
+		ResultShipSet(result, occupiedShip, occupied);
+
+		occupied.setTimesHit();
+		attackStatus = AtackStatus.HIT;
+		if(isCqSink(occupied)){
+			attackStatus = CqOccupiedAttack(occupiedShip);
+		}
+		 else{
+			if(occupied.getType().equals("CQ") && occupied.getTimesHit() == 1){
+				attackStatus = AtackStatus.MISS;
+			}
+		}
+		result.setResult(attackStatus);
+		attackResult.add(result);
+		return true;
+	}
+
+	private AtackStatus CqOccupiedAttack(Ship occupiedShip) {
+		AtackStatus attackStatus;
+		occupiedShip.setSunk(true);
+		setShipsSunk();
+		attackStatus = AtackStatus.SUNK;
+		if(this.shipsSunk == 3){
+			attackStatus = AtackStatus.SURRENDER;
+		}
+		return attackStatus;
+	}
+
+	private void ResultShipSet(Result result, Ship occupiedShip, Square occupied) {
+		result.setShip(occupiedShip);
+		// If square has already been hit max times, then don't add it to ship hit count
+		if (occupied.getTimesHit() < occupied.getMaxHits()) {
+			occupiedShip.setHit();
+		}
+		if(occupiedShip.getKind().equals("MINESWEEPER")){
+			occupied.setMaxHits(1);
+		}
 	}
 
 	private boolean isCqSink(Square occupied) {
