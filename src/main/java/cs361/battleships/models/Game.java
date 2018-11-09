@@ -36,14 +36,12 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y) {
-
         Result playerAttack;
         playerAttack = opponentsBoard.attack(x, y);
 
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
-
 
         // opponent's board is attacked until a valid result is reached
         opponentAttack();
@@ -52,14 +50,12 @@ public class Game {
     }
 
     public boolean radarAttack(int x, char  y) {
-
         Result playerAttack;
         playerAttack = opponentsBoard.radarAttack(x, y);
 
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
-
 
         // opponent's board is attacked until a valid result is reached
         opponentAttack();
