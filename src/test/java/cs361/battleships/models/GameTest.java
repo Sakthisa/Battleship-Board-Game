@@ -24,6 +24,22 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
     }
 
     @Test
+    public void testInvalidSubmarineYPlacement(){
+        Ship ship = new Submarine();
+        Game game = new Game();
+
+        assertFalse(game.placeShip(ship,1, 'K', true));
+    }
+
+    @Test
+    public void testInvalidShipSubmarinePlacement(){
+        Ship ship = new Submarine();
+        Game game = new Game();
+
+        assertFalse(game.placeShip(ship,1, 'E', false));
+    }
+
+    @Test
     public void testValidShipPlacement(){
         Ship ship = new Minesweeper();
         Game game = new Game();
@@ -84,6 +100,9 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         Game gamebph = new Game();
         assertFalse(gamebph.placeShip(new Minesweeper(), 0, 'A', false)); // places minesweeper ship at 0A horizontally (not possible)
         assertFalse(gamebph.placeShip(new Minesweeper(), 1, 'Z', false)); // places minesweeper ship at 1Z horizontally (not possible)
+        Game nGame = new Game();
+        assertTrue(nGame.placeShip(new Submarine(), 3, 'E', false));
+        assertFalse(nGame.placeShip(new Submarine(), 7, 'E', true));
     }
 
     @Test
@@ -130,6 +149,7 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Destroyer(), 1, 'A', false);
         board.placeShip(new Minesweeper(), 3, 'A', true);
         board.placeShip(new Battleship(), 5, 'A', false);
+        board.placeShip(new Submarine(), 4, 'E', false);
         assert (AtackStatus.HIT == board.attack(1, 'A').getResult());
         assert (AtackStatus.MISS == board.attack(1, 'B').getResult());
         assert (AtackStatus.MISS == board.attack(8, 'B').getResult());
@@ -141,7 +161,9 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResult());
         assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResult());
         assert (AtackStatus.MISS == board.attack(5, 'C').getResult());
-        assert (AtackStatus.SURRENDER == board.attack(5, 'C').getResult());
+        assert (AtackStatus.SUNK == board.attack(5, 'C').getResult());
+        assert (AtackStatus.MISS == board.attack(4, 'H').getResult());
+        assert (AtackStatus.SURRENDER == board.attack(4, 'H').getResult());
 
     }
 

@@ -15,6 +15,7 @@ public class Ship {
 	// kind is the type of ship: 'MINESWEEPER' for example
 	protected String kind;
 	protected boolean sunk;
+	protected boolean underwater;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
@@ -46,4 +47,12 @@ public class Ship {
 
 	public void setSunk(boolean sunk) { this.sunk = sunk; }
 	public boolean getSunk() { return this.sunk; }
+
+	public boolean getUnderwater(){
+		return underwater;
+	}
+
+	public void setUnderwater(){
+		underwater = true;
+	}
 }

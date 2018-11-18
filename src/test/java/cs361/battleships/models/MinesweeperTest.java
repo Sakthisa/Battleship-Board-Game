@@ -13,5 +13,6 @@ public class MinesweeperTest {
         Minesweeper m = new Minesweeper();
         assertEquals(2, m.getShipSize());
         assertEquals("MINESWEEPER", m.getKind());
+        assertEquals(false, m.getUnderwater());
     }
 }

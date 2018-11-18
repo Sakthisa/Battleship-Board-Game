@@ -29,8 +29,16 @@ public class ShipTest {
     @Test
     public void testShipConstructorBattleship() {
         Ship ship;
-        ship = new Destroyer();
-        assertEquals("DESTROYER", ship.getKind());
+        ship = new Battleship();
+        assertEquals("BATTLESHIP", ship.getKind());
+
+    }
+
+    @Test
+    public void testShipConstructorSubmarine() {
+        Ship ship;
+        ship = new Submarine();
+        assertEquals("SUBMARINE", ship.getKind());
 
     }
 
@@ -47,6 +55,9 @@ public class ShipTest {
 
         ship = new Minesweeper();
         assertEquals(ship.getShipSize(),2);
+
+        ship = new Submarine();
+        assertEquals(ship.getShipSize(),5);
     }
 
     @Test
@@ -87,6 +98,14 @@ public class ShipTest {
         assertEquals(2, m.getHits());
         m.setHit();
         assertEquals(3, m.getHits());
+        Submarine su = new Submarine();
+        assertEquals(0, su.getHits());
+        su.setHit();
+        assertEquals(1, su.getHits());
+        su.setHit();
+        assertEquals(2, su.getHits());
+        su.setHit();
+        assertEquals(3, su.getHits());
     }
 
 }

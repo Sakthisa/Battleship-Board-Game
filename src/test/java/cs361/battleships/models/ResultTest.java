@@ -46,6 +46,9 @@ public class ResultTest {
         s = new Minesweeper();
         r.setShip(s);
         assertEquals(s, r.getShip());
+        s = new Submarine();
+        r.setShip(s);
+        assertEquals(s, r.getShip());
     }
 
     @Test

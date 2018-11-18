@@ -38,10 +38,10 @@ function makeGrid(table, isPlayer) {
         for (j = 0; j < 10; j++) {
 
             let column = document.createElement('td');
-            if (count >= 3 && isPlayer == true) {
+            if (count >= 4 && isPlayer == true) {
 
             }
-            else if (count < 3 && isPlayer == false) {
+            else if (count < 4 && isPlayer == false) {
 
             }
             else {
@@ -386,18 +386,19 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
-            if (placedShips === 3) {
+            if (placedShips === 4) {
                 isSetup = false;
                 // registerCellListener((e) => {});
 
                 //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
-                document.getElementsByClassName("buttonHolder")[0].children.item(3).setAttribute("id", "is_vertical")
-                document.getElementsByClassName("buttonHolder")[0].children.item(3).innerHTML = "Vertical";
+                document.getElementsByClassName("buttonHolder")[0].children.item(4).setAttribute("id", "is_vertical")
+                document.getElementsByClassName("buttonHolder")[0].children.item(4).innerHTML = "Vertical";
 
                 //Remove place ship buttons and adding a restart button
                 document.getElementById("place_battleship").style.display = "none";
                 document.getElementById("is_vertical").style.display = "none";
                 document.getElementById("place_destroyer").style.display = "none";
+                document.getElementById("place_submarine").style.display = "none";
                 document.getElementById("place_minesweeper").style.display = "none";
                 document.getElementById("restart").style.visibility = "visible";
                 document.getElementById("restart").addEventListener("click", function (e) {
@@ -472,7 +473,7 @@ function sendXhr(method, url, data, handler) {
     req.send(JSON.stringify(data));
 }
 
-function place(size) {
+function place(size, sub) {
     return function () {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
@@ -485,6 +486,11 @@ function place(size) {
             }
             if (vertical) {
                 let tableRow = table.rows[row + i];
+                if(sub == 1 && i == 2){
+                     cell = table.rows[row+i].cells[col+1];
+                     cell.classList.toggle("placed");
+
+                }
 
                 if (tableRow === 0) {
                     break;
@@ -492,6 +498,7 @@ function place(size) {
                 if (tableRow === undefined) {
                     // ship is over the edge, mark the visible squares with red X's
                     for (let j = (row + i - 1); j >= row; j--) {
+
                         cell = table.rows[j].cells[col];
                         cell.classList.toggle("error-place");
                     }
@@ -507,6 +514,12 @@ function place(size) {
                     break;
                 }
             } else {
+
+                if(sub == 1 && i == 2){
+                    cell = table.rows[row-1].cells[col+i];
+                    cell.classList.toggle("placed");
+
+                }
                 cell = table.rows[row].cells[col + i];
             }
 
@@ -588,17 +601,22 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function (e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
-        registerCellListener(place(2), "player");
+        registerCellListener(place(2, 0), "player");
     });
     document.getElementById("place_destroyer").addEventListener("click", function (e) {
         shipType = "DESTROYER";
         shipSize = 3;
-        registerCellListener(place(3), "player");
+        registerCellListener(place(3, 0), "player");
     });
     document.getElementById("place_battleship").addEventListener("click", function (e) {
         shipType = "BATTLESHIP";
         shipSize = 4;
-        registerCellListener(place(4), "player");
+        registerCellListener(place(4, 0), "player");
+    });
+    document.getElementById("place_submarine").addEventListener("click", function (e) {
+        shipType = "SUBMARINE";
+        shipSize = 5;
+        registerCellListener(place(4, 1), "player");
     });
 
     // Event listener for the radar button
