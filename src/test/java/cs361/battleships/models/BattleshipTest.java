@@ -13,5 +13,6 @@ public class BattleshipTest {
         Battleship b = new Battleship();
         assertEquals(4, b.getShipSize());
         assertEquals("BATTLESHIP", b.getKind());
+        assertEquals(false, b.getUnderwater());
     }
 }

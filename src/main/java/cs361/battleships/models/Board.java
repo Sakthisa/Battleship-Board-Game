@@ -81,7 +81,7 @@ public class Board {
 	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
 		if(newShip.getKind().equals("SUBMARINE")){
 			shipSize = 4;
-			if (SubOutBounds(x, y, isVertical)) return true;
+			if (SubOutBounds(x, y, isVertical)) return false;
 		}
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement

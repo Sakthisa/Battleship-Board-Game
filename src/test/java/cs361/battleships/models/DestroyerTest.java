@@ -13,5 +13,6 @@ public class DestroyerTest {
         Destroyer d = new Destroyer();
         assertEquals(3, d.getShipSize());
         assertEquals("DESTROYER", d.getKind());
+        assertEquals(false, d.getUnderwater());
     }
 }

@@ -11,7 +11,9 @@ public class SubmarineTest {
     @Test
     public void testSubmarineCreation(){
         Submarine s = new Submarine();
+        s.setUnderwater();
         assertEquals(5, s.getShipSize());
         assertEquals("SUBMARINE", s.getKind());
+        assertEquals(true, s.getUnderwater());
     }
 }
