@@ -44,22 +44,41 @@ public class Board {
 		List<Square> squares = new ArrayList<Square>();
 
 		if(!squareIsValid(new Square(x, y))){
-			System.out.println("False");
+			System.out.println("FALSE5");
 			return false;
 		}
-
-//		if(newShip.getKind().equals("SUBMARINE")){
-//			System.out.println(x);
-//			if(x - 1 <= 1) {
-//				return true;
-//			}
-//		}
-
 
 		if (checkSquareOccupied(x, y, isVertical, shipSize, newShip)) return false;
 
 		//Sets new ship if it is able to be placed
-		return setNewShip(x, y, isVertical, shipSize, newShip, squares);
+		return setNewShip(x, y, isVertical, shipSize, newShip, squares, false);
+
+	}
+
+	public boolean placeSubShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
+		int shipSize = ship.getShipSize();
+		//List<Square> occupiedSquares = getBoardOccupiedSquares();
+
+		// Check for the user trying to place multiple of the same ship type
+		for(Ship item : shipList){
+			if(item.getShipSize() == ship.getShipSize()){
+				return false;
+			}
+		}
+
+		Ship newShip;
+		newShip = CreateShip(ship);
+		List<Square> squares = new ArrayList<Square>();
+
+		newShip.setUnderwater();
+
+		if(!squareIsValid(new Square(x, y))){
+			System.out.println("FALSE6");
+			return false;
+		}
+
+		//Sets new ship if it is able to be placed
+		return setNewShip(x, y, isVertical, shipSize, newShip, squares, true);
 
 	}
 
@@ -78,7 +97,7 @@ public class Board {
 		return newShip;
 	}
 
-	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
+	private boolean setNewShip(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares, boolean isSubmerged) {
 		if(newShip.getKind().equals("SUBMARINE")){
 			shipSize = 4;
 			if (SubOutBounds(x, y, isVertical)) return false;
@@ -86,8 +105,9 @@ public class Board {
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
 			if ((x + (shipSize - 1) <= 11)) {
-				placeShipVertical(x, y, isVertical, shipSize, newShip, squares);
+				placeShipVertical(x, y, isVertical, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
+
 				shipList.add(newShip);
 				return true;
 			}
@@ -95,22 +115,24 @@ public class Board {
 			// If it is within the column bounds, then it is a successful placement
 			if ((y + (shipSize - 1) <= 'K')) {
 				//successful
-				placeShipHorizontal(x, y, shipSize, newShip, squares);
-
+				placeShipHorizontal(x, y, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
 				shipList.add(newShip);
 				return true;
 			}
 		}
+		System.out.println("FALSE7");
 		return false;
 	}
 
-	private void placeShipVertical(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares) {
+	private void placeShipVertical(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares, boolean isSubmerged) {
 		for (int i = 0; i < shipSize; i++) {
 			// place the CQ in a single square, here choose second square placed
 			if(newShip.getShipSize() - i == 2) {
 				squares.add(new CaptainQuarter(x + i, y));
-				BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
+				if(isSubmerged == false){
+					BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
+				}
 			}
 			else{
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
@@ -121,17 +143,21 @@ public class Board {
 				else{
 					squares.add(new Square(x + i, y));
 				}
-				BoardoccupiedSquares.add(new Square(x + i, y));
+				if(isSubmerged == false){
+					BoardoccupiedSquares.add(new Square(x + i, y));
+				}
 			}
 		}
 	}
 
-	private void placeShipHorizontal(int x, char y, int shipSize, Ship newShip, List<Square> squares) {
+	private void placeShipHorizontal(int x, char y, int shipSize, Ship newShip, List<Square> squares, boolean isSubmerged) {
 		for (int i = 0; i < shipSize; i++) {
 			// place the CQ in a single square, here choose second square placed
 			if(newShip.getShipSize() - i == 2) { // think about using rand to place the ship
 				squares.add(new CaptainQuarter(x, (char) (y + i)));
-				BoardoccupiedSquares.add(new CaptainQuarter(x, (char) (y + i))); // consider not using new a second time
+				if(isSubmerged == false){
+					BoardoccupiedSquares.add(new CaptainQuarter(x, (char) (y + i))); // consider not using new a second time
+				}
 			}
 			else{ // normal square
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
@@ -142,7 +168,9 @@ public class Board {
 				else{
 					squares.add(new Square(x, (char)(y + i)));
 				}
-				BoardoccupiedSquares.add(new Square(x, (char)(y + i)));
+				if(isSubmerged == false){
+					BoardoccupiedSquares.add(new Square(x , (char)(y + i)));
+				}
 			}
 		}
 	}
@@ -156,10 +184,11 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if(newShip.getKind().equals("SUBMARINE") && i == 2 && occupied.getRow() == x-1 && occupied.getColumn() == (char)(y + i)){
-						System.out.println("FALSE");
+						System.out.println("FALSE8");
 						return true;
 					}
 					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
+						System.out.println("FALSE9");
 						return true;
 					}
 				}
@@ -169,7 +198,7 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if(newShip.getKind().equals("SUBMARINE") && i == 2 && occupied.getRow() == x+i && occupied.getColumn() == (char)(y + 1)){
-						System.out.println("FALSE");
+						System.out.println("FALSE10");
 						return true;
 					}
 					if (occupied.getRow() == x + i && occupied.getColumn() == y) {
