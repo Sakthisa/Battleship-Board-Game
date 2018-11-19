@@ -88,9 +88,11 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
     public void testShipPlacement(){ // Test class for ship placement
         Game game = new Game(); // Creates new game
         assertTrue(game.placeShip(new Minesweeper(), 1, 'A', true)); // places minesweeper ship at 1A vertically
-        assertTrue(game.placeShip(new Destroyer(), 1, 'C', true)); // places destroyer ship at 1A vertically (This test currently fails)
+        assertTrue(game.placeShip(new Destroyer(), 5, 'C', true)); // places destroyer ship at 1A vertically (This test currently fails)
         assertFalse(game.placeShip(new Minesweeper(), 1, 'J', true)); // places 4th ship on board (not possible)
         assertFalse(game.placeShip(new Minesweeper(), 1, 'A', true)); // places ship in already chosen location (not possible)
+        assertTrue(game.placeSubShip(new Submarine(), 5, 'C', false, true));
+        assertFalse(game.placeShip(new Submarine(), 3, 'C', false));
         Game gamebp = new Game();
         assertFalse(gamebp.placeShip(new Minesweeper(), 0, 'A', true)); // places minesweeper ship at 0A vertically (not possible)
         assertFalse(gamebp.placeShip(new Minesweeper(), 1, 'Z', true)); // places minesweeper ship at 1Z vertically (not possible)
@@ -123,6 +125,7 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Destroyer(), 1, 'A', false);
         board.placeShip(new Minesweeper(), 3, 'A', false);
         board.placeShip(new Battleship(), 5, 'A', false);
+        board.placeSubShip(new Submarine(), 5, 'A', false, true);
         assert (AtackStatus.HIT == board.attack(1, 'A').getResult());
         assert (AtackStatus.MISS == board.attack(1, 'B').getResult());
         assert (AtackStatus.HIT == board.attack(1, 'C').getResult());
@@ -149,21 +152,21 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Destroyer(), 1, 'A', false);
         board.placeShip(new Minesweeper(), 3, 'A', true);
         board.placeShip(new Battleship(), 5, 'A', false);
-        board.placeShip(new Submarine(), 4, 'E', false);
+        board.placeSubShip(new Submarine(), 3, 'A', false, true);
         assert (AtackStatus.HIT == board.attack(1, 'A').getResult());
         assert (AtackStatus.MISS == board.attack(1, 'B').getResult());
         assert (AtackStatus.MISS == board.attack(8, 'B').getResult());
         assert (AtackStatus.HIT == board.attack(1, 'C').getResult());
         assert (AtackStatus.SUNK == board.attack(1, 'B').getResult());
-        assert (AtackStatus.MISS == board.attack(3, 'C').getResult());
+        assert (AtackStatus.HIT == board.attack(3, 'C').getResult());
         assert (AtackStatus.SUNK == board.attack(3, 'A').getResult());
         assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResult());
         assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResult());
         assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResult());
         assert (AtackStatus.MISS == board.attack(5, 'C').getResult());
         assert (AtackStatus.SUNK == board.attack(5, 'C').getResult());
-        assert (AtackStatus.MISS == board.attack(4, 'H').getResult());
-        assert (AtackStatus.SURRENDER == board.attack(4, 'H').getResult());
+        assert (AtackStatus.MISS == board.attack(3, 'D').getResult());
+        assert (AtackStatus.SURRENDER == board.attack(3, 'D').getResult());
 
     }
 

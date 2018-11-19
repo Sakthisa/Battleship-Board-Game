@@ -23,6 +23,18 @@ public class BoardTest {
         assertTrue(board.placeShip(new Minesweeper(), 5, 'C', false));
     }
 
+    @Test
+    public void testValidPlaceShipSubmarine(){
+        Board board = new Board();
+        assertTrue(board.placeShip(new Submarine(), 5, 'C', false));
+    }
+
+    @Test
+    public void testInvalidPlaceShipSubmarine(){
+        Board board = new Board();
+        assertFalse(board.placeShip(new Submarine(), 1, 'C', false));
+    }
+
     //Checking invalid Destroyer placement
     @Test
     public void testInvalidPlaceShipDestroyer(){
@@ -56,6 +68,13 @@ public class BoardTest {
         Board board = new Board();
         assertTrue(board.placeShip(new Battleship(), 1, 'H', true));
         assertFalse(board.placeShip(new Minesweeper(), 3, 'G', false));
+    }
+
+    @Test
+    public void testValidOverlapPlacement(){
+        Board board = new Board();
+        assertTrue(board.placeSubShip(new Submarine(), 1, 'H', true, true));
+        assertTrue(board.placeShip(new Minesweeper(), 3, 'G', false));
     }
 
     @Test
@@ -103,6 +122,8 @@ public class BoardTest {
         assertFalse(game.placeShip(new Minesweeper(), 5, 'C', true));
         assertTrue(game.placeShip(new Destroyer(), 7, 'F', false));
         assertFalse(game.placeShip(new Destroyer(), 10, 'F', false));
+        assertTrue(game.placeSubShip(new Submarine(), 10, 'F', false, true));
+        assertFalse(game.placeShip(new Submarine(), 10, 'F', false));
 
     }
 
