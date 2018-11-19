@@ -4,6 +4,7 @@ var game;
 var shipType;
 var shipSize = 1;
 var vertical;
+var submerged = false;
 var count = 0;
 var vertical = false;
 var isRadar = false;
@@ -375,53 +376,57 @@ function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
-        sendXhr("POST", "/place", {
-            game: game,
-            shipType: shipType,
-            x: row,
-            y: col,
-            isVertical: vertical
-        }, function (data) {
-            game = data;
+            sendXhr("POST", "/place", {
+                game: game,
+                shipType: shipType,
+                x: row,
+                y: col,
+                isSubmerged: submerged,
+                isVertical: vertical
+            }, function (data) {
+                game = data;
+                redrawGrid();
+                placedShips++;
+                if (placedShips === 4) {
+                    isSetup = false;
+                    // registerCellListener((e) => {});
 
-            redrawGrid();
-            placedShips++;
-            if (placedShips === 4) {
-                isSetup = false;
-                // registerCellListener((e) => {});
+                    //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
+                    document.getElementsByClassName("buttonHolder")[0].children.item(4).setAttribute("id", "is_vertical")
+                    document.getElementsByClassName("buttonHolder")[0].children.item(4).innerHTML = "Vertical";
+                    document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
+                    document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
 
-                //Resets the results box and also gets rid of the ship placement buttons and includes a restart button
-                document.getElementsByClassName("buttonHolder")[0].children.item(4).setAttribute("id", "is_vertical")
-                document.getElementsByClassName("buttonHolder")[0].children.item(4).innerHTML = "Vertical";
+                    //Remove place ship buttons and adding a restart button
+                    document.getElementById("place_battleship").style.display = "none";
+                    document.getElementById("is_vertical").style.display = "none";
+                    document.getElementById("is_submerged").style.display = "none";
+                    document.getElementById("place_destroyer").style.display = "none";
+                    document.getElementById("place_submarine").style.display = "none";
+                    document.getElementById("place_minesweeper").style.display = "none";
+                    document.getElementById("restart").style.visibility = "visible";
+                    document.getElementById("restart").addEventListener("click", function (e) {
+                        location.reload();
+                    });
 
-                //Remove place ship buttons and adding a restart button
-                document.getElementById("place_battleship").style.display = "none";
-                document.getElementById("is_vertical").style.display = "none";
-                document.getElementById("place_destroyer").style.display = "none";
-                document.getElementById("place_submarine").style.display = "none";
-                document.getElementById("place_minesweeper").style.display = "none";
-                document.getElementById("restart").style.visibility = "visible";
-                document.getElementById("restart").addEventListener("click", function (e) {
-                    location.reload();
-                });
+                    //Clearing out the results box and preparing it for the attack phase results
+                    document.getElementsByClassName("container-header")[0].innerHTML = "ATTACK RESULTS";
+                    resultscontain = document.getElementById("results-container");
+                    resultscontain.innerHTML = "";
 
-                //Clearing out the results box and preparing it for the attack phase results
-                document.getElementsByClassName("container-header")[0].innerHTML = "ATTACK RESULTS";
-                resultscontain = document.getElementById("results-container");
-                resultscontain.innerHTML = "";
+                    playerResults = document.createElement('div');
+                    playerResults.setAttribute("id", "player-results");
+                    playerResults.setAttribute("class", "individual-results");
 
-                playerResults = document.createElement('div');
-                playerResults.setAttribute("id", "player-results");
-                playerResults.setAttribute("class", "individual-results");
+                    opponentResults = document.createElement('div');
+                    opponentResults.setAttribute("id", "opponent-results");
+                    opponentResults.setAttribute("class", "individual-results");
 
-                opponentResults = document.createElement('div');
-                opponentResults.setAttribute("id", "opponent-results");
-                opponentResults.setAttribute("class", "individual-results");
+                    resultscontain.appendChild(playerResults);
+                    resultscontain.appendChild(opponentResults);
+                }
+            });
 
-                resultscontain.appendChild(playerResults);
-                resultscontain.appendChild(opponentResults);
-            }
-        });
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
             game = data;
@@ -470,6 +475,8 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
+    console.log(url);
+    console.log(data);
     req.send(JSON.stringify(data));
 }
 
@@ -597,26 +604,43 @@ function attack() {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    document.getElementById("is_submerged").style.display = "none";
 
     document.getElementById("place_minesweeper").addEventListener("click", function (e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
         registerCellListener(place(2, 0), "player");
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
+        document.getElementById("is_submerged").style.display = "none";
+        submerged = false;
     });
     document.getElementById("place_destroyer").addEventListener("click", function (e) {
         shipType = "DESTROYER";
         shipSize = 3;
         registerCellListener(place(3, 0), "player");
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
+        document.getElementById("is_submerged").style.display = "none";
+        submerged = false;
     });
     document.getElementById("place_battleship").addEventListener("click", function (e) {
         shipType = "BATTLESHIP";
         shipSize = 4;
         registerCellListener(place(4, 0), "player");
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
+        document.getElementById("is_submerged").style.display = "none";
+        submerged = false;
+
     });
     document.getElementById("place_submarine").addEventListener("click", function (e) {
         shipType = "SUBMARINE";
         shipSize = 5;
         registerCellListener(place(4, 1), "player");
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
+        document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
+        document.getElementById("is_submerged").style.display = "block";
     });
 
     // Event listener for the radar button
@@ -649,6 +673,20 @@ function initGame() {
 
         }
     });
+
+     document.getElementById("is_submerged").addEventListener("click", function (e) {
+            if (submerged == true) {
+                submerged = false;
+                document.getElementById("is_surface").innerHTML = "Submerged";
+                document.getElementById("is_surface").setAttribute("id", "is_submerged");
+            }
+            else {
+                submerged = true;
+                document.getElementById("is_submerged").innerHTML = "Surface";
+                document.getElementById("is_submerged").setAttribute("id", "is_surface");
+
+            }
+      });
 
     sendXhr("GET", "/game", {}, function (data) {
         game = data;

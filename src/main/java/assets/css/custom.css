@@ -275,6 +275,22 @@ th {
     background-color: #302f2f
 }
 
+#is_surface{
+    background-color: black;
+}
+
+#is_surface:hover{
+    background-color: #302f2f
+}
+
+#is_submerged{
+    background-color: #565656;
+}
+
+#is_submerged:hover{
+    background-color: #302f2f
+}
+
 .button img{
     max-width: 50%;
     height: auto;
