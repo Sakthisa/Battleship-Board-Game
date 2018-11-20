@@ -319,6 +319,7 @@ public class Board {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
 						AttackOccupied(result, occupiedShip, occupied);
 						if (shipsSunk == 0) {
+							attackResult.add(result);
 							return true;
 						}
 						success = true;
@@ -330,6 +331,7 @@ public class Board {
 					if (SunkResult(x, y, result, occupiedShip, occupied)) {
 
 						if (shipsSunk == 0) {
+							attackResult.add(result);
 							return true;
 						}
 						success = true;
@@ -369,7 +371,6 @@ public class Board {
 			}
 		}
 		result.setResult(attackStatus);
-
 	}
 
 	private AtackStatus CqOccupiedAttack(Ship occupiedShip) {
