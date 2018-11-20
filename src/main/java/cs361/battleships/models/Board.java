@@ -311,7 +311,7 @@ public class Board {
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
 			// only execute if ship is not sunk
-			if (occupiedShip.getKind().equals("SUBMARINE") && shipsSunk == 0) {
+			if (occupiedShip.getUnderwater() && shipsSunk == 0) {
 				continue;
 			}
 			if (!occupiedShip.getSunk()) {
