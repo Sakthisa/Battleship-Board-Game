@@ -8,7 +8,6 @@ var submerged = false;
 var count = 0;
 var vertical = false;
 var isRadar = false;
-var isLaser = false;
 var numSunk = 0;
 var radarsUsed = 0;
 
@@ -73,7 +72,7 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
         let result;
-        for (result of attack.result) {
+        for (result of attack.results) {
             let className;
             if (result === "MISS") {
                 className = "miss";
@@ -84,9 +83,9 @@ function markHits(board, elementId, surrenderText) {
             else if (result === "SUNK") {
                 // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
                 let ship;
-                for (ship of attack.ship) {
+                for (ship of attack.ships) {
                     let square;
-                    for (square of attack.ship.occupiedSquares) {
+                    for (square of ship.occupiedSquares) {
                         if (square.type == "CQ") {
                             document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
                             document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
@@ -107,9 +106,9 @@ function markHits(board, elementId, surrenderText) {
             //When a surrender occurs, a modal will popup and display the win message
             else if (result === "SURRENDER") {
                 let ship;
-                for (ship of attack.ship) {
+                for (ship of attack.ships) {
                     let square;
-                    for (square of attack.ship.occupiedSquares) {
+                    for (square of ship.occupiedSquares) {
                         if (square.type == "CQ") {
                             document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
                             document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
@@ -214,36 +213,34 @@ function displayResults(board, elementId) {
 
         let row = result.location.row - 1;
         let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
-        
-        let a;
-        for (a of result.result) {
-            if (a === "HIT")
-                resultHTML += "hitResult'>" + a + "</span>" + " " + row + col + "</span></div>";
-            else if (a === "MISS")
-                resultHTML += "missResult'>" + a + "</span>" + " " + row + col + "</span></div>";
-            else if (a === "SUNK") {
+
+        for (let i = 0; i < result.results.length; i++) {
+            if (result.results[i] === "HIT")
+                resultHTML += "hitResult'>" + result.results[i] + "</span>" + " " + row + col + "</span></div>";
+            else if (result.results[i] === "MISS")
+                resultHTML += "missResult'>" + result.results[i] + "</span>" + " " + row + col + "</span></div>";
+            else if (result.results[i] === "SUNK") {
                 if (elementId === "opponent")
                     numSunk++;
-                resultHTML += "sunkResult'>" + a + "</span>" + " " + result.ship.kind + " CQ" + "</span></div>";
+                resultHTML += "sunkResult'>" + result.results[i] + "</span>" + " " + result.ships[i].kind + " CQ" + "</span></div>";
             }
-            else if (a === "RADAR") {
-                resultHTML += "radarResult'>" + a + "</span> PLACED</span></div>";
-            }
-        }
-
-        // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
-        if (elementId === "opponent") {
-            html += " class='player-name'>PLAYER: </span>" + resultHTML;
-            document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
-            // here we display the radar button
-            if (numSunk === 1) {
-                document.getElementById("radar-btn").style.visibility = "visible";
-                document.getElementById("laser-btn").style.visibility = "visible";
+            else if (result.results[i] === "RADAR") {
+                resultHTML += "radarResult'>" + result.results[i] + "</span> PLACED</span></div>";
             }
 
-        } else if (elementId === "player") {
-            html += " class='opponent-name'>AI: </span>" + resultHTML;
-            document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+            // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
+            if (elementId === "opponent") {
+                html += " class='player-name'>PLAYER: </span>" + resultHTML;
+                document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+                // here we display the radar button
+                if (numSunk === 1) {
+                    document.getElementById("radar-btn").style.visibility = "visible";
+                }
+
+            } else if (elementId === "player") {
+                html += " class='opponent-name'>AI: </span>" + resultHTML;
+                document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+            }
         }
 
     }
@@ -418,17 +415,12 @@ function cellClick() {
             });
 
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar, laser: isLaser}, function (data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
             game = data;
-
             if (isRadar) {
                 radarsUsed++;
                 isRadar = false;
                 document.getElementById("radar-btn").classList.toggle("btn-toggle");
-            }
-            else if (isLaser) {
-                isLaser = false;
-                document.getElementById("laser-btn").classList.toggle("btn-toggle");
             }
             if (radarsUsed === 2) {
                 document.getElementById("radar-btn").style.display = "none";
@@ -442,7 +434,6 @@ function cellClick() {
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function (event) {
-        console.log(req.responseText);
         if (req.status != 200) {
             if (url === "/attack") {
                 var row = data.x;
@@ -474,7 +465,7 @@ function sendXhr(method, url, data, handler) {
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
     console.log(url);
-    console.log(JSON.stringify(data));
+    console.log(data);
     req.send(JSON.stringify(data));
 }
 
@@ -671,19 +662,6 @@ function initGame() {
             isRadar = false;
             registerCellListener((e) => {
             }, "none");
-        }
-    });
-    document.getElementById("laser-btn").addEventListener("click", (e) => {
-        // laser is true if adding btn-toggle class to the laser button, meaning we want to use the laser, else false
-        let laser = e.target.classList.toggle("btn-toggle");
-        if (laser) {
-            if (isRadar) {
-                document.getElementById("radar-btn").classList.toggle("btn-toggle");
-                isRadar = false;
-            }
-            isLaser = true;
-        } else {
-            isLaser = false;
         }
     });
 

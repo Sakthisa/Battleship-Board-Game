@@ -10,7 +10,6 @@ public class Game {
 
     @JsonProperty private Board playersBoard = new Board();
     @JsonProperty private Board opponentsBoard = new Board();
-    private boolean laserAttack;
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -62,9 +61,7 @@ public class Game {
 	 */
     public boolean attack(int x, char  y) {
         Result playerAttack;
-        laserAttack = false;
         playerAttack = opponentsBoard.attack(x, y);
-
 
         if (!isValid(playerAttack)) {
             return false;
@@ -78,7 +75,6 @@ public class Game {
 
     public boolean radarAttack(int x, char  y) {
         Result playerAttack;
-        laserAttack = false;
         playerAttack = opponentsBoard.radarAttack(x, y);
 
         if (!isValid(playerAttack)) {
@@ -90,30 +86,15 @@ public class Game {
 
         return true;
     }
-
-    public boolean laserAttack(int x, char y) {
-        Result playerAttack;
-        laserAttack = true;
-        playerAttack = opponentsBoard.attack(x, y);
-
-        if (!isValid(playerAttack)) {
-            return false;
-        }
-        opponentAttack();
-
-        return true;
-    }
     private void opponentAttack() {
         Result opponentAttackResult;
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             if(randBool()) {
-                laserAttack = false;
                 opponentAttackResult = playersBoard.attack(randRow(), randCol());
             }
             else{
-                laserAttack = false;
                 opponentAttackResult = playersBoard.radarAttack(randRow(), randCol());
             }
         } while(!isValid(opponentAttackResult));
@@ -141,12 +122,8 @@ public class Game {
         return rand.nextBoolean();
     }
 
-    public boolean isLaserAttack() {
-        return laserAttack;
-    }
-
     private boolean isValid(Result r) {
-        for (AtackStatus a : r.getResult()) {
+        for (AtackStatus a : r.getResults()) {
             if (a == INVALID) {
                 return false;
             }

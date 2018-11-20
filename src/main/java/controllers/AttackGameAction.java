@@ -11,7 +11,6 @@ public class AttackGameAction {
     @JsonProperty private int x;
     @JsonProperty private char y;
     @JsonProperty private boolean radar;
-    @JsonProperty private boolean laser;
 
     public Game getGame() {
         return game;
@@ -26,6 +25,4 @@ public class AttackGameAction {
     }
 
     public boolean isRadar() { return radar; }
-
-    public boolean isLaser() { return laser; }
 }

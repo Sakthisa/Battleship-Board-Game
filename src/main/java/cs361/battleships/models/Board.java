@@ -1,6 +1,7 @@
 package cs361.battleships.models;
 
-import javax.sound.midi.SysexMessage;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -310,10 +311,16 @@ public class Board {
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
 			// only execute if ship is not sunk
+			if (occupiedShip.getKind().equals("SUBMARINE") && shipsSunk == 0) {
+				continue;
+			}
 			if (!occupiedShip.getSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
 						AttackOccupied(result, occupiedShip, occupied);
+						if (shipsSunk == 0) {
+							return true;
+						}
 						success = true;
 						break;
 					}
@@ -321,6 +328,10 @@ public class Board {
 			} else {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (SunkResult(x, y, result, occupiedShip, occupied)) {
+
+						if (shipsSunk == 0) {
+							return true;
+						}
 						success = true;
 						break;
 					}
@@ -352,7 +363,7 @@ public class Board {
 		if(isCqSink(occupied)){
 			attackStatus = CqOccupiedAttack(occupiedShip);
 		}
-		 else{
+		else{
 			if(occupied.getType().equals("CQ") && occupied.getTimesHit() == 1){
 				attackStatus = AtackStatus.MISS;
 			}

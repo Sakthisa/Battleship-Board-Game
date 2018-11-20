@@ -54,8 +54,6 @@ public class ApplicationController {
 
         if(g.isRadar()){
             result = game.radarAttack(g.getActionRow(), g.getActionColumn());
-        } else if (g.isLaser()) {
-            result = game.laserAttack(g.getActionRow(), g.getActionColumn());
         }
         else{
             result = game.attack(g.getActionRow(), g.getActionColumn());
