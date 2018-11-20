@@ -126,13 +126,13 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Minesweeper(), 3, 'A', false);
         board.placeShip(new Battleship(), 5, 'A', false);
         board.placeSubShip(new Submarine(), 5, 'A', false, true);
-        assert (AtackStatus.HIT == board.attack(1, 'A').getResult());
-        assert (AtackStatus.MISS == board.attack(1, 'B').getResult());
-        assert (AtackStatus.HIT == board.attack(1, 'C').getResult());
-        assert (AtackStatus.SUNK == board.attack(1, 'B').getResult());
-        assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResult());
-        assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResult());
-        assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResult());
+        assert (AtackStatus.HIT == board.attack(1, 'A').getResults().get(0));
+        assert (AtackStatus.MISS == board.attack(1, 'B').getResults().get(0));
+        assert (AtackStatus.HIT == board.attack(1, 'C').getResults().get(0));
+        assert (AtackStatus.SUNK == board.attack(1, 'B').getResults().get(0));
+        assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResults().get(0));
+        assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResults().get(0));
+        assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResults().get(0));
     }
 
     @Test
@@ -153,20 +153,20 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Minesweeper(), 3, 'A', true);
         board.placeShip(new Battleship(), 5, 'A', false);
         board.placeSubShip(new Submarine(), 3, 'A', false, true);
-        assert (AtackStatus.HIT == board.attack(1, 'A').getResult());
-        assert (AtackStatus.MISS == board.attack(1, 'B').getResult());
-        assert (AtackStatus.MISS == board.attack(8, 'B').getResult());
-        assert (AtackStatus.HIT == board.attack(1, 'C').getResult());
-        assert (AtackStatus.SUNK == board.attack(1, 'B').getResult());
-        assert (AtackStatus.HIT == board.attack(3, 'C').getResult());
-        assert (AtackStatus.SUNK == board.attack(3, 'A').getResult());
-        assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResult());
-        assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResult());
-        assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResult());
-        assert (AtackStatus.MISS == board.attack(5, 'C').getResult());
-        assert (AtackStatus.SUNK == board.attack(5, 'C').getResult());
-        assert (AtackStatus.MISS == board.attack(3, 'D').getResult());
-        assert (AtackStatus.SURRENDER == board.attack(3, 'D').getResult());
+        assert (AtackStatus.HIT == board.attack(1, 'A').getResults().get(0));
+        assert (AtackStatus.MISS == board.attack(1, 'B').getResults().get(0));
+        assert (AtackStatus.MISS == board.attack(8, 'B').getResults().get(0));
+        assert (AtackStatus.HIT == board.attack(1, 'C').getResults().get(0));
+        assert (AtackStatus.SUNK == board.attack(1, 'B').getResults().get(0));
+        assert (AtackStatus.HIT == board.attack(3, 'C').getResults().get(0));
+        assert (AtackStatus.SUNK == board.attack(3, 'A').getResults().get(0));
+        assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResults().get(0));
+        assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResults().get(0));
+        assert (AtackStatus.INVALID == board.radarAttack(2, 'C').getResults().get(0));
+        assert (AtackStatus.MISS == board.attack(5, 'C').getResults().get(0));
+        assert (AtackStatus.SUNK == board.attack(5, 'C').getResults().get(0));
+        assert (AtackStatus.MISS == board.attack(3, 'D').getResults().get(0));
+        assert (AtackStatus.SURRENDER == board.attack(3, 'D').getResults().get(0));
 
     }
 
