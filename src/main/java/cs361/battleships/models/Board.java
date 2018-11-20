@@ -12,6 +12,7 @@ public class Board {
 	private int xDimension;
 	private int yDimension;
 	private	int shipsSunk;
+	private int nRadars;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -20,6 +21,7 @@ public class Board {
 		this.shipList = new ArrayList<Ship>();
 		this.attackResult = new ArrayList<Result>();
 		this.shipsSunk = 0;
+		this.nRadars = 0;
 		//In future these should be taken as args to the board constructor
 		setYDimension(10);
 		setXDimension(10);
@@ -282,27 +284,18 @@ public class Board {
 		attackStatus = AtackStatus.RADAR;
 		result.setResult(attackStatus);
 		attackResult.add(result);
+		this.nRadars++;
 		return result;
 	}
 
 	private boolean shipHasBeenSunk(Result result) {
-		for (Result res : attackResult) {
-			if (res.getResult() == AtackStatus.SUNK) {
-				return true;
-			}
-		}
+		if (getShipsSunk() > 0) return true;
+
 		result.setResult(AtackStatus.INVALID);
 		return false;
 	}
 	
 	private boolean checkTooManyRadars(Result result) {
-		AtackStatus attackStatus;
-		int nRadars = 0;
-
-		for (Result res : attackResult) {
-			if (res.getResult() == AtackStatus.RADAR) nRadars++;
-		}
-
 		if (nRadars >= 2) {
 			result.setResult(AtackStatus.INVALID);
 			return true;
@@ -312,7 +305,7 @@ public class Board {
 
 	// This method is a behemoth because of all of the checks, these could be factored into class methods from other classes
 	private boolean checkKnownValidAttack(int x, char y, Result result) {
-		AtackStatus attackStatus;
+		boolean success = false;
 		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
@@ -320,18 +313,22 @@ public class Board {
 			if (!occupiedShip.getSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
-						return AttackOccupied(result, occupiedShip, occupied);
-
+						AttackOccupied(result, occupiedShip, occupied);
+						success = true;
+						break;
 					}
 				}
 			} else {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
-					if (SunkResult(x, y, result, occupiedShip, occupied)) return true;
+					if (SunkResult(x, y, result, occupiedShip, occupied)) {
+						success = true;
+						break;
+					}
 				}
 
 			}
 		}
-		return false;
+		return success;
 	}
 
 	private boolean SunkResult(int x, char y, Result result, Ship occupiedShip, Square occupied) {
@@ -344,7 +341,7 @@ public class Board {
 		return false;
 	}
 
-	private boolean AttackOccupied(Result result, Ship occupiedShip, Square occupied) {
+	private void AttackOccupied(Result result, Ship occupiedShip, Square occupied) {
 		AtackStatus attackStatus;
 		ResultShipSet(result, occupiedShip, occupied);
 
@@ -360,7 +357,6 @@ public class Board {
 		}
 		result.setResult(attackStatus);
 		attackResult.add(result);
-		return true;
 	}
 
 	private AtackStatus CqOccupiedAttack(Ship occupiedShip) {
@@ -399,7 +395,7 @@ public class Board {
 	private boolean checkAttackRedundant(int x, char y, Result result) {
 		//Checks if a square has already been attacked
 		AtackStatus attackStatus;
-		for(Result validSpot: attackResult){
+		for(Result validSpot : attackResult) {
 			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
 				attackStatus = AtackStatus.INVALID;
 				result.setResult(attackStatus);

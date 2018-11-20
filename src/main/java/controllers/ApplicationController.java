@@ -51,13 +51,14 @@ public class ApplicationController {
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
         boolean result;
-        // standard attack
-        if(!g.isRadar()){
-            result = game.attack(g.getActionRow(), g.getActionColumn());
-        }
-        // radar click
-        else{
+
+        if(g.isRadar()){
             result = game.radarAttack(g.getActionRow(), g.getActionColumn());
+        } else if (g.isLaser()) {
+            result = game.laserAttack(g.getActionRow(), g.getActionColumn());
+        }
+        else{
+            result = game.attack(g.getActionRow(), g.getActionColumn());
         }
 
         if (result) {

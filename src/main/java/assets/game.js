@@ -8,6 +8,7 @@ var submerged = false;
 var count = 0;
 var vertical = false;
 var isRadar = false;
+var isLaser = false;
 var numSunk = 0;
 var radarsUsed = 0;
 
@@ -67,129 +68,133 @@ function makeGrid(table, isPlayer) {
 
 function markHits(board, elementId, surrenderText) {
     var oldListener;
-
+    console.log(board);
     board.attacks.forEach((attack) => {
         // Remove the radar class to start so that if a user attacked a spot within the radar, it would appear over the grey square
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
-        document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found")
-        let className;
-        if (attack.result === "MISS") {
-            className = "miss";
-        }
-        else if (attack.result === "HIT" && !document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
-            className = "hit";
-        }
-        else if (attack.result === "SUNK") {
-            // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
-            var square;
-
-            for (square of attack.ship.occupiedSquares) {
-                if(square.type == "CQ"){
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
-
-                }
-                else{
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
-                }
+        document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+        let result;
+        for (result of attack.result) {
+            let className;
+            if (result === "MISS") {
+                className = "miss";
             }
-
-
-            return;
-        }
-        //When a surrender occurs, a modal will popup and display the win message
-        else if (attack.result === "SURRENDER") {
-            for (square of attack.ship.occupiedSquares) {
-                if(square.type == "CQ"){
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
-
-                }
-                else{
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                    document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
-                }
+            else if (result === "HIT" && !document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
+                className = "hit";
             }
-            if (surrenderText == false) {
-                document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
-            }
-            displayVictoryDialogue();
+            else if (result === "SUNK") {
+                // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
+                var square;
 
-            return;
-        }
-        // If there is a radar used there, then make it show.
-        else if (attack.result === "RADAR") {
-            let table = document.getElementById(elementId);
-            let row = attack.location.row - 1;
-            let col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
-            let tableRow;
-            let cell;
-            let i;
-            for (i = 0; i < 5; i++) {
-                if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
-                    continue;
-                }
-                // start from 2 rows down and make your way up to the top
-                tableRow = table.rows[row - 2 + i];
-                if (tableRow != undefined) {
-                    cell = tableRow.cells[col];
-                    // Only mark with the placed class if there doesn't already exist an attack there
-                    if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place") ) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
-                        if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
-                            cell.classList.add("found");
-                        }
-                        else {
-                            cell.classList.add("radar-square");
-                        }
+                for (square of attack.ship.occupiedSquares) {
+                    if (square.type == "CQ") {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+
+                    }
+                    else {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                     }
                 }
 
-                // Now place the 4 squares diagonal to middle
-                if (i === 1 || i === 3) {
-                    if ((tableRow.cells[col - 1] != undefined && col - 1 != 0) && !(tableRow.cells[col - 1].classList.contains("hit") || (tableRow.cells[col - 1].classList.contains("miss") && !tableRow.cells[col - 1].classList.contains("opp_cq_place")) || tableRow.cells[col - 1].classList.contains("sink") || tableRow.cells[col - 1].classList.contains("cq_sink"))) {
-                        if (tableRow.cells[col - 1].classList.contains("opp-occupied") || tableRow.cells[col - 1].classList.contains("occupied")) {
-                            tableRow.cells[col - 1].classList.add("found");
-                        } else {
-                            tableRow.cells[col - 1].classList.add("radar-square");
-                        }
+
+                return;
+            }
+            //When a surrender occurs, a modal will popup and display the win message
+            else if (result === "SURRENDER") {
+                for (square of attack.ship.occupiedSquares) {
+                    if (square.type == "CQ") {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
                     }
-                    if (tableRow.cells[col + 1] != undefined && !(tableRow.cells[col + 1].classList.contains("hit") || (tableRow.cells[col + 1].classList.contains("miss") && !tableRow.cells[col + 1].classList.contains("opp_cq_place")) || tableRow.cells[col + 1].classList.contains("sink") || tableRow.cells[col + 1].classList.contains("cq_sink"))) {
-                        if (tableRow.cells[col + 1].classList.contains("opp-occupied") || tableRow.cells[col + 1].classList.contains("occupied")) {
-                            tableRow.cells[col + 1].classList.add("found");
-                        } else {
-                            tableRow.cells[col + 1].classList.add("radar-square");
-                        }
+                    else {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                     }
                 }
-            }
-            tableRow = table.rows[row];
-            for (i = 0; i < 5; i++) {
-                if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
-                    continue;
+                if (surrenderText == false) {
+                    document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
                 }
-                // Start 2 cells left of center, and work your way right
-                cell = tableRow.cells[col - 2 + i];
-                if (cell != undefined) {
-                    // If no other attack exists in this location, then we can mark it with a radar class
-                    if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place")) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
-                        if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
-                            cell.classList.add("found");
-                        } else {
-                            cell.classList.add("radar-square");
-                        }
-                    }
-                }
+                displayVictoryDialogue();
 
+                return;
             }
-            return;
+            // If there is a radar used there, then make it show.
+            else if (result === "RADAR") {
+                let table = document.getElementById(elementId);
+                let row = attack.location.row - 1;
+                let col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+                let tableRow;
+                let cell;
+                let i;
+                for (i = 0; i < 5; i++) {
+                    if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                        continue;
+                    }
+                    // start from 2 rows down and make your way up to the top
+                    tableRow = table.rows[row - 2 + i];
+                    if (tableRow != undefined) {
+                        cell = tableRow.cells[col];
+                        // Only mark with the placed class if there doesn't already exist an attack there
+                        if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place")) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
+                            if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
+                                cell.classList.add("found");
+                            }
+                            else {
+                                cell.classList.add("radar-square");
+                            }
+                        }
+                    }
+
+                    // Now place the 4 squares diagonal to middle
+                    if (i === 1 || i === 3) {
+                        if ((tableRow.cells[col - 1] != undefined && col - 1 != 0) && !(tableRow.cells[col - 1].classList.contains("hit") || (tableRow.cells[col - 1].classList.contains("miss") && !tableRow.cells[col - 1].classList.contains("opp_cq_place")) || tableRow.cells[col - 1].classList.contains("sink") || tableRow.cells[col - 1].classList.contains("cq_sink"))) {
+                            if (tableRow.cells[col - 1].classList.contains("opp-occupied") || tableRow.cells[col - 1].classList.contains("occupied")) {
+                                tableRow.cells[col - 1].classList.add("found");
+                            } else {
+                                tableRow.cells[col - 1].classList.add("radar-square");
+                            }
+
+                        }
+                        if (tableRow.cells[col + 1] != undefined && !(tableRow.cells[col + 1].classList.contains("hit") || (tableRow.cells[col + 1].classList.contains("miss") && !tableRow.cells[col + 1].classList.contains("opp_cq_place")) || tableRow.cells[col + 1].classList.contains("sink") || tableRow.cells[col + 1].classList.contains("cq_sink"))) {
+                            if (tableRow.cells[col + 1].classList.contains("opp-occupied") || tableRow.cells[col + 1].classList.contains("occupied")) {
+                                tableRow.cells[col + 1].classList.add("found");
+                            } else {
+                                tableRow.cells[col + 1].classList.add("radar-square");
+                            }
+                        }
+                    }
+                }
+                tableRow = table.rows[row];
+                for (i = 0; i < 5; i++) {
+                    if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                        continue;
+                    }
+                    // Start 2 cells left of center, and work your way right
+                    cell = tableRow.cells[col - 2 + i];
+                    if (cell != undefined) {
+                        // If no other attack exists in this location, then we can mark it with a radar class
+                        if (!(cell.classList.contains("hit") || (cell.classList.contains("miss") && !cell.classList.contains("opp_cq_place")) || cell.classList.contains("sink") || cell.classList.contains("cq_sink"))) {
+                            if (cell.classList.contains("opp-occupied") || cell.classList.contains("occupied")) {
+                                cell.classList.add("found");
+                            } else {
+                                cell.classList.add("radar-square");
+                            }
+                        }
+                    }
+
+                }
+                return;
+            }
+            document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
         }
-        document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+
     });
     displayResults(board, elementId);
 }
@@ -225,6 +230,7 @@ function displayResults(board, elementId) {
             // here we display the radar button
             if (numSunk === 1) {
                 document.getElementById("radar-btn").style.visibility = "visible";
+                document.getElementById("laser-btn").style.visibility = "visible";
             }
 
         } else if (elementId === "player") {
@@ -232,30 +238,6 @@ function displayResults(board, elementId) {
             document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
         }
 
-//        //Create an error hover effect on already attacked spaces after 215 ms
-//        setTimeout(function () {
-//            var opponentTable = document.getElementById("opponent");
-//
-//            for (var i = 1; i < 11; i++) {
-//                for (var j = 1; j < 11; j++) {
-//
-//
-//                    if (opponentTable.rows[i].cells[j].className === "miss") {
-//                        opponentTable.rows[i].cells[j].setAttribute("class", "missError");
-//                    }
-//                    else if (opponentTable.rows[i].cells[j].className === "hit") {
-//                        opponentTable.rows[i].cells[j].setAttribute("class", "hitError");
-//                    }
-//                    else if (opponentTable.rows[i].cells[j].className === "sink") {
-//                        opponentTable.rows[i].cells[j].setAttribute("class", "sinkError");
-//                    }
-//
-//
-//                }
-//            }
-//
-//
-//        }, 215);
     }
 
 }
@@ -428,12 +410,16 @@ function cellClick() {
             });
 
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar, laser: isLaser}, function (data) {
             game = data;
             if (isRadar) {
                 radarsUsed++;
                 isRadar = false;
                 document.getElementById("radar-btn").classList.toggle("btn-toggle");
+            }
+            else if (isLaser) {
+                isLaser = false;
+                document.getElementById("laser-btn").classList.toggle("btn-toggle");
             }
             if (radarsUsed === 2) {
                 document.getElementById("radar-btn").style.display = "none";
@@ -457,10 +443,11 @@ function sendXhr(method, url, data, handler) {
                 html += " class='player-name'>PLAYER: </span>" + "<span class='error'>INVALID ATTACK</span></div>";
                 document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
 
-                html = "<div class='result'><span"
+                html = "<div class='result'><span";
                 html += " class='opponent-name'>AI: </span>" + "<span class='error'>WAITING...</span></div>";
-                ;
+
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+                console.log(req.responseText);
             }
             //Displays an invalid placement if there is an error
             else {
@@ -471,6 +458,7 @@ function sendXhr(method, url, data, handler) {
 
             return;
         }
+
         handler(JSON.parse(req.responseText));
     });
     req.open(method, url);
@@ -493,23 +481,29 @@ function place(size, sub) {
             }
             if (vertical) {
                 let tableRow = table.rows[row + i];
-                if(sub == 1 && i == 2){
-                     cell = table.rows[row+i].cells[col+1];
-                     cell.classList.toggle("placed");
-
-                }
 
                 if (tableRow === 0) {
                     break;
                 }
+
                 if (tableRow === undefined) {
                     // ship is over the edge, mark the visible squares with red X's
                     for (let j = (row + i - 1); j >= row; j--) {
-
                         cell = table.rows[j].cells[col];
                         cell.classList.toggle("error-place");
+                        if (sub === 1) {
+                            if (j === 10 && i === 3 && table.rows[j].cells[col + 1] != undefined) {
+                                table.rows[j].cells[col + 1].classList.toggle("error-place");
+                            }
+                        }
                     }
+
                     break;
+                }
+                if(sub == 1 && i == 2 && tableRow.cells[col + 1] != undefined){
+                    cell = tableRow.cells[col+1];
+                    cell.classList.toggle("placed");
+
                 }
                 cell = tableRow.cells[col];
                 // If cell is occupied, then we can't place there either, so mark visible square with red X's
@@ -522,10 +516,18 @@ function place(size, sub) {
                 }
             } else {
 
-                if(sub == 1 && i == 2){
+                if (row === 1) {
+                    for (let j = 0; j < size; j++) {
+                        cell = table.rows[row].cells[j + col];
+                        if (cell != undefined) {
+                            cell.classList.toggle("error-place");
+                        }
+                    }
+                    break;
+                }
+                if(sub == 1 && i == 2 && table.rows[row - 1].cells[col + i] != undefined && row > 1) {
                     cell = table.rows[row-1].cells[col+i];
                     cell.classList.toggle("placed");
-
                 }
                 cell = table.rows[row].cells[col + i];
             }
@@ -535,6 +537,11 @@ function place(size, sub) {
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
+                    if (sub === 1) {
+                        if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
+                            table.rows[row - 1].cells[j].classList.toggle("error-place");
+                        }
+                    }
                 }
                 break;
             } else if (cell.classList.contains('occupied')) {
@@ -656,7 +663,19 @@ function initGame() {
             }, "none");
         }
     });
-
+    document.getElementById("laser-btn").addEventListener("click", (e) => {
+        // laser is true if adding btn-toggle class to the laser button, meaning we want to use the laser, else false
+        let laser = e.target.classList.toggle("btn-toggle");
+        if (laser) {
+            if (isRadar) {
+                document.getElementById("radar-btn").classList.toggle("btn-toggle");
+                isRadar = false;
+            }
+            isLaser = true;
+        } else {
+            isLaser = false;
+        }
+    });
 
     //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function (e) {
