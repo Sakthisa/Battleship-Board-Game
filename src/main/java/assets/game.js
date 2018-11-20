@@ -104,7 +104,7 @@ function markHits(board, elementId, surrenderText) {
                 return;
             }
             //When a surrender occurs, a modal will popup and display the win message
-            else if (result === "SURRENDER") {
+            else if (result == "SURRENDER") {
                 let ship;
                 for (ship of attack.ships) {
                     let square;
@@ -138,7 +138,7 @@ function markHits(board, elementId, surrenderText) {
                 let cell;
                 let i;
                 for (i = 0; i < 5; i++) {
-                    if (table.rows[row - 2 + i] === undefined || table.rows[row - 2 + i].rowIndex === 0) {
+                    if (table.rows[row - 2 + i] == undefined || table.rows[row - 2 + i].rowIndex === 0) {
                         continue;
                     }
                     // start from 2 rows down and make your way up to the top
@@ -177,7 +177,7 @@ function markHits(board, elementId, surrenderText) {
                 }
                 tableRow = table.rows[row];
                 for (i = 0; i < 5; i++) {
-                    if (tableRow.cells[col - 2 + i] === undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
+                    if (tableRow.cells[col - 2 + i] == undefined || tableRow.cells[col - 2 + i].cellIndex === 0) {
                         continue;
                     }
                     // Start 2 cells left of center, and work your way right
@@ -263,7 +263,7 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        if(square.type == "CQ"){
+        if(square.type === "CQ"){
             document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_place");
         }
         document.getElementById("player").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
@@ -271,7 +271,7 @@ function redrawGrid() {
 
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         // for testing
-        if(square.type == "CQ"){
+        if(square.type === "CQ"){
             document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp_cq_place");
         }
         document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
@@ -284,7 +284,7 @@ function redrawGrid() {
 var oldListener;
 
 function registerCellListener(f, board) {
-    if (board !== "none") {
+    if (board != "none") {
         let el = document.getElementById(board);
         for (i = 1; i < 11; i++) {
             for (j = 1; j < 11; j++) {
@@ -333,14 +333,14 @@ function displayVictoryDialogue() {
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function () {
-    if (endGame == 1) {
+    if (endGame === 1) {
         location.reload();
     }
     modal.style.display = "none";
 }
 
 span2.onclick = function () {
-    if (endGame == 1) {
+    if (endGame === 1) {
         location.reload();
     }
     modal.style.display = "none";
@@ -350,9 +350,9 @@ span2.onclick = function () {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
 
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
-        if (endGame == 1) {
+        if (endGame === 1) {
             location.reload();
         }
     }
@@ -469,7 +469,7 @@ function sendXhr(method, url, data, handler) {
     req.send(JSON.stringify(data));
 }
 
-function place(size, sub) {
+function place(size, submerged, submarine) {
     return function () {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
@@ -481,6 +481,16 @@ function place(size, sub) {
                 break;
             }
             if (vertical) {
+                if (col === 10 && submarine == true) {
+                    for (let j = 0; j < size; j++) {
+
+                        if (table.rows[row + j] != undefined) {
+                            cell = table.rows[row + j].cells[col];
+                            cell.classList.toggle("error-place");
+                        }
+                    }
+                    break;
+                }
                 let tableRow = table.rows[row + i];
 
                 if (tableRow === 0) {
@@ -492,7 +502,7 @@ function place(size, sub) {
                     for (let j = (row + i - 1); j >= row; j--) {
                         cell = table.rows[j].cells[col];
                         cell.classList.toggle("error-place");
-                        if (sub === 1) {
+                        if (submarine == true) {
                             if (j === 10 && i === 3 && table.rows[j].cells[col + 1] != undefined) {
                                 table.rows[j].cells[col + 1].classList.toggle("error-place");
                             }
@@ -501,23 +511,26 @@ function place(size, sub) {
 
                     break;
                 }
-                if(sub == 1 && i == 2 && tableRow.cells[col + 1] != undefined){
+                if(submarine == true && i === 2 && tableRow.cells[col + 1] != undefined){
                     cell = tableRow.cells[col+1];
                     cell.classList.toggle("placed");
-
                 }
                 cell = tableRow.cells[col];
                 // If cell is occupied, then we can't place there either, so mark visible square with red X's
-                if (cell.classList.contains('occupied')) {
+                if (cell.classList.contains('occupied') && submerged != true) {
                     for (let j = (row + i - 1); j >= row; j--) {
                         cell = table.rows[j].cells[col];
                         cell.classList.toggle("error-place");
+                        if (submarine == true && i === 2) {
+                            cell = table.rows[j].cells[col + 1];
+                            cell.classList.toggle("error-place");
+                        }
                     }
                     break;
                 }
             } else {
 
-                if (row === 1) {
+                if (row === 1 && submarine == true) {
                     for (let j = 0; j < size; j++) {
                         cell = table.rows[row].cells[j + col];
                         if (cell != undefined) {
@@ -526,7 +539,7 @@ function place(size, sub) {
                     }
                     break;
                 }
-                if(sub == 1 && i == 2 && table.rows[row - 1].cells[col + i] != undefined && row > 1) {
+                if(submarine == true && i === 2 && table.rows[row - 1].cells[col + i] != undefined) {
                     cell = table.rows[row-1].cells[col+i];
                     cell.classList.toggle("placed");
                 }
@@ -538,18 +551,22 @@ function place(size, sub) {
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
-                    if (sub === 1) {
+                    if (submarine == true) {
                         if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
                             table.rows[row - 1].cells[j].classList.toggle("error-place");
                         }
                     }
                 }
                 break;
-            } else if (cell.classList.contains('occupied')) {
+            } else if (cell.classList.contains('occupied') && submerged != true) {
                 // If cell is occupied, then we can't place there either, so mark visible square with red X's
                 for (let j = (col + i - 1); j >= col; j--) {
                     cell = table.rows[row].cells[j];
                     cell.classList.toggle("error-place");
+                    if (submarine == true && j - col === 2) {
+                        cell = table.rows[row - 1].cells[j];
+                        cell.classList.toggle("error-place");
+                    }
                 }
                 break;
             }
@@ -617,7 +634,7 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function (e) {
         shipType = "MINESWEEPER";
         shipSize = 2;
-        registerCellListener(place(2, 0), "player");
+        registerCellListener(place(2, false, false), "player");
         document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
         document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
         document.getElementById("is_submerged").style.display = "none";
@@ -626,7 +643,7 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function (e) {
         shipType = "DESTROYER";
         shipSize = 3;
-        registerCellListener(place(3, 0), "player");
+        registerCellListener(place(3, false, false), "player");
         document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
         document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
         document.getElementById("is_submerged").style.display = "none";
@@ -635,7 +652,7 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function (e) {
         shipType = "BATTLESHIP";
         shipSize = 4;
-        registerCellListener(place(4, 0), "player");
+        registerCellListener(place(4, false, false), "player");
         document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
         document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
         document.getElementById("is_submerged").style.display = "none";
@@ -645,7 +662,7 @@ function initGame() {
     document.getElementById("place_submarine").addEventListener("click", function (e) {
         shipType = "SUBMARINE";
         shipSize = 5;
-        registerCellListener(place(4, 1), "player");
+        registerCellListener(place(4, submerged, true), "player");
         document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
         document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
         document.getElementById("is_submerged").style.display = "block";
