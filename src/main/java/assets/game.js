@@ -68,7 +68,6 @@ function makeGrid(table, isPlayer) {
 
 function markHits(board, elementId, surrenderText) {
     var oldListener;
-    console.log(board);
     board.attacks.forEach((attack) => {
         // Remove the radar class to start so that if a user attacked a spot within the radar, it would appear over the grey square
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
@@ -84,19 +83,21 @@ function markHits(board, elementId, surrenderText) {
             }
             else if (result === "SUNK") {
                 // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
-                var square;
+                let ship;
+                for (ship of attack.ship) {
+                    let square;
+                    for (square of attack.ship.occupiedSquares) {
+                        if (square.type == "CQ") {
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
-                for (square of attack.ship.occupiedSquares) {
-                    if (square.type == "CQ") {
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
-
-                    }
-                    else {
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                        }
+                        else {
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                        }
                     }
                 }
 
@@ -105,17 +106,21 @@ function markHits(board, elementId, surrenderText) {
             }
             //When a surrender occurs, a modal will popup and display the win message
             else if (result === "SURRENDER") {
-                for (square of attack.ship.occupiedSquares) {
-                    if (square.type == "CQ") {
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+                let ship;
+                for (ship of attack.ship) {
+                    let square;
+                    for (square of attack.ship.occupiedSquares) {
+                        if (square.type == "CQ") {
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
-                    }
-                    else {
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                        }
+                        else {
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
+                        }
                     }
                 }
                 if (surrenderText == false) {
@@ -209,18 +214,21 @@ function displayResults(board, elementId) {
 
         let row = result.location.row - 1;
         let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
-
-        if (result.result === "HIT")
-            resultHTML += "hitResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
-        else if (result.result === "MISS")
-            resultHTML += "missResult'>" + result.result + "</span>" + " " + row + col + "</span></div>";
-        else if (result.result === "SUNK") {
-            if (elementId === "opponent")
-                numSunk++;
-            resultHTML += "sunkResult'>" + result.result + "</span>" + " " + result.ship.kind + " CQ" + "</span></div>";
-        }
-        else if (result.result === "RADAR") {
-            resultHTML += "radarResult'>" + result.result + "</span> PLACED</span></div>";
+        
+        let a;
+        for (a of result.result) {
+            if (a === "HIT")
+                resultHTML += "hitResult'>" + a + "</span>" + " " + row + col + "</span></div>";
+            else if (a === "MISS")
+                resultHTML += "missResult'>" + a + "</span>" + " " + row + col + "</span></div>";
+            else if (a === "SUNK") {
+                if (elementId === "opponent")
+                    numSunk++;
+                resultHTML += "sunkResult'>" + a + "</span>" + " " + result.ship.kind + " CQ" + "</span></div>";
+            }
+            else if (a === "RADAR") {
+                resultHTML += "radarResult'>" + a + "</span> PLACED</span></div>";
+            }
         }
 
         // If elementID is opponent then that means we are displaying the attacks that the player did on the opponent's board. Same the other way around
@@ -412,6 +420,7 @@ function cellClick() {
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar, laser: isLaser}, function (data) {
             game = data;
+
             if (isRadar) {
                 radarsUsed++;
                 isRadar = false;
@@ -433,6 +442,7 @@ function cellClick() {
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function (event) {
+        console.log(req.responseText);
         if (req.status != 200) {
             if (url === "/attack") {
                 var row = data.x;
@@ -447,7 +457,7 @@ function sendXhr(method, url, data, handler) {
                 html += " class='opponent-name'>AI: </span>" + "<span class='error'>WAITING...</span></div>";
 
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
-                console.log(req.responseText);
+                document.body.insertAdjacentHTML("afterend", req.response);
             }
             //Displays an invalid placement if there is an error
             else {
@@ -464,7 +474,7 @@ function sendXhr(method, url, data, handler) {
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
     console.log(url);
-    console.log(data);
+    console.log(JSON.stringify(data));
     req.send(JSON.stringify(data));
 }
 

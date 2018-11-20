@@ -18,7 +18,7 @@ public class Result {
 	}
 
 	public void setResult(AtackStatus result) {
-		a.add(result);
+		this.a.add(result);
 	}
 
 	public List<Ship> getShip() {
@@ -26,7 +26,7 @@ public class Result {
 	}
 
 	public void setShip(Ship ship) {
-    	s.add(ship);
+    	this.s.add(ship);
 	}
 
 	public Square getLocation() {
@@ -34,6 +34,6 @@ public class Result {
 	}
 
 	public void setLocation(Square square) {
-		sq = square;
+		this.sq = square;
 	}
 }
