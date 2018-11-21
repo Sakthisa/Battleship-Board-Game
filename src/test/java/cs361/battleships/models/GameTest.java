@@ -158,7 +158,7 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assert (AtackStatus.MISS == board.attack(8, 'B').getResults().get(0));
         assert (AtackStatus.HIT == board.attack(1, 'C').getResults().get(0));
         assert (AtackStatus.SUNK == board.attack(1, 'B').getResults().get(0));
-        assert (AtackStatus.HIT == board.attack(3, 'C').getResults().get(0));
+        assertEquals(AtackStatus.HIT, board.attack(3, 'C').getResults().get(0));
         assert (AtackStatus.SUNK == board.attack(3, 'A').getResults().get(0));
         assert (AtackStatus.RADAR == board.radarAttack(4, 'D').getResults().get(0));
         assert (AtackStatus.RADAR == board.radarAttack(6, 'A').getResults().get(0));

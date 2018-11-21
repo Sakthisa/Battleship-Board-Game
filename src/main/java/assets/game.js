@@ -209,12 +209,13 @@ function displayResults(board, elementId) {
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
         var html = "<div class='result'><span";
-        var resultHTML = "<span class='attack-detail'><span class='";
 
         let row = result.location.row - 1;
         let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
 
         for (let i = 0; i < result.results.length; i++) {
+            let resultHTML = "<span class='attack-detail'><span class='";
+
             if (result.results[i] === "HIT")
                 resultHTML += "hitResult'>" + result.results[i] + "</span>" + " " + row + col + "</span></div>";
             else if (result.results[i] === "MISS")
