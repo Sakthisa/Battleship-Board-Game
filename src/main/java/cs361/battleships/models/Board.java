@@ -95,7 +95,6 @@ public class Board {
 			newShip = new Battleship();
 		}
 		else{
-			System.out.println("IN createSHIP");
 			newShip = new Submarine();
 		}
 		return newShip;
@@ -253,7 +252,6 @@ public class Board {
 
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
-		System.out.println("Didn't find a ship");
 		//If not any other attack result then it is a miss
 		attackStatus = AtackStatus.MISS;
 		result.setResult(attackStatus);
@@ -310,10 +308,8 @@ public class Board {
 		boolean sunk;
 		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
-		System.out.println(shipList);
 		for(Ship occupiedShip : shipList) {
 			if (occupiedShip.getUnderwater() && getShipsSunk() == 0) {
-				System.out.println(occupiedShip.getOccupiedSquares());
 				continue;
 			}
 			// only execute if ship is not sunk
