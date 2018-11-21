@@ -42,15 +42,13 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            if(randBool() == true){
+            if(randBool()){
                 opponentPlacedSuccessfully = opponentsBoard.placeSubShip(ship, randRow(), randCol(), randBool(), true);
             }
             else{
                 opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randBool());
             }
         } while (!opponentPlacedSuccessfully);
-
-
 
         return true;
     }
@@ -90,6 +88,7 @@ public class Game {
         Result opponentAttackResult;
         do {
             // AI does random attacks, so it might attack the same spot twice
+
             // let it try until it gets it right
             if(randBool()) {
                 opponentAttackResult = playersBoard.attack(randRow(), randCol());
@@ -98,7 +97,6 @@ public class Game {
                 opponentAttackResult = playersBoard.radarAttack(randRow(), randCol());
             }
         } while(!isValid(opponentAttackResult));
-        System.out.println("OUT OF OPPONENT");
     }
 
     // This will be a random character from A-J to indicate a column
@@ -124,7 +122,7 @@ public class Game {
 
     private boolean isValid(Result r) {
         for (AtackStatus a : r.getResults()) {
-            if (a == INVALID) {
+            if (a == AtackStatus.INVALID) {
                 return false;
             }
         }

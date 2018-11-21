@@ -285,7 +285,7 @@ public class Board {
 		attackStatus = AtackStatus.RADAR;
 		result.setResult(attackStatus);
 		attackResult.add(result);
-		this.nRadars++;
+		setnRadars();
 		return result;
 	}
 
@@ -297,7 +297,7 @@ public class Board {
 	}
 	
 	private boolean checkTooManyRadars(Result result) {
-		if (nRadars >= 2) {
+		if (getnRadars() >= 2) {
 			result.setResult(AtackStatus.INVALID);
 			return true;
 		}
@@ -311,14 +311,14 @@ public class Board {
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
 		for(Ship occupiedShip : shipList){
 			// only execute if ship is not sunk
-			if (occupiedShip.getUnderwater() && shipsSunk == 0) {
+			if (occupiedShip.getUnderwater() && getShipsSunk() == 0) {
 				continue;
 			}
 			if (!occupiedShip.getSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
 						AttackOccupied(result, occupiedShip, occupied);
-						if (shipsSunk == 0) {
+						if (getShipsSunk() == 0) {
 							attackResult.add(result);
 							return true;
 						}
@@ -330,7 +330,7 @@ public class Board {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (SunkResult(x, y, result, occupiedShip, occupied)) {
 
-						if (shipsSunk == 0) {
+						if (getShipsSunk() == 0) {
 							attackResult.add(result);
 							return true;
 						}
@@ -402,6 +402,8 @@ public class Board {
 	private void setShipsSunk() {
 		this.shipsSunk++;
 	}
+	private void setnRadars() {this.nRadars++; }
+	public int getnRadars() { return nRadars; }
 	public int getShipsSunk() {
 		return shipsSunk;
 	}
