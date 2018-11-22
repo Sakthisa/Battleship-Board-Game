@@ -66,8 +66,6 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
-    console.log(board.attacks);
-    var oldListener;
     board.attacks.forEach((attack) => {
         // Remove the radar class to start so that if a user attacked a spot within the radar, it would appear over the grey square
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
@@ -80,6 +78,8 @@ function markHits(board, elementId, surrenderText) {
             }
             else if (result === "HIT" && !document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
                 document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("hit");
+                document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+
             }
             else if (result === "SUNK") {
                 // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
