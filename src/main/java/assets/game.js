@@ -66,68 +66,63 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    console.log(board.attacks);
     var oldListener;
     board.attacks.forEach((attack) => {
         // Remove the radar class to start so that if a user attacked a spot within the radar, it would appear over the grey square
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("radar-square");
         document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
         let result;
+        let i = 0;
         for (result of attack.results) {
-            let className;
             if (result === "MISS") {
-                className = "miss";
+                document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("miss");
             }
             else if (result === "HIT" && !document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.contains("sink")) {
-                className = "hit";
+                document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("hit");
             }
             else if (result === "SUNK") {
                 // We need to mark the ship as sunk with the appropriate images. Let CSS handle that after we give add a class to it
-                let ship;
-                for (ship of attack.ships) {
-                    let square;
-                    for (square of ship.occupiedSquares) {
-                        if (square.type == "CQ") {
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+                let ship = attack.ships[i];
+                let square;
+                for (square of ship.occupiedSquares) {
+                    if (ship.kind === "SUBMARINE") {
+                        console.log(ship.occupiedSquares);
+                    }
+                    if (square.type == "CQ") {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
-                        }
-                        else {
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
-                        }
+                    }
+                    else {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                     }
                 }
-
-
-                return;
             }
             //When a surrender occurs, a modal will popup and display the win message
-            else if (result == "SURRENDER") {
-                let ship;
-                for (ship of attack.ships) {
-                    let square;
-                    for (square of ship.occupiedSquares) {
-                        if (square.type == "CQ") {
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
+            else if (result === "SURRENDER") {
+                let ship = attack.ships[i];
+                let square;
+                for (square of ship.occupiedSquares) {
+                    if (square.type == "CQ") {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
-                        }
-                        else {
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
-                            document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
-                        }
+                    }
+                    else {
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sink");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("found");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                     }
                 }
                 if (surrenderText == false) {
                     document.getElementsByClassName("win-message")[0].innerHTML = "Opponent won the game! You can now view your results or exit the modal to restart and play a new one.";
                 }
                 displayVictoryDialogue();
-
-                return;
             }
             // If there is a radar used there, then make it show.
             else if (result === "RADAR") {
@@ -194,10 +189,10 @@ function markHits(board, elementId, surrenderText) {
                     }
 
                 }
-                return;
             }
-            document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+            i++;
         }
+
 
     });
     displayResults(board, elementId);
@@ -208,13 +203,12 @@ function displayResults(board, elementId) {
     // COLOR-CODE DIFFERENT ATTACK RESULTS
     if (board.attacks.length > 0) {
         var result = board.attacks[board.attacks.length - 1];
-        var html = "<div class='result'><span";
-
         let row = result.location.row - 1;
         let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
 
         for (let i = 0; i < result.results.length; i++) {
             let resultHTML = "<span class='attack-detail'><span class='";
+            let html = "<div class='result'><span";
 
             if (result.results[i] === "HIT")
                 resultHTML += "hitResult'>" + result.results[i] + "</span>" + " " + row + col + "</span></div>";
