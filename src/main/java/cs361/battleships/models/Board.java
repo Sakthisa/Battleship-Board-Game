@@ -140,6 +140,9 @@ public class Board {
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
 					squares.add(new Square(x+i, (char)(y + 1)));
 					squares.add(new Square(x + i, (char)(y)));
+                    if(isSubmerged == false){
+                        BoardoccupiedSquares.add(new Square(x + i, (char)(y + 1)));
+                    }
 				}
 				if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
 				}
@@ -167,6 +170,9 @@ public class Board {
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
 					squares.add(new Square(x-1, (char)(y + i)));
 					squares.add(new Square(x, (char)(y + i)));
+                    if(isSubmerged == false){
+                        BoardoccupiedSquares.add(new Square(x-1 , (char)(y + i)));
+                    }
 				}
 				else if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
 				}
