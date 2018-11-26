@@ -422,7 +422,7 @@ th {
     overflow: auto;
 }
 
-#radar-btn {
+#radar-btn, #laser-btn {
     visibility: hidden;
 }
 
