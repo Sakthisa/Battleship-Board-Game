@@ -404,6 +404,12 @@ function cellClick() {
             }, function (data) {
                 game = data;
                 redrawGrid();
+
+                let tempShipType = shipType.toLowerCase();
+                document.getElementById("place_" + tempShipType).style.display = "none";
+                document.getElementById("is_submerged").style.display = "none";
+
+
                 placedShips++;
                 if (placedShips === 4) {
                     isSetup = false;
@@ -706,7 +712,6 @@ function initGame() {
     document.getElementById("place_submarine").addEventListener("click", function (e) {
         shipType = "SUBMARINE";
         shipSize = 5;
-        console.log(submerged);
         registerCellListener(place(4, true), "player");
         document.getElementsByClassName("buttonHolder")[0].children.item(5).setAttribute("id", "is_submerged")
         document.getElementsByClassName("buttonHolder")[0].children.item(5).innerHTML = "Submerged";
@@ -746,14 +751,11 @@ function initGame() {
      document.getElementById("is_submerged").addEventListener("click", function (e) {
             if (submerged == true) {
                 submerged = false;
-                document.getElementById("is_surface").innerHTML = "Submerged";
-                document.getElementById("is_surface").setAttribute("id", "is_submerged");
+                document.getElementById("is_submerged").innerHTML = "Submerged";
             }
             else {
                 submerged = true;
                 document.getElementById("is_submerged").innerHTML = "Surface";
-                document.getElementById("is_submerged").setAttribute("id", "is_surface");
-
             }
       });
 
