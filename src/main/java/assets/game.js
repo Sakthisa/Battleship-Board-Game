@@ -9,6 +9,7 @@ var count = 0;
 var vertical = false;
 var isRadar = false;
 var numSunk = 0;
+var numSunkOpp = 0;
 var radarsUsed = 0;
 
 function containsCQ(board, row, col) {
@@ -198,6 +199,7 @@ function markHits(board, elementId, surrenderText) {
 
 
     });
+
     displayResults(board, elementId);
 }
 
@@ -205,9 +207,11 @@ function displayResults(board, elementId) {
     // DISPLAY THE ATTACK RESULT IN THE RESULTS CONTAINER.
     // COLOR-CODE DIFFERENT ATTACK RESULTS
     if (board.attacks.length > 0) {
-        var result = board.attacks[board.attacks.length - 1];
+        let result = board.attacks[board.attacks.length - 1];
         let row = result.location.row - 1;
         let col = String.fromCharCode(result.location.column.charCodeAt(0) - 1);
+        let newLaser = false;
+        let newLaserOpp = false;
 
         for (let i = 0; i < result.results.length; i++) {
             let resultHTML = "<span class='attack-detail'><span class='";
@@ -218,8 +222,11 @@ function displayResults(board, elementId) {
             else if (result.results[i] === "MISS")
                 resultHTML += "missResult'>" + result.results[i] + "</span>" + " " + row + col + "</span></div>";
             else if (result.results[i] === "SUNK") {
-                if (elementId === "opponent")
+                if (elementId === "opponent") {
                     numSunk++;
+                } else {
+                    numSunkOpp++;
+                }
                 resultHTML += "sunkResult'>" + result.results[i] + "</span>" + " " + result.ships[i].kind + " CQ" + "</span></div>";
             }
             else if (result.results[i] === "RADAR") {
@@ -240,6 +247,8 @@ function displayResults(board, elementId) {
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
             }
         }
+
+
 
     }
 
@@ -281,8 +290,26 @@ function redrawGrid() {
         }
     }));
 
+    let numSunkBefore = numSunk;
+    let numSunkOppBefore = numSunkOpp;
+
     markHits(game.opponentsBoard, "opponent", true);
     markHits(game.playersBoard, "player", false);
+
+    let resultHTML = "<span class='attack-detail'><span class='laser-detail'>SPACE LASER ENGAGED</span></span></div>";
+    let html = "<div class='result'><span";
+    console.log("in here");
+    if (numSunkBefore === 0 && numSunk === 1 && numSunkOppBefore === numSunkOpp) {
+        html += " class='player-name'>PLAYER: </span>" + resultHTML;
+        document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+        html = "<div class='result'><span class='opponent-name'>AI:</span><span>. . .</span></div>";
+        document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+    } else if (numSunkBefore === numSunk && numSunkOppBefore === 0 && numSunkOpp === 1) {
+        html += " class='opponent-name'>AI: </span>" + resultHTML;
+        document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
+        html = "<div class='result'><span class='player-name'>PLAYER:</span><span>. . .</span></div>";
+        document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
+    }
 }
 
 var oldListener;
