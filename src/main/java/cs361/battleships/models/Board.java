@@ -1,5 +1,7 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.sound.midi.SysexMessage;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Board {
 	private int xDimension;
 	private int yDimension;
 	private	int shipsSunk;
+	private int nRadars;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -20,6 +23,7 @@ public class Board {
 		this.shipList = new ArrayList<Ship>();
 		this.attackResult = new ArrayList<Result>();
 		this.shipsSunk = 0;
+		this.nRadars = 0;
 		//In future these should be taken as args to the board constructor
 		setYDimension(10);
 		setXDimension(10);
@@ -44,7 +48,6 @@ public class Board {
 		List<Square> squares = new ArrayList<Square>();
 
 		if(!squareIsValid(new Square(x, y))){
-			System.out.println("FALSE5");
 			return false;
 		}
 
@@ -70,15 +73,15 @@ public class Board {
 		newShip = CreateShip(ship);
 		List<Square> squares = new ArrayList<Square>();
 
-		newShip.setUnderwater();
+		if (isSubmerged)
+			newShip.setUnderwater();
 
 		if(!squareIsValid(new Square(x, y))){
-			System.out.println("FALSE6");
 			return false;
 		}
 
 		//Sets new ship if it is able to be placed
-		return setNewShip(x, y, isVertical, shipSize, newShip, squares, true);
+		return setNewShip(x, y, isVertical, shipSize, newShip, squares, isSubmerged);
 
 	}
 
@@ -121,28 +124,32 @@ public class Board {
 				return true;
 			}
 		}
-		System.out.println("FALSE7");
 		return false;
 	}
 
 	private void placeShipVertical(int x, char y, boolean isVertical, int shipSize, Ship newShip, List<Square> squares, boolean isSubmerged) {
 		for (int i = 0; i < shipSize; i++) {
 			// place the CQ in a single square, here choose second square placed
-			if(newShip.getShipSize() - i == 2) {
+			if((newShip.getShipSize() - i == 2 && !newShip.getKind().equals("SUBMARINE")) || (newShip.getKind().equals("SUBMARINE") && i == 3)) {
 				squares.add(new CaptainQuarter(x + i, y));
-				if(isSubmerged == false){
+				if(isSubmerged == false) {
 					BoardoccupiedSquares.add(new CaptainQuarter(x + i, y));
 				}
 			}
 			else{
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
 					squares.add(new Square(x+i, (char)(y + 1)));
+					squares.add(new Square(x + i, (char)(y)));
+                    if(isSubmerged == false){
+                        BoardoccupiedSquares.add(new Square(x + i, (char)(y + 1)));
+                    }
 				}
 				if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
 				}
 				else{
 					squares.add(new Square(x + i, y));
 				}
+
 				if(isSubmerged == false){
 					BoardoccupiedSquares.add(new Square(x + i, y));
 				}
@@ -153,7 +160,7 @@ public class Board {
 	private void placeShipHorizontal(int x, char y, int shipSize, Ship newShip, List<Square> squares, boolean isSubmerged) {
 		for (int i = 0; i < shipSize; i++) {
 			// place the CQ in a single square, here choose second square placed
-			if(newShip.getShipSize() - i == 2) { // think about using rand to place the ship
+			if((newShip.getShipSize() - i == 2 && !newShip.getKind().equals("SUBMARINE")) || (i == 3 && newShip.getKind().equals("SUBMARINE"))) { // think about using rand to place the ship
 				squares.add(new CaptainQuarter(x, (char) (y + i)));
 				if(isSubmerged == false){
 					BoardoccupiedSquares.add(new CaptainQuarter(x, (char) (y + i))); // consider not using new a second time
@@ -162,8 +169,12 @@ public class Board {
 			else{ // normal square
 				if(newShip.getKind().equals("SUBMARINE") && i == 2){
 					squares.add(new Square(x-1, (char)(y + i)));
+					squares.add(new Square(x, (char)(y + i)));
+                    if(isSubmerged == false){
+                        BoardoccupiedSquares.add(new Square(x-1 , (char)(y + i)));
+                    }
 				}
-				if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
+				else if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
 				}
 				else{
 					squares.add(new Square(x, (char)(y + i)));
@@ -184,11 +195,9 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if(newShip.getKind().equals("SUBMARINE") && i == 2 && occupied.getRow() == x-1 && occupied.getColumn() == (char)(y + i)){
-						System.out.println("FALSE8");
 						return true;
 					}
 					if (occupied.getRow() == x && occupied.getColumn() == (char)(y + i)) {
-						System.out.println("FALSE9");
 						return true;
 					}
 				}
@@ -198,7 +207,6 @@ public class Board {
 			for(int i = 0; i < shipSize; i++) {
 				for (Square occupied : BoardoccupiedSquares) {
 					if(newShip.getKind().equals("SUBMARINE") && i == 2 && occupied.getRow() == x+i && occupied.getColumn() == (char)(y + 1)){
-						System.out.println("FALSE10");
 						return true;
 					}
 					if (occupied.getRow() == x + i && occupied.getColumn() == y) {
@@ -250,7 +258,6 @@ public class Board {
 
 		//Check for HIT, SUNK, SURRENDER
 		if (checkKnownValidAttack(x, y, result)) return result;
-
 		//If not any other attack result then it is a miss
 		attackStatus = AtackStatus.MISS;
 		result.setResult(attackStatus);
@@ -282,28 +289,19 @@ public class Board {
 		attackStatus = AtackStatus.RADAR;
 		result.setResult(attackStatus);
 		attackResult.add(result);
+		setnRadars();
 		return result;
 	}
 
 	private boolean shipHasBeenSunk(Result result) {
-		for (Result res : attackResult) {
-			if (res.getResult() == AtackStatus.SUNK) {
-				return true;
-			}
-		}
+		if (getShipsSunk() > 0) return true;
+
 		result.setResult(AtackStatus.INVALID);
 		return false;
 	}
 	
 	private boolean checkTooManyRadars(Result result) {
-		AtackStatus attackStatus;
-		int nRadars = 0;
-
-		for (Result res : attackResult) {
-			if (res.getResult() == AtackStatus.RADAR) nRadars++;
-		}
-
-		if (nRadars >= 2) {
+		if (getnRadars() >= 2) {
 			result.setResult(AtackStatus.INVALID);
 			return true;
 		}
@@ -312,33 +310,47 @@ public class Board {
 
 	// This method is a behemoth because of all of the checks, these could be factored into class methods from other classes
 	private boolean checkKnownValidAttack(int x, char y, Result result) {
-		AtackStatus attackStatus;
+		boolean success = false;
+		boolean sunk;
 		//For every ship check its occupied squares, if there is a occupied square delete it and check if the occupied square list is empty. If it is empty remove the ship and check if the ship
 		//list is empty. If the ship list is empty send an attack status of SURRENDER, if the ship list is not empty send an attack status of SUNK. Else it is just a normal hit.
-		for(Ship occupiedShip : shipList){
+		for(Ship occupiedShip : shipList) {
+			if (occupiedShip.getUnderwater() && getShipsSunk() == 0) {
+				continue;
+			}
 			// only execute if ship is not sunk
+
 			if (!occupiedShip.getSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
-						return AttackOccupied(result, occupiedShip, occupied);
-
+						sunk = AttackOccupied(result, occupiedShip, occupied);
+						if (getShipsSunk() == 0 || (getShipsSunk() == 1 && sunk)) {
+							attackResult.add(result);
+							return true;
+						}
+						success = true;
+						break;
 					}
 				}
 			} else {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
-					if (SunkResult(x, y, result, occupiedShip, occupied)) return true;
+					if (SunkResult(x, y, result, occupiedShip, occupied)) {
+						success = true;
+						break;
+					}
 				}
-
 			}
 		}
-		return false;
+		if (success) {
+			attackResult.add(result);
+		}
+		return success;
 	}
 
 	private boolean SunkResult(int x, char y, Result result, Ship occupiedShip, Square occupied) {
 		if (x == occupied.getRow() && y == occupied.getColumn()) {
 			result.setShip(occupiedShip);
 			result.setResult(AtackStatus.SUNK);
-			attackResult.add(result);
 			return true;
 		}
 		return false;
@@ -346,21 +358,22 @@ public class Board {
 
 	private boolean AttackOccupied(Result result, Ship occupiedShip, Square occupied) {
 		AtackStatus attackStatus;
+		boolean sunk;
 		ResultShipSet(result, occupiedShip, occupied);
 
 		occupied.setTimesHit();
 		attackStatus = AtackStatus.HIT;
-		if(isCqSink(occupied)){
+		sunk = isCqSink(occupied);
+		if(sunk) {
 			attackStatus = CqOccupiedAttack(occupiedShip);
 		}
-		 else{
+		else{
 			if(occupied.getType().equals("CQ") && occupied.getTimesHit() == 1){
 				attackStatus = AtackStatus.MISS;
 			}
 		}
 		result.setResult(attackStatus);
-		attackResult.add(result);
-		return true;
+		return sunk;
 	}
 
 	private AtackStatus CqOccupiedAttack(Ship occupiedShip) {
@@ -368,7 +381,7 @@ public class Board {
 		occupiedShip.setSunk(true);
 		setShipsSunk();
 		attackStatus = AtackStatus.SUNK;
-		if(this.shipsSunk == 4){
+		if(getShipsSunk() == 4){
 			attackStatus = AtackStatus.SURRENDER;
 		}
 		return attackStatus;
@@ -392,6 +405,8 @@ public class Board {
 	private void setShipsSunk() {
 		this.shipsSunk++;
 	}
+	private void setnRadars() {this.nRadars++; }
+	public int getnRadars() { return nRadars; }
 	public int getShipsSunk() {
 		return shipsSunk;
 	}
@@ -399,7 +414,7 @@ public class Board {
 	private boolean checkAttackRedundant(int x, char y, Result result) {
 		//Checks if a square has already been attacked
 		AtackStatus attackStatus;
-		for(Result validSpot: attackResult){
+		for(Result validSpot : attackResult) {
 			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
 				attackStatus = AtackStatus.INVALID;
 				result.setResult(attackStatus);
