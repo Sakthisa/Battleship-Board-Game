@@ -26,6 +26,7 @@ public class Square {
 	public void setMaxHits(int maxHits){
 		this.maxHits = maxHits;
 	}
+
 	public void setTimesHit(){
 		this.timesHit++;
 	}

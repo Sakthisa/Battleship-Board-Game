@@ -52,7 +52,10 @@ public class ApplicationController {
         Game game = g.getGame();
         boolean result;
 
-        if(g.isRadar()){
+        if(g.isFleet()){
+            result = game.moveShips(g.getFleet());
+        }
+        else if(g.isRadar()){
             result = game.radarAttack(g.getActionRow(), g.getActionColumn());
         }
         else{

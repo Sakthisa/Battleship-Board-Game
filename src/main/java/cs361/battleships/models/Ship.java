@@ -41,6 +41,65 @@ public class Ship {
 		}
 	}
 
+
+	// each move function will move the ship within a game board if it can be moved independently.
+	public boolean moveUp(int row, char col){
+		for(Square square : occupiedSquares){
+			if(square.getRow() <= 0){
+				return false;
+			}
+		}
+		for(Square square : occupiedSquares) {
+			square.setRow(square.getRow() - 1);
+		}
+		return true;
+	}
+
+	public boolean moveDown(int row, char col){
+		for(Square square : occupiedSquares){
+			if(square.getRow() >= row){
+				return false;
+			}
+		}
+		for(Square square : occupiedSquares) {
+			square.setRow(square.getRow() + 1);
+		}
+		return true;
+	}
+
+	public boolean moveLeft(int row, char col){
+		for(Square square : occupiedSquares){
+			if(square.getColumn() <= 'A'){
+				return false;
+			}
+		}
+		for(Square square : occupiedSquares) {
+			square.setColumn((char)(square.getColumn() - 1));
+		}
+		return true;
+	}
+
+	public boolean moveRight(int row, char col){
+		for(Square square : occupiedSquares){
+			if(square.getColumn() >= col){
+				return false;
+			}
+		}
+		for(Square square : occupiedSquares) {
+			square.setColumn((char)(square.getColumn() + 1));
+		}
+		return true;
+	}
+
+	public boolean containsSquare(int row, char col){
+		for(Square square : occupiedSquares){
+			if(square.getRow() == row && square.getColumn() == col){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}

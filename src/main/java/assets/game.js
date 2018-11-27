@@ -1,3 +1,5 @@
+
+
 var isSetup = true;
 var placedShips = 0;
 var game;
@@ -8,6 +10,7 @@ var count = 0;
 var vertical = false;
 var isRadar = false;
 var isFleet = false;
+var fleetType = "";
 var numSunk = 0;
 var numSunkOpp = 0;
 var radarsUsed = 0;
@@ -457,7 +460,7 @@ function cellClick() {
             });
 
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar, fleet: fleetType}, function (data) {
             game = data;
             if (isRadar) {
                 radarsUsed++;
@@ -466,6 +469,7 @@ function cellClick() {
             }
             if (isFleet) {
                 isFleet = false;
+                fleetType = "";
                 document.getElementById("move-fleet").classList.toggle("btn-toggle");
             }
             if (radarsUsed === 2) {
@@ -832,7 +836,8 @@ function initGame() {
         // wst is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let wst = e.target.classList.toggle("btn-toggle");
         if (wst) {
-            // implement west direction logic here
+            // implement west direction logic
+            fleetType = "west";
             fleetsUsed++;
             document.getElementById("move-fleet").style.display = "block";
             document.getElementById("north").style.display = "none";

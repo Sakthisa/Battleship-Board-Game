@@ -174,7 +174,7 @@ public class Board {
                         BoardoccupiedSquares.add(new Square(x-1 , (char)(y + i)));
                     }
 				}
-				else if(newShip.getKind().equals("SUBMARINE") && (i == 4)){
+				else if(newShip.getKind().equals("SUBMARINE") && (i == 4)){ //TODO: What is this?
 				}
 				else{
 					squares.add(new Square(x, (char)(y + i)));
@@ -414,8 +414,8 @@ public class Board {
 	private boolean checkAttackRedundant(int x, char y, Result result) {
 		//Checks if a square has already been attacked
 		AtackStatus attackStatus;
-		for(Result validSpot : attackResult) {
-			if(validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y){
+		for (Result validSpot : attackResult) {
+			if (validSpot.getLocation().getRow() == x && validSpot.getLocation().getColumn() == y) {
 				attackStatus = AtackStatus.INVALID;
 				result.setResult(attackStatus);
 				attackResult.add(result);
@@ -461,6 +461,94 @@ public class Board {
 		for (Result item : attacks) {
 			attackResult.add(item);
 		}
+	}
+
+	public void moveShipsWest(){
+		boolean[][] squares = new boolean[xDimension][yDimension];
+		int [] xdir = new int[xDimension];
+		int [] ydir = new int[yDimension];
+		int j = 0;
+		int k = 0;
+		// iterate through the
+		for(int x : xdir){
+			for(int y : ydir){
+				if(squares[j][k]){continue;}
+				if(j == 0){break;} // leave the inner for loop
+				if(squareExists((char) (j+'A'), k) && !squares[j][k]){
+					if(squareExists((char) (j - 1 + 'A'), k) && !squares[j][k]){continue;}
+					Square translate = getOccupiedSquare((char) (j+'A'), k);
+					translate.setColumn((char)(translate.getColumn() - 1));
+					squares[j][k] = true;
+				}
+
+				k++;
+			}
+			k = 0;
+			j++;
+		}
+		j = 0;
+		k = 0;
+		for(boolean [] row : squares){
+			for(boolean idx : row){
+				if(!idx){
+					k++;
+					continue;
+				}
+				boolean removed = false;
+				for(Result result : attackResult){
+					if(result.getLocation().getColumn() == (char)(k+'A') && result.getLocation().getRow() == j){
+						attackResult.remove(result);
+						removed = true;
+					}
+					if(removed){
+						attack(j, (char)(k - 1));
+					}
+				}
+				k++;
+			}
+			k = 0;
+			j++;
+		}
+		j = 0;
+		k = 0;
+
+		for(boolean [] row : squares){
+			for(boolean idx : row){
+				if(!idx){
+					k++;
+					continue;
+				}
+				for(Ship ship : shipList){
+					if(ship.containsSquare(j, (char) (k+'A'))){
+						for(Square square : ship.getOccupiedSquares()){
+							squares[square.getRow()][square.getColumn() - 'A'] = false;
+						}
+						ship.moveLeft( xDimension, (char)('A'+yDimension));
+					}
+				}
+				k++;
+			}
+			k = 0;
+			j++;
+		}
+	}
+
+	private boolean squareExists(char x, int y){
+		for(Square square : BoardoccupiedSquares){
+			if(square.getRow() == y && square.getColumn() == x){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private Square getOccupiedSquare(char x, int y){
+		for(Square square : BoardoccupiedSquares){
+			if(square.getColumn() == x && square.getRow() == y){
+				return square;
+			}
+		}
+		return null;
 	}
 
 	//Sets the number of board squares in the x direction
