@@ -747,7 +747,7 @@ function initGame() {
     });
 
     document.getElementById("move-fleet").addEventListener("click", (e) => {
-        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        // flt is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let flt = e.target.classList.toggle("btn-toggle");
         if (flt) {
             isFleet = true;
@@ -764,7 +764,7 @@ function initGame() {
     });
 
     document.getElementById("north").addEventListener("click", (e) => {
-        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        // nth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let nth = e.target.classList.toggle("btn-toggle");
         if (nth) {
             // implement north direction logic here
@@ -785,7 +785,7 @@ function initGame() {
     });
 
     document.getElementById("east").addEventListener("click", (e) => {
-        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        // est is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let est = e.target.classList.toggle("btn-toggle");
         if (est) {
             // implement east direction logic here
@@ -806,7 +806,7 @@ function initGame() {
     });
 
     document.getElementById("south").addEventListener("click", (e) => {
-        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        // sth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let sth = e.target.classList.toggle("btn-toggle");
         if (sth) {
             // implement south direction logic here
@@ -827,7 +827,7 @@ function initGame() {
     });
 
     document.getElementById("west").addEventListener("click", (e) => {
-        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        // wst is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
         let wst = e.target.classList.toggle("btn-toggle");
         if (wst) {
             // implement west direction logic here
