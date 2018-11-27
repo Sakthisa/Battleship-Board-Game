@@ -52,16 +52,27 @@ public class ApplicationController {
         Game game = g.getGame();
         boolean result;
 
-        if(g.isFleet()){
-            result = game.moveShips(g.getFleet());
-        }
-        else if(g.isRadar()){
+        if(g.isRadar()){
             result = game.radarAttack(g.getActionRow(), g.getActionColumn());
         }
         else{
             result = game.attack(g.getActionRow(), g.getActionColumn());
         }
 
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest().html();
+        }
+    }
+
+    public Result move(Context context, AttackGameAction g){
+        Game game = g.getGame();
+        boolean result = false;
+
+        if(g.isFleet()){
+            result = game.moveShips(g.getFleet());
+        }
         if (result) {
             return Results.json().render(game);
         } else {

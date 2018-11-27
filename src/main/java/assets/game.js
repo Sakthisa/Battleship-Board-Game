@@ -460,17 +460,12 @@ function cellClick() {
             });
 
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar, fleet: fleetType}, function (data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
             game = data;
             if (isRadar) {
                 radarsUsed++;
                 isRadar = false;
                 document.getElementById("radar-btn").classList.toggle("btn-toggle");
-            }
-            if (isFleet) {
-                isFleet = false;
-                fleetType = "";
-                document.getElementById("move-fleet").classList.toggle("btn-toggle");
             }
             if (radarsUsed === 2) {
                 document.getElementById("radar-btn").style.display = "none";
@@ -502,6 +497,7 @@ function sendXhr(method, url, data, handler) {
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
                 document.body.insertAdjacentHTML("afterend", req.response);
             }
+            else if(url === "/move"){}
             //Displays an invalid placement if there is an error
             else {
                 var html = "<div class='result'><span";
@@ -844,6 +840,15 @@ function initGame() {
             document.getElementById("east").style.display = "none";
             document.getElementById("south").style.display = "none";
             document.getElementById("west").style.display = "none";
+
+            sendXhr("POST", "/move", {game: game, fleet: "west"}, function (data) {
+                game = data;
+                if (fleetsUsed === 2) {
+                    document.getElementById("move-fleet").style.display = "none";
+                }
+                redrawGrid();
+            })
+            isFleet = false;
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }

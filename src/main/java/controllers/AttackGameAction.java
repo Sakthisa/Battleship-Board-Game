@@ -33,6 +33,6 @@ public class AttackGameAction {
     public boolean isRadar() { return radar; }
 
     public boolean isFleet(){
-        return(!fleet.equals(""));
+        return(!fleet.isEmpty());
     }
 }
