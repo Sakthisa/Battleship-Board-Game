@@ -433,6 +433,7 @@ function cellClick() {
                     document.getElementById("place_submarine").style.display = "none";
                     document.getElementById("place_minesweeper").style.display = "none";
                     document.getElementById("restart").style.visibility = "visible";
+                    document.getElementById("move-fleet").style.display = "block"
                     document.getElementById("restart").addEventListener("click", function (e) {
                         location.reload();
                     });
@@ -690,6 +691,7 @@ function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
     document.getElementById("is_submerged").style.display = "none";
+    document.getElementById("move-fleet").style.display = "none";
     document.getElementById("north").style.display = "none";
     document.getElementById("east").style.display = "none";
     document.getElementById("south").style.display = "none";
