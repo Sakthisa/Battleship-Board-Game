@@ -3,14 +3,15 @@ var placedShips = 0;
 var game;
 var shipType;
 var shipSize = 1;
-var vertical;
 var submerged = false;
 var count = 0;
 var vertical = false;
 var isRadar = false;
+var isFleet = false;
 var numSunk = 0;
 var numSunkOpp = 0;
 var radarsUsed = 0;
+var fleetsUsed = 0;
 
 function containsCQ(board, row, col) {
 
@@ -241,6 +242,9 @@ function displayResults(board, elementId) {
                 if (numSunk === 1) {
                     document.getElementById("radar-btn").style.visibility = "visible";
                 }
+                else if(numSunk === 2) {
+                    document.getElementById("move-fleet").style.visibility = "visible";
+                }
 
             } else if (elementId === "player") {
                 html += " class='opponent-name'>AI: </span>" + resultHTML;
@@ -459,10 +463,16 @@ function cellClick() {
                 isRadar = false;
                 document.getElementById("radar-btn").classList.toggle("btn-toggle");
             }
+            if (isFleet) {
+                isFleet = false;
+                document.getElementById("move-fleet").classList.toggle("btn-toggle");
+            }
             if (radarsUsed === 2) {
                 document.getElementById("radar-btn").style.display = "none";
             }
-
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
             redrawGrid();
         })
     }
@@ -680,6 +690,10 @@ function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
     document.getElementById("is_submerged").style.display = "none";
+    document.getElementById("north").style.display = "none";
+    document.getElementById("east").style.display = "none";
+    document.getElementById("south").style.display = "none";
+    document.getElementById("west").style.display = "none";
 
     document.getElementById("place_minesweeper").addEventListener("click", function (e) {
         shipType = "MINESWEEPER";
@@ -731,6 +745,108 @@ function initGame() {
             }, "none");
         }
     });
+
+    document.getElementById("move-fleet").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let flt = e.target.classList.toggle("btn-toggle");
+        if (flt) {
+            isFleet = true;
+            document.getElementById("move-fleet").style.display = "none";
+            document.getElementById("north").style.display = "block";
+            document.getElementById("east").style.display = "block";
+            document.getElementById("south").style.display = "block";
+            document.getElementById("west").style.display = "block";
+        } else {
+            isFleet = false;
+            registerCellListener((e) => {
+            }, "none");
+        }
+    });
+
+    document.getElementById("north").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let nth = e.target.classList.toggle("btn-toggle");
+        if (nth) {
+            // implement north direction logic here
+            fleetsUsed++;
+            document.getElementById("move-fleet").style.display = "block";
+            document.getElementById("north").style.display = "none";
+            document.getElementById("east").style.display = "none";
+            document.getElementById("south").style.display = "none";
+            document.getElementById("west").style.display = "none";
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
+        } else {
+            isFleet = false;
+            registerCellListener((e) => {
+            }, "none");
+        }
+    });
+
+    document.getElementById("east").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let est = e.target.classList.toggle("btn-toggle");
+        if (est) {
+            // implement east direction logic here
+            fleetsUsed++;
+            document.getElementById("move-fleet").style.display = "block";
+            document.getElementById("north").style.display = "none";
+            document.getElementById("east").style.display = "none";
+            document.getElementById("south").style.display = "none";
+            document.getElementById("west").style.display = "none";
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
+        } else {
+            isFleet = false;
+            registerCellListener((e) => {
+            }, "none");
+        }
+    });
+
+    document.getElementById("south").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let sth = e.target.classList.toggle("btn-toggle");
+        if (sth) {
+            // implement south direction logic here
+            fleetsUsed++;
+            document.getElementById("move-fleet").style.display = "block";
+            document.getElementById("north").style.display = "none";
+            document.getElementById("east").style.display = "none";
+            document.getElementById("south").style.display = "none";
+            document.getElementById("west").style.display = "none";
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
+        } else {
+            isFleet = false;
+            registerCellListener((e) => {
+            }, "none");
+        }
+    });
+
+    document.getElementById("west").addEventListener("click", (e) => {
+        // rad is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
+        let wst = e.target.classList.toggle("btn-toggle");
+        if (wst) {
+            // implement west direction logic here
+            fleetsUsed++;
+            document.getElementById("move-fleet").style.display = "block";
+            document.getElementById("north").style.display = "none";
+            document.getElementById("east").style.display = "none";
+            document.getElementById("south").style.display = "none";
+            document.getElementById("west").style.display = "none";
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
+        } else {
+            isFleet = false;
+            registerCellListener((e) => {
+            }, "none");
+        }
+    });
+
 
     //Makes the vertical button have the toggle effect allowing users to switch between horizontal and vertical
     document.getElementById("is_vertical").addEventListener("click", function (e) {
