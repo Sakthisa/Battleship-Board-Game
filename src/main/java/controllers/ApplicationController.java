@@ -68,7 +68,7 @@ public class ApplicationController {
 
     public Result move(Context context, AttackGameAction g){
         Game game = g.getGame();
-        boolean result = false;
+        boolean result = true;
 
         if(g.isFleet()){
             result = game.moveShips(g.getFleet());

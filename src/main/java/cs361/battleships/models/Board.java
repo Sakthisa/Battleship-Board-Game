@@ -110,8 +110,12 @@ public class Board {
 			if ((x + (shipSize - 1) <= 11)) {
 				placeShipVertical(x, y, isVertical, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
+				newShip.setInitcol(y);
+				newShip.setInitrow(x);
+				newShip.setVertical(isVertical);
 
-				shipList.add(newShip);
+
+                shipList.add(newShip);
 				return true;
 			}
 		} else {
@@ -120,7 +124,10 @@ public class Board {
 				//successful
 				placeShipHorizontal(x, y, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
-				shipList.add(newShip);
+                newShip.setInitcol(y);
+                newShip.setInitrow(x);
+                newShip.setVertical(isVertical);
+                shipList.add(newShip);
 				return true;
 			}
 		}
@@ -320,7 +327,7 @@ public class Board {
 			}
 			// only execute if ship is not sunk
 
-			if (!occupiedShip.getSunk()) {
+			if (!occupiedShip.isSunk()) {
 				for(Square occupied : occupiedShip.getOccupiedSquares()) {
 					if (x == occupied.getRow() && y == occupied.getColumn()) {
 						sunk = AttackOccupied(result, occupiedShip, occupied);
@@ -463,7 +470,7 @@ public class Board {
 		}
 	}
 
-	public void moveShipsWest(){
+	public void moveShipsWestold(){
 		boolean[][] squares = new boolean[xDimension][yDimension];
 		int [] xdir = new int[xDimension];
 		int [] ydir = new int[yDimension];
@@ -532,6 +539,54 @@ public class Board {
 			j++;
 		}
 	}
+
+	public void moveShipsWest(){
+        List <Ship> newShipList = new ArrayList<>();
+        List <Ship> oldShipList = new ArrayList<>();
+        Ship tempship;
+
+//        for(Ship ship : shipList){
+//            oldShipList.add(new Ship(ship));
+//        }
+
+        for(Ship ship : shipList){
+            tempship = leftmostShip();
+            newShipList.add(tempship);
+            shipList.remove(tempship);
+        }
+        for(Ship ship : shipList){
+            shipList.remove(ship);
+        }
+        BoardoccupiedSquares = new ArrayList<Square>();
+        for(Ship ship : newShipList){
+			if (ship.getKind().equals("MINESWEEPER")) {
+				tempship = new Minesweeper();
+			} else if (ship.getKind().equals("DESTROYER")) {
+				tempship = new Destroyer();
+			} else if (ship.getKind().equals("BATTLESHIP")){
+				tempship = new Battleship();
+			}
+			else{
+				tempship = new Submarine();
+			}
+            if(placeShip(tempship, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
+            else{placeShip(tempship, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+        }
+    }
+
+    public Ship leftmostShip(){
+	    Ship leftmost = null;
+	    char max = (char) ('A' + xDimension);
+	    for(Ship ship : shipList){
+	        for(Square square : ship.getOccupiedSquares()){
+	            if(square.getColumn() < max){
+	                leftmost = ship;
+	                max = square.getColumn();
+                }
+            }
+        }
+        return new Ship(leftmost);
+    }
 
 	private boolean squareExists(char x, int y){
 		for(Square square : BoardoccupiedSquares){

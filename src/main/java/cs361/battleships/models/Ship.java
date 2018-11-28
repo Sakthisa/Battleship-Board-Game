@@ -11,16 +11,29 @@ public class Ship {
 	// shipSize is the amount of squares that it takes up.
 	protected int shipSize;
 	protected int hits;
+	protected int initrow;
+	protected char initcol;
 	protected Square captainsQuarter;
 	// kind is the type of ship: 'MINESWEEPER' for example
 	protected String kind;
 	protected boolean sunk;
 	protected boolean underwater;
+	protected boolean isVertical;
+
+
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 		this.hits = 0;
 		this.sunk = false;
+	}
+
+	public boolean isVertical() {
+		return isVertical;
+	}
+
+	public void setVertical(boolean vertical) {
+		isVertical = vertical;
 	}
 
 	public int getShipSize() {
@@ -39,6 +52,33 @@ public class Ship {
 		for (Square item : squares) {
 			occupiedSquares.add(item);
 		}
+	}
+
+	public void setInitrow(int initrow) {
+		this.initrow = initrow;
+	}
+
+	public void setInitcol(char initcol) {
+		this.initcol = initcol;
+	}
+
+	public int getInitrow() {
+		return initrow;
+	}
+
+	public char getInitcol() {
+		return initcol;
+	}
+
+	public Ship(Ship old){
+		for(Square square : old.getOccupiedSquares()){
+			this.occupiedSquares.add(new Square(square));
+		}
+		this.shipSize = old.getShipSize();
+		this.hits = old.getHits();
+		this.captainsQuarter = new Square(old.getCaptainsQuarter());
+		this.sunk = old.isSunk();
+		this.underwater = old.isUnderwater();
 	}
 
 
@@ -105,9 +145,20 @@ public class Ship {
 	}
 
 	public void setSunk(boolean sunk) { this.sunk = sunk; }
-	public boolean getSunk() { return this.sunk; }
 
 	public boolean getUnderwater(){
+		return underwater;
+	}
+
+	public Square getCaptainsQuarter() {
+		return captainsQuarter;
+	}
+
+	public boolean isSunk() {
+		return sunk;
+	}
+
+	public boolean isUnderwater() {
 		return underwater;
 	}
 

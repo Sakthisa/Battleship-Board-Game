@@ -460,7 +460,7 @@ function cellClick() {
             });
 
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, radar: isRadar}, function (data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, fleet: "", radar: isRadar}, function (data) {
             game = data;
             if (isRadar) {
                 radarsUsed++;
@@ -496,8 +496,11 @@ function sendXhr(method, url, data, handler) {
 
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
                 document.body.insertAdjacentHTML("afterend", req.response);
+                console.log(req.response);
             }
-            else if(url === "/move"){}
+            else if(url === "/move"){
+                console.log(req.response);
+            }
             //Displays an invalid placement if there is an error
             else {
                 var html = "<div class='result'><span";
@@ -840,14 +843,16 @@ function initGame() {
             document.getElementById("east").style.display = "none";
             document.getElementById("south").style.display = "none";
             document.getElementById("west").style.display = "none";
+            if (fleetsUsed === 2) {
+                document.getElementById("move-fleet").style.display = "none";
+            }
+            console.log("Posting move req");
 
-            sendXhr("POST", "/move", {game: game, fleet: "west"}, function (data) {
+            sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
                 game = data;
-                if (fleetsUsed === 2) {
-                    document.getElementById("move-fleet").style.display = "none";
-                }
                 redrawGrid();
             })
+            console.log("passes move req");
             isFleet = false;
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";

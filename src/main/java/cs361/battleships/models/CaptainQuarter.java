@@ -7,4 +7,11 @@ public class CaptainQuarter extends Square {
         this.maxHits = 2;
         this.type = "CQ";
     }
+
+    public CaptainQuarter(CaptainQuarter old){
+        super(old.getRow(), old.getColumn());
+        this.timesHit = 0;
+        this.maxHits = 2;
+        this.type = "CQ";
+    }
 }
