@@ -36,6 +36,9 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
+		System.out.println(x);
+		System.out.println(y);
+		System.out.println("\n");
 		// Check for the user trying to place multiple of the same ship type
 		for(Ship item : shipList){
 			if(item.getShipSize() == ship.getShipSize()){
@@ -219,6 +222,8 @@ public class Board {
 	}
 
 	private boolean SubOutBounds(int x, char y, boolean isVertical) {
+		System.out.println(x);
+		System.out.println(y);
 		if(isVertical){
 			if((char)(y+1) == 'L'){
 				return true;
@@ -430,14 +435,16 @@ public class Board {
 		int x = square.getRow();
 		char y = square.getColumn();
 
-		int minX = 1;
-		char minY = 'A';
+		int minX = 2;
+		char minY = 'B';
 
-		if(x < minX || x > minX + this.getXDimension()){
+		System.out.println("X: " + this.getXDimension());
+		System.out.println("Y: " + this.getYDimension());
+		if(x < minX || x > minX + this.getXDimension() - 1){
 			return false;
 		}
 
-		if(y < minY || y > minY + this.getYDimension()){
+		if(y < minY || y > minY + this.getYDimension() - 1){
 			return false;
 		}
 		return true;
