@@ -46,7 +46,7 @@ public class BoardTest {
     @Test
     public void testValidPlaceShipDestroyer(){
         Board board = new Board();
-        assertTrue(board.placeShip(new Destroyer(), 3, 'A', true));
+        assertTrue(board.placeShip(new Destroyer(), 3, 'B', true));
     }
 
     //Checking invalid Battleship placement
@@ -66,14 +66,14 @@ public class BoardTest {
     @Test
     public void testInvalidOverlapPlacement(){
         Board board = new Board();
-        assertTrue(board.placeShip(new Battleship(), 1, 'H', true));
+        assertTrue(board.placeShip(new Battleship(), 2, 'H', true));
         assertFalse(board.placeShip(new Minesweeper(), 3, 'G', false));
     }
 
     @Test
     public void testValidOverlapPlacement(){
         Board board = new Board();
-        assertTrue(board.placeSubShip(new Submarine(), 1, 'H', true, true));
+        assertTrue(board.placeSubShip(new Submarine(), 2, 'H', true, true));
         assertTrue(board.placeShip(new Minesweeper(), 3, 'G', false));
     }
 
@@ -87,7 +87,7 @@ public class BoardTest {
     @Test
     public void testInvalidGamePlacement(){
         Game game = new Game();
-        assertTrue(game.placeShip(new Battleship(), 1, 'A', false));
+        assertTrue(game.placeShip(new Battleship(), 2, 'B', false));
         assertTrue(game.placeShip(new Minesweeper(), 5, 'B', true));
         assertTrue(game.placeShip(new Destroyer(), 7, 'F', false));
 
@@ -96,16 +96,15 @@ public class BoardTest {
     @Test
     public void testGame(){
         Game game = new Game();
-        assertTrue(game.placeShip(new Battleship(), 1, 'A', false));
+        assertTrue(game.placeShip(new Battleship(), 2, 'B', false));
         assertTrue(game.placeShip(new Minesweeper(), 5, 'B', true));
         assertTrue(game.placeShip(new Destroyer(), 7, 'F', false));
         assertFalse(game.attack(12, 'A'));
         assertTrue(game.attack(5, 'B'));
         assertTrue(game.attack(6, 'B'));
-        assertTrue(game.attack(1, 'A'));
-        assertTrue(game.attack(1, 'B'));
-        assertTrue(game.attack(1, 'C'));
-        assertTrue(game.attack(1, 'D'));
+        assertTrue(game.attack(2, 'B'));
+        assertTrue(game.attack(2, 'B'));
+        assertTrue(game.attack(2, 'D'));
         assertTrue(game.attack(7, 'F'));
         assertTrue(game.attack(7, 'G'));
         assertTrue(game.attack(7, 'H'));
@@ -116,7 +115,7 @@ public class BoardTest {
     @Test
     public void testUniqueShips(){
         Game game = new Game();
-        assertTrue(game.placeShip(new Battleship(), 1, 'A', false));
+        assertTrue(game.placeShip(new Battleship(), 2, 'B', false));
         assertFalse(game.placeShip(new Battleship(), 2, 'A', false));
         assertTrue(game.placeShip(new Minesweeper(), 5, 'B', true));
         assertFalse(game.placeShip(new Minesweeper(), 5, 'C', true));
