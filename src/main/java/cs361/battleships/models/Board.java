@@ -107,20 +107,18 @@ public class Board {
 		}
 		if (isVertical) {
 			// If it is within the row bounds, then it is a successful placement
-			if ((x + (shipSize - 1) <= 11)) {
+			if ((x + (shipSize - 1) <= 11 && x + (shipSize - 1) >= 1)) {
 				placeShipVertical(x, y, isVertical, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
 				newShip.setInitcol(y);
 				newShip.setInitrow(x);
 				newShip.setVertical(isVertical);
-
-
                 shipList.add(newShip);
 				return true;
 			}
 		} else {
 			// If it is within the column bounds, then it is a successful placement
-			if ((y + (shipSize - 1) <= 'K')) {
+			if ((y + (shipSize - 1) <= 'K') && (y + (shipSize - 1) >= 'B')) {
 				//successful
 				placeShipHorizontal(x, y, shipSize, newShip, squares, isSubmerged);
 				newShip.setOccupiedSquares(squares);
@@ -438,7 +436,7 @@ public class Board {
 		char y = square.getColumn();
 
 		int minX = 1;
-		char minY = 'A';
+		char minY = 'B';
 
 		if(x < minX || x > minX + this.getXDimension()){
 			return false;
