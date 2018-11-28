@@ -282,7 +282,7 @@ function redrawGrid() {
     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         // for testing
         if(square.type === "CQ"){
-            document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp_cq_place");
+            document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-cq_place");
         }
         document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("opp-occupied");
         if (ship.underwater == true) {
