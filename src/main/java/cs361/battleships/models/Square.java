@@ -20,12 +20,23 @@ public class Square {
 		this.maxHits = 1;
 	}
 
+	public Square(int row, char column, String type, int maxHits, int timesHit){
+		this.row = row;
+		this.column = column;
+		this.timesHit = timesHit;
+		this.type = type;
+		this.maxHits = maxHits;
+	}
+
+
+
 	public int getMaxHits(){
 		return maxHits;
 	}
 	public void setMaxHits(int maxHits){
 		this.maxHits = maxHits;
 	}
+
 	public void setTimesHit(){
 		this.timesHit++;
 	}

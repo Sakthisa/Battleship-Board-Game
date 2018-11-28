@@ -67,6 +67,21 @@ public class Game {
 
         return true;
     }
+
+ 
+
+    public boolean moveShips(String direction){
+        if(direction.equals("west")){
+            moveShipsWest();
+            return true;
+        }
+        return false;
+    }
+
+    public void moveShipsWest(){
+        playersBoard.moveShipsWest();
+    }
+  
     // Opponent's turn to place a ship
     private void opponentPlace(Ship ship) {
         boolean opponentPlacedSuccessfully;

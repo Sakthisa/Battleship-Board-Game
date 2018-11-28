@@ -65,4 +65,18 @@ public class ApplicationController {
             return Results.badRequest().html();
         }
     }
+
+    public Result move(Context context, AttackGameAction g){
+        Game game = g.getGame();
+        boolean result = true;
+
+        if(g.isFleet()){
+            result = game.moveShips(g.getFleet());
+        }
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest().html();
+        }
+    }
 }

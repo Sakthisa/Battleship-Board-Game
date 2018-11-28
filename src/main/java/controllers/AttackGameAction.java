@@ -11,6 +11,8 @@ public class AttackGameAction {
     @JsonProperty private int x;
     @JsonProperty private char y;
     @JsonProperty private boolean radar;
+    @JsonProperty private String fleet;
+
 
     public Game getGame() {
         return game;
@@ -24,5 +26,13 @@ public class AttackGameAction {
         return y;
     }
 
+    public String getFleet(){
+        return fleet;
+    }
+
     public boolean isRadar() { return radar; }
+
+    public boolean isFleet(){
+        return(!fleet.isEmpty());
+    }
 }
