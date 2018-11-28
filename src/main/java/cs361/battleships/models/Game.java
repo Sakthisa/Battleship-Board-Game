@@ -19,14 +19,7 @@ public class Game {
         if (!successful)
             return false;
 
-        boolean opponentPlacedSuccessfully;
-        do {
-            // AI places random ships, so it might try and place overlapping ships
-            // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randBool());
-        } while (!opponentPlacedSuccessfully);
-
-
+        opponentPlace(ship);
 
         return true;
     }
@@ -38,17 +31,7 @@ public class Game {
         if (!successful)
             return false;
 
-        boolean opponentPlacedSuccessfully;
-        do {
-            // AI places random ships, so it might try and place overlapping ships
-            // let it try until it gets it right
-            if(randBool()){
-                opponentPlacedSuccessfully = opponentsBoard.placeSubShip(ship, randRow(), randCol(), randBool(), true);
-            }
-            else{
-                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randBool());
-            }
-        } while (!opponentPlacedSuccessfully);
+        opponentPlace(ship);
 
         return true;
     }
@@ -85,6 +68,8 @@ public class Game {
         return true;
     }
 
+ 
+
     public boolean moveShips(String direction){
         if(direction.equals("west")){
             moveShipsWest();
@@ -95,6 +80,20 @@ public class Game {
 
     public void moveShipsWest(){
         playersBoard.moveShipsWest();
+    }
+  
+    // Opponent's turn to place a ship
+    private void opponentPlace(Ship ship) {
+        boolean opponentPlacedSuccessfully;
+        do {
+            // AI places random ships, so it might try and place overlapping ships
+            // let it try until it gets it right
+            if (ship.getKind().equals("SUBMARINE")) {
+                opponentPlacedSuccessfully = opponentsBoard.placeSubShip(ship, randRow(), randCol(), randBool(), randBool());
+            } else {
+                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randBool());
+            }
+        } while (!opponentPlacedSuccessfully);
     }
 
     private void opponentAttack() {
