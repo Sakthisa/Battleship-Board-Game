@@ -542,42 +542,44 @@ public class Board {
 
 	public void moveShipsWest(){
         List <Ship> newShipList = new ArrayList<>();
-        List <Ship> oldShipList = new ArrayList<>();
-        Ship tempship;
+        Ship tempShip;
 
 //        for(Ship ship : shipList){
 //            oldShipList.add(new Ship(ship));
 //        }
 
         for(Ship ship : shipList){
-            tempship = leftmostShip();
-            newShipList.add(tempship);
-            shipList.remove(tempship);
+            tempShip = leftmostShip(newShipList);
+            newShipList.add(tempShip);
+            //shipList.remove(tempShip);
         }
-        for(Ship ship : shipList){
-            shipList.remove(ship);
-        }
+        this.shipList = new ArrayList<Ship>();
         BoardoccupiedSquares = new ArrayList<Square>();
         for(Ship ship : newShipList){
 			if (ship.getKind().equals("MINESWEEPER")) {
-				tempship = new Minesweeper();
+				tempShip = new Minesweeper();
 			} else if (ship.getKind().equals("DESTROYER")) {
-				tempship = new Destroyer();
+				tempShip = new Destroyer();
 			} else if (ship.getKind().equals("BATTLESHIP")){
-				tempship = new Battleship();
+				tempShip = new Battleship();
 			}
 			else{
-				tempship = new Submarine();
+				tempShip = new Submarine();
 			}
-            if(placeShip(tempship, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
-            else{placeShip(tempship, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+            if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
+            else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
         }
     }
 
-    public Ship leftmostShip(){
+    public Ship leftmostShip(List <Ship> newShipList){
 	    Ship leftmost = null;
 	    char max = (char) ('A' + xDimension);
 	    for(Ship ship : shipList){
+	    	boolean isAdded = false;
+	    	for(Ship added : newShipList){
+	    		if(ship == added){isAdded = true;}
+			}
+			if(isAdded){continue;}
 	        for(Square square : ship.getOccupiedSquares()){
 	            if(square.getColumn() < max){
 	                leftmost = ship;
@@ -585,7 +587,7 @@ public class Board {
                 }
             }
         }
-        return new Ship(leftmost);
+        return leftmost;
     }
 
 	private boolean squareExists(char x, int y){

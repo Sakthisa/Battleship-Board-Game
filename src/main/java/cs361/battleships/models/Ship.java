@@ -70,16 +70,7 @@ public class Ship {
 		return initcol;
 	}
 
-	public Ship(Ship old){
-		for(Square square : old.getOccupiedSquares()){
-			this.occupiedSquares.add(new Square(square));
-		}
-		this.shipSize = old.getShipSize();
-		this.hits = old.getHits();
-		this.captainsQuarter = new Square(old.getCaptainsQuarter());
-		this.sunk = old.isSunk();
-		this.underwater = old.isUnderwater();
-	}
+
 
 
 	// each move function will move the ship within a game board if it can be moved independently.
