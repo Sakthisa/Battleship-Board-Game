@@ -436,7 +436,7 @@ function cellClick() {
                     document.getElementById("place_submarine").style.display = "none";
                     document.getElementById("place_minesweeper").style.display = "none";
                     document.getElementById("restart").style.visibility = "visible";
-                    document.getElementById("move-fleet").style.display = "block"
+                    document.getElementById("move-fleet").style.display = "inline-block"
                     document.getElementById("restart").addEventListener("click", function (e) {
                         location.reload();
                     });
