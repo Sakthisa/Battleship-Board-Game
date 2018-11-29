@@ -757,10 +757,10 @@ function initGame() {
         if (flt) {
             isFleet = true;
             document.getElementById("move-fleet").style.display = "none";
-            document.getElementById("north").style.display = "block";
-            document.getElementById("east").style.display = "block";
-            document.getElementById("south").style.display = "block";
-            document.getElementById("west").style.display = "block";
+            document.getElementById("north").style.display = "inline-block";
+            document.getElementById("east").style.display = "inline-block";
+            document.getElementById("south").style.display = "inline-block";
+            document.getElementById("west").style.display = "inline-block";
         } else {
             isFleet = false;
             registerCellListener((e) => {
@@ -774,6 +774,7 @@ function initGame() {
         if (nth) {
             // implement north direction logic here
             fleetsUsed++;
+            fleetType = "north";
             document.getElementById("move-fleet").style.display = "block";
             document.getElementById("north").style.display = "none";
             document.getElementById("east").style.display = "none";
@@ -782,6 +783,11 @@ function initGame() {
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }
+            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+                game = data;
+                redrawGrid();
+            })
+            isFleet = false;
         } else {
             isFleet = false;
             registerCellListener((e) => {
@@ -794,6 +800,7 @@ function initGame() {
         let est = e.target.classList.toggle("btn-toggle");
         if (est) {
             // implement east direction logic here
+            fleetType = "east";
             fleetsUsed++;
             document.getElementById("move-fleet").style.display = "block";
             document.getElementById("north").style.display = "none";
@@ -803,6 +810,11 @@ function initGame() {
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }
+            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+                game = data;
+                redrawGrid();
+            })
+            isFleet = false;
         } else {
             isFleet = false;
             registerCellListener((e) => {
@@ -816,6 +828,7 @@ function initGame() {
         if (sth) {
             // implement south direction logic here
             fleetsUsed++;
+            fleetType = "south";
             document.getElementById("move-fleet").style.display = "block";
             document.getElementById("north").style.display = "none";
             document.getElementById("east").style.display = "none";
@@ -824,6 +837,11 @@ function initGame() {
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }
+            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+                game = data;
+                redrawGrid();
+            })
+            isFleet = false;
         } else {
             isFleet = false;
             registerCellListener((e) => {
@@ -846,13 +864,11 @@ function initGame() {
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }
-            console.log("Posting move req");
 
             sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
                 game = data;
                 redrawGrid();
             })
-            console.log("passes move req");
             isFleet = false;
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";

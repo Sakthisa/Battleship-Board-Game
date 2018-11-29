@@ -1,8 +1,5 @@
 package cs361.battleships.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.sound.midi.SysexMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -477,108 +474,77 @@ public class Board {
 		}
 	}
 
-	public void moveShipsWestold(){
-		boolean[][] squares = new boolean[xDimension][yDimension];
-		int [] xdir = new int[xDimension];
-		int [] ydir = new int[yDimension];
-		int j = 0;
-		int k = 0;
-		// iterate through the
-		for(int x : xdir){
-			for(int y : ydir){
-				if(squares[j][k]){continue;}
-				if(j == 0){break;} // leave the inner for loop
-				if(squareExists((char) (j+'A'), k) && !squares[j][k]){
-					if(squareExists((char) (j - 1 + 'A'), k) && !squares[j][k]){continue;}
-					Square translate = getOccupiedSquare((char) (j+'A'), k);
-					translate.setColumn((char)(translate.getColumn() - 1));
-					squares[j][k] = true;
-				}
+//	public void moveShipsWestold(){
+//		boolean[][] squares = new boolean[xDimension][yDimension];
+//		int [] xdir = new int[xDimension];
+//		int [] ydir = new int[yDimension];
+//		int j = 0;
+//		int k = 0;
+//		// iterate through the
+//		for(int x : xdir){
+//			for(int y : ydir){
+//				if(squares[j][k]){continue;}
+//				if(j == 0){break;} // leave the inner for loop
+//				if(squareExists((char) (j+'A'), k) && !squares[j][k]){
+//					if(squareExists((char) (j - 1 + 'A'), k) && !squares[j][k]){continue;}
+//					Square translate = getOccupiedSquare((char) (j+'A'), k);
+//					translate.setColumn((char)(translate.getColumn() - 1));
+//					squares[j][k] = true;
+//				}
+//
+//				k++;
+//			}
+//			k = 0;
+//			j++;
+//		}
+//		j = 0;
+//		k = 0;
+//		for(boolean [] row : squares){
+//			for(boolean idx : row){
+//				if(!idx){
+//					k++;
+//					continue;
+//				}
+//				boolean removed = false;
+//				for(Result result : attackResult){
+//					if(result.getLocation().getColumn() == (char)(k+'A') && result.getLocation().getRow() == j){
+//						attackResult.remove(result);
+//						removed = true;
+//					}
+//					if(removed){
+//						attack(j, (char)(k - 1));
+//					}
+//				}
+//				k++;
+//			}
+//			k = 0;
+//			j++;
+//		}
+//		j = 0;
+//		k = 0;
+//
+//		for(boolean [] row : squares){
+//			for(boolean idx : row){
+//				if(!idx){
+//					k++;
+//					continue;
+//				}
+//				for(Ship ship : shipList){
+//					if(ship.containsSquare(j, (char) (k+'A'))){
+//						for(Square square : ship.getOccupiedSquares()){
+//							squares[square.getRow()][square.getColumn() - 'A'] = false;
+//						}
+//						ship.moveLeft( xDimension, (char)('A'+yDimension));
+//					}
+//				}
+//				k++;
+//			}
+//			k = 0;
+//			j++;
+//		}
+//	}
 
-				k++;
-			}
-			k = 0;
-			j++;
-		}
-		j = 0;
-		k = 0;
-		for(boolean [] row : squares){
-			for(boolean idx : row){
-				if(!idx){
-					k++;
-					continue;
-				}
-				boolean removed = false;
-				for(Result result : attackResult){
-					if(result.getLocation().getColumn() == (char)(k+'A') && result.getLocation().getRow() == j){
-						attackResult.remove(result);
-						removed = true;
-					}
-					if(removed){
-						attack(j, (char)(k - 1));
-					}
-				}
-				k++;
-			}
-			k = 0;
-			j++;
-		}
-		j = 0;
-		k = 0;
-
-		for(boolean [] row : squares){
-			for(boolean idx : row){
-				if(!idx){
-					k++;
-					continue;
-				}
-				for(Ship ship : shipList){
-					if(ship.containsSquare(j, (char) (k+'A'))){
-						for(Square square : ship.getOccupiedSquares()){
-							squares[square.getRow()][square.getColumn() - 'A'] = false;
-						}
-						ship.moveLeft( xDimension, (char)('A'+yDimension));
-					}
-				}
-				k++;
-			}
-			k = 0;
-			j++;
-		}
-	}
-
-	public void moveShipsWest(){
-        List <Ship> newShipList = new ArrayList<>();
-        Ship tempShip;
-
-//        for(Ship ship : shipList){
-//            oldShipList.add(new Ship(ship));
-//        }
-
-        for(Ship ship : shipList){
-            tempShip = leftmostShip(newShipList);
-            newShipList.add(tempShip);
-            //shipList.remove(tempShip);
-        }
-        this.shipList = new ArrayList<Ship>();
-        BoardoccupiedSquares = new ArrayList<Square>();
-        for(Ship ship : newShipList){
-			if (ship.getKind().equals("MINESWEEPER")) {
-				tempShip = new Minesweeper();
-			} else if (ship.getKind().equals("DESTROYER")) {
-				tempShip = new Destroyer();
-			} else if (ship.getKind().equals("BATTLESHIP")){
-				tempShip = new Battleship();
-			}
-			else{
-				tempShip = new Submarine();
-			}
-            if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
-            else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
-        }
-    }
-
-    public Ship leftmostShip(List <Ship> newShipList){
+    private Ship westernMostShip(List <Ship> newShipList){
 	    Ship leftmost = null;
 	    char max = (char) ('A' + xDimension);
 	    for(Ship ship : shipList){
@@ -597,22 +563,126 @@ public class Board {
         return leftmost;
     }
 
-	private boolean squareExists(char x, int y){
-		for(Square square : BoardoccupiedSquares){
-			if(square.getRow() == y && square.getColumn() == x){
-				return true;
+	private Ship easternMostShip(List <Ship> newShipList){
+		Ship rightmost = null;
+		char min = 'B';
+		for(Ship ship : shipList){
+			boolean isAdded = false;
+			for(Ship added : newShipList){
+				if(ship == added){isAdded = true;}
+			}
+			if(isAdded){continue;}
+			for(Square square : ship.getOccupiedSquares()){
+				if(square.getColumn() > min){
+					rightmost = ship;
+					min = square.getColumn();
+				}
 			}
 		}
-		return false;
+		return rightmost;
 	}
 
-	private Square getOccupiedSquare(char x, int y){
-		for(Square square : BoardoccupiedSquares){
-			if(square.getColumn() == x && square.getRow() == y){
-				return square;
+	private Ship northernMostShip(List <Ship> newShipList){
+		Ship northernmost = null;
+		int min = 11;
+		for(Ship ship : shipList){
+			boolean isAdded = false;
+			for(Ship added : newShipList){
+				if(ship == added){isAdded = true;}
+			}
+			if(isAdded){continue;}
+			for(Square square : ship.getOccupiedSquares()){
+				if(square.getRow() < min){
+					northernmost = ship;
+					min = square.getRow();
+				}
 			}
 		}
-		return null;
+		return northernmost;
+	}
+
+	private Ship southernMostShip(List <Ship> newShipList){
+		Ship southernmost = null;
+		int max = 2;
+		for(Ship ship : shipList){
+			boolean isAdded = false;
+			for(Ship added : newShipList){
+				if(ship == added){isAdded = true;}
+			}
+			if(isAdded){continue;}
+			for(Square square : ship.getOccupiedSquares()){
+				if(square.getRow() > max){
+					southernmost = ship;
+					max = square.getRow();
+				}
+			}
+		}
+		return southernmost;
+	}
+
+
+	public boolean moveShips(String direction){
+		List <Ship> newShipList = new ArrayList<>();
+		Ship tempShip;
+
+//        for(Ship ship : shipList){
+//            oldShipList.add(new Ship(ship));
+//        }
+
+		for(Ship ship : shipList){
+			switch(direction) {
+				case("east"):
+					tempShip = easternMostShip(newShipList);
+					break;
+				case("west"):
+					tempShip = westernMostShip(newShipList);
+					break;
+				case("north"):
+					tempShip = northernMostShip(newShipList);
+					break;
+				case("south"):
+					tempShip = southernMostShip(newShipList);
+					break;
+				default:
+					return false;
+			}
+			newShipList.add(tempShip);
+		}
+		this.shipList = new ArrayList<Ship>();
+		BoardoccupiedSquares = new ArrayList<Square>();
+		for(Ship ship : newShipList){
+			if (ship.getKind().equals("MINESWEEPER")) {
+				tempShip = new Minesweeper();
+			} else if (ship.getKind().equals("DESTROYER")) {
+				tempShip = new Destroyer();
+			} else if (ship.getKind().equals("BATTLESHIP")){
+				tempShip = new Battleship();
+			}
+			else{
+				tempShip = new Submarine();
+			}
+			switch(direction) {
+				case("east"):
+					if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() + 1), ship.isVertical())){}
+					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					break;
+				case("west"):
+					if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
+					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					break;
+				case("north"):
+					if(placeShip(tempShip, ship.getInitrow()-1, (ship.getInitcol()), ship.isVertical())){}
+					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					break;
+				case("south"):
+					if(placeShip(tempShip, ship.getInitrow()+1, (ship.getInitcol()), ship.isVertical())){}
+					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					break;
+				default:
+					return false;
+			}
+		}
+		return true;
 	}
 
 	//Sets the number of board squares in the x direction
