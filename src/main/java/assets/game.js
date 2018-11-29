@@ -247,7 +247,6 @@ function displayResults(board, elementId) {
                     document.getElementById("radar-btn").style.visibility = "visible";
                 }
                 else if(numSunk === 2) {
-                    console.log("two sunks");
                     document.getElementById("move-fleet").style.visibility = "visible";
                 }
 
@@ -307,7 +306,7 @@ function redrawGrid() {
 
     let resultHTML = "<span class='attack-detail'><span class='laser-detail'>SPACE LASER ENGAGED</span></span></div>";
     let html = "<div class='result'><span";
-    console.log("in here");
+
     if (numSunkBefore === 0 && numSunk === 1 && numSunkOppBefore === numSunkOpp) {
         html += " class='player-name'>PLAYER: </span>" + resultHTML;
         document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
@@ -498,10 +497,6 @@ function sendXhr(method, url, data, handler) {
 
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
                 document.body.insertAdjacentHTML("afterend", req.response);
-                console.log(req.response);
-            }
-            else if(url === "/move"){
-                console.log(req.response);
             }
             //Displays an invalid placement if there is an error
             else {
@@ -517,8 +512,6 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
-    console.log(url);
-    console.log(data);
     req.send(JSON.stringify(data));
 }
 
@@ -599,42 +592,42 @@ function place(size, submarine) {
                     }
                     break;
                 }
-                if(submarine == true && i === 2 && table.rows[row - 1].cells[col + i] != undefined) {
-                    cell = table.rows[row-1].cells[col+i];
+                if (submarine == true && i === 2 && table.rows[row - 1].cells[col + i] != undefined) {
+                    cell = table.rows[row - 1].cells[col + i];
                     cell.classList.toggle("placed");
                 }
                 cell = table.rows[row].cells[col + i];
-            }
 
-            if (cell === undefined) {
-                // ship is over the edge, so mark visible squares with red X's
-                for (let j = (col + i - 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                    if (submarine == true) {
-                        if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
-                            table.rows[row - 1].cells[j].classList.toggle("error-place");
+                if (cell === undefined) {
+                    // ship is over the edge, so mark visible squares with red X's
+                    for (let j = (col + i - 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
+                        cell.classList.toggle("error-place");
+                        if (submarine == true) {
+                            if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
+                                table.rows[row - 1].cells[j].classList.toggle("error-place");
+                            }
                         }
                     }
-                }
-                break;
-            } else if (submarine == true && submerged != true && i === 2 && table.rows[row - 1].cells[col + i].classList.contains("occupied")) {
-                for (let j = (col + i + 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                }
-                break;
-            } else if (cell.classList.contains('occupied') && !(submerged == true || cell.classList.contains("submerged"))) {
-                // If cell is occupied, then we can't place there either, so mark visible square with red X's
-                for (let j = (col + i - 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                    if (submarine == true && j - col === 2) {
-                        cell = table.rows[row - 1].cells[j];
+                    break;
+                } else if (submarine == true && submerged != true && i === 2 && table.rows[row - 1].cells[col + i].classList.contains("occupied")) {
+                    for (let j = (col + i + 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
                         cell.classList.toggle("error-place");
                     }
+                    break;
+                } else if (cell.classList.contains('occupied') && !(submerged == true || cell.classList.contains("submerged"))) {
+                    // If cell is occupied, then we can't place there either, so mark visible square with red X's
+                    for (let j = (col + i - 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
+                        cell.classList.toggle("error-place");
+                        if (submarine == true && j - col === 2) {
+                            cell = table.rows[row - 1].cells[j];
+                            cell.classList.toggle("error-place");
+                        }
+                    }
+                    break;
                 }
-                break;
             }
             cell.classList.toggle("placed");
         }
