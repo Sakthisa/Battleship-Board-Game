@@ -628,6 +628,48 @@ public class Board {
 		List <Ship> newShipList = new ArrayList<>();
 		Ship tempShip;
 		boolean underWater = false;
+		int numMsHits = 0;
+		int numBsHits = 0;
+		int numDsHits = 0;
+		int numSmHits  = 0;
+		int MsHits[];
+		MsHits = new int[2];
+		int BsHits[];
+		BsHits = new int[4];
+		int DsHits[];
+		DsHits = new int[3];
+		int SmHits[];
+		SmHits = new int[5];
+
+
+		for(Ship oldShip : shipList){
+			for(Square OccS : oldShip.getOccupiedSquares()){
+				if(oldShip.getKind().equals("MINESWEEPER")){
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					MsHits[numMsHits] = OccS.getTimesHit();
+					numMsHits++;
+				}
+				else if(oldShip.getKind().equals("BATTLESHIP")){
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					BsHits[numBsHits] = OccS.getTimesHit();
+					numBsHits++;
+				}
+				else if(oldShip.getKind().equals("DESTROYER")){
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					DsHits[numDsHits] = OccS.getTimesHit();
+					numDsHits++;
+				}
+				else{
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					SmHits[numSmHits] = OccS.getTimesHit();
+					numSmHits++;
+				}
+			}
+		}
 
 		for(Ship ship : shipList){
 			switch(direction) {
@@ -752,6 +794,75 @@ public class Board {
 					return false;
 			}
 		}
+		numBsHits = 0;
+		numDsHits = 0;
+		numMsHits = 0;
+		numSmHits = 0;
+		for(Ship oldShip : shipList){
+			for(Square OccS : oldShip.getOccupiedSquares()){
+				if(oldShip.getKind().equals("MINESWEEPER")){
+					OccS.changeTimesHit(MsHits[numMsHits]);
+					numMsHits++;
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					//MsHits[numMsHits] = OccS.getTimesHit();
+					//numMsHits++;
+				}
+				else if(oldShip.getKind().equals("BATTLESHIP")){
+					OccS.changeTimesHit(BsHits[numBsHits]);
+					numBsHits++;
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					//BsHits[numBsHits] = OccS.getTimesHit();
+					//numBsHits++;
+				}
+				else if(oldShip.getKind().equals("DESTROYER")){
+					OccS.changeTimesHit(DsHits[numDsHits]);
+					numDsHits++;
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					//DsHits[numDsHits] = OccS.getTimesHit();
+					//numDsHits++;
+				}
+				else{
+					OccS.changeTimesHit(SmHits[numSmHits]);
+					numSmHits++;
+					//System.out.println("SHIP: " + oldShip.getKind());
+					//System.out.println("Occupied Square: " + OccS.getTimesHit());
+					//SmHits[numSmHits] = OccS.getTimesHit();
+					//numSmHits++;
+				}
+			}
+		}
+
+//		for(Ship oldShip : shipList){
+//			for(Square OccS : oldShip.getOccupiedSquares()){
+//				if(oldShip.getKind().equals("MINESWEEPER")){
+//					System.out.println("SHIP: " + oldShip.getKind());
+//					System.out.println("Occupied Square: " + OccS.getTimesHit());
+//					System.out.println("Square Type: " + OccS.getType());
+//				}
+//				else if(oldShip.getKind().equals("BATTLESHIP")){
+//					System.out.println("SHIP: " + oldShip.getKind());
+//					System.out.println("Occupied Square: " + OccS.getTimesHit());
+//					System.out.println("Square Type: " + OccS.getType());
+//				}
+//				else if(oldShip.getKind().equals("DESTROYER")){
+//					System.out.println("SHIP: " + oldShip.getKind());
+//					System.out.println("Occupied Square: " + OccS.getTimesHit());
+//					System.out.println("Square Type: " + OccS.getType());
+//				}
+//				else{
+//					System.out.println("SHIP: " + oldShip.getKind());
+//					System.out.println("Occupied Square: " + OccS.getTimesHit());
+//					System.out.println("Square Type: " + OccS.getType());
+//				}
+//			}
+//		}
+
+
+
+
 		return true;
 	}
 

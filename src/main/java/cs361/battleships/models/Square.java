@@ -40,6 +40,9 @@ public class Square {
 	public void setTimesHit(){
 		this.timesHit++;
 	}
+
+	public void changeTimesHit(int timesHit){this.timesHit = timesHit;}
+
 	public int getTimesHit(){
 		return timesHit;
 	}
