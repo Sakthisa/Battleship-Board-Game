@@ -780,23 +780,22 @@ function initGame() {
     });
 
     document.getElementById("east").addEventListener("click", (e) => {
-        // est is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-            // implement east direction logic here
-            fleetType = "east";
-            fleetsUsed++;
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
-                game = data;
-                redrawGrid();
-            })
-            isFleet = false;
+        // implement east direction logic here
+        fleetType = "east";
+        fleetsUsed++;
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
+        }
+        sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
     });
 
     document.getElementById("south").addEventListener("click", (e) => {
