@@ -72,6 +72,7 @@ public class ApplicationController {
 
         if(g.isFleet()){
             result = game.moveShips(g.getFleet());
+            game.opponentAttack();
         }
         if (result) {
             return Results.json().render(game);

@@ -92,7 +92,7 @@ public class Game {
         } while (!opponentPlacedSuccessfully);
     }
 
-    private void opponentAttack() {
+    public void opponentAttack() {
         Result opponentAttackResult;
         do {
             // AI does random attacks, so it might attack the same spot twice
