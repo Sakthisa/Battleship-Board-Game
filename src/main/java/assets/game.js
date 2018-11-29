@@ -752,26 +752,15 @@ function initGame() {
     });
 
     document.getElementById("move-fleet").addEventListener("click", (e) => {
-        // flt is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let flt = e.target.classList.toggle("btn-toggle");
-        if (flt) {
             isFleet = true;
             document.getElementById("move-fleet").style.display = "none";
             document.getElementById("north").style.display = "inline-block";
             document.getElementById("east").style.display = "inline-block";
             document.getElementById("south").style.display = "inline-block";
             document.getElementById("west").style.display = "inline-block";
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
     });
 
     document.getElementById("north").addEventListener("click", (e) => {
-        // nth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let nth = e.target.classList.toggle("btn-toggle");
-        if (nth) {
             // implement north direction logic here
             fleetsUsed++;
             fleetType = "north";
@@ -788,17 +777,10 @@ function initGame() {
                 redrawGrid();
             })
             isFleet = false;
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
     });
 
     document.getElementById("east").addEventListener("click", (e) => {
         // est is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let est = e.target.classList.toggle("btn-toggle");
-        if (est) {
             // implement east direction logic here
             fleetType = "east";
             fleetsUsed++;
@@ -815,11 +797,6 @@ function initGame() {
                 redrawGrid();
             })
             isFleet = false;
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
     });
 
     document.getElementById("south").addEventListener("click", (e) => {
