@@ -115,6 +115,7 @@ function markHits(board, elementId, surrenderText) {
                 for (square of ship.occupiedSquares) {
                     if (square.type == "CQ") {
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
@@ -246,6 +247,7 @@ function displayResults(board, elementId) {
                     document.getElementById("radar-btn").style.visibility = "visible";
                 }
                 else if(numSunk === 2) {
+                    console.log("two sunks");
                     document.getElementById("move-fleet").style.visibility = "visible";
                 }
 

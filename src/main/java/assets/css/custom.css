@@ -435,3 +435,7 @@ th {
     background-color: #333333;
 }
 
+#move-fleet{
+    visibility: hidden;
+}
+

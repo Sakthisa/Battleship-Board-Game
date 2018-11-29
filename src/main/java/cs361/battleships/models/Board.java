@@ -624,6 +624,7 @@ public class Board {
 	public boolean moveShips(String direction){
 		List <Ship> newShipList = new ArrayList<>();
 		Ship tempShip;
+		boolean underWater = false;
 
 //        for(Ship ship : shipList){
 //            oldShipList.add(new Ship(ship));
@@ -633,15 +634,27 @@ public class Board {
 			switch(direction) {
 				case("east"):
 					tempShip = easternMostShip(newShipList);
+					if(tempShip.getKind().equals("SUBMARINE") && tempShip.getUnderwater()){
+						underWater = true;
+					}
 					break;
 				case("west"):
 					tempShip = westernMostShip(newShipList);
+					if(tempShip.getKind().equals("SUBMARINE") && tempShip.getUnderwater()){
+						underWater = true;
+					}
 					break;
 				case("north"):
 					tempShip = northernMostShip(newShipList);
+					if(tempShip.getKind().equals("SUBMARINE") && tempShip.getUnderwater()){
+						underWater = true;
+					}
 					break;
 				case("south"):
 					tempShip = southernMostShip(newShipList);
+					if(tempShip.getKind().equals("SUBMARINE") && tempShip.getUnderwater()){
+						underWater = true;
+					}
 					break;
 				default:
 					return false;
@@ -663,20 +676,76 @@ public class Board {
 			}
 			switch(direction) {
 				case("east"):
-					if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() + 1), ship.isVertical())){}
-					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					if(tempShip.getKind().equals("SUBMARINE") && underWater){
+						if(placeSubShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() + 1), ship.isVertical(), true)){
+
+						}
+						else{
+							placeSubShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical(), true);
+						}
+					}
+					else{
+						if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() + 1), ship.isVertical())){
+
+						}
+						else{
+							placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());
+						}
+					}
 					break;
 				case("west"):
-					if(placeShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() - 1), ship.isVertical())){}
-					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					if(tempShip.getKind().equals("SUBMARINE") && underWater){
+						if (placeSubShip(tempShip, ship.getInitrow(), (char) (ship.getInitcol() - 1), ship.isVertical(),true)) {
+
+						}
+						else {
+							placeSubShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical(), true);
+					}
+					}
+					else{
+						if (placeShip(tempShip, ship.getInitrow(), (char) (ship.getInitcol() - 1), ship.isVertical())) {
+
+						}
+						else {
+							placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());
+						}
+					}
 					break;
 				case("north"):
-					if(placeShip(tempShip, ship.getInitrow()-1, (ship.getInitcol()), ship.isVertical())){}
-					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					if(tempShip.getKind().equals("SUBMARINE") && underWater){
+						if(placeSubShip(tempShip, ship.getInitrow()-1, (ship.getInitcol()), ship.isVertical(), true)){
+
+						}
+						else{
+							placeSubShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical(), true);
+						}
+					}
+					else{
+						if(placeShip(tempShip, ship.getInitrow()-1, (ship.getInitcol()), ship.isVertical())){
+
+						}
+						else{
+							placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());
+						}
+					}
 					break;
 				case("south"):
-					if(placeShip(tempShip, ship.getInitrow()+1, (ship.getInitcol()), ship.isVertical())){}
-					else{placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());}
+					if(tempShip.getKind().equals("SUBMARINE") && underWater){
+						if(placeSubShip(tempShip, ship.getInitrow()+1, (ship.getInitcol()), ship.isVertical(), true)){
+
+						}
+						else{
+							placeSubShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical(), true);
+						}
+					}
+					else{
+						if(placeShip(tempShip, ship.getInitrow()+1, (ship.getInitcol()), ship.isVertical())){
+
+						}
+						else{
+							placeShip(tempShip, ship.getInitrow(), (ship.getInitcol()), ship.isVertical());
+						}
+					}
 					break;
 				default:
 					return false;
