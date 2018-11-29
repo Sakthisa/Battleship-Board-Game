@@ -800,61 +800,47 @@ function initGame() {
     });
 
     document.getElementById("south").addEventListener("click", (e) => {
-        // sth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let sth = e.target.classList.toggle("btn-toggle");
-        if (sth) {
-            // implement south direction logic here
-            fleetsUsed++;
-            fleetType = "south";
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
-                game = data;
-                redrawGrid();
-            })
-            isFleet = false;
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
+        // implement south direction logic here
+        fleetsUsed++;
+        fleetType = "south";
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
         }
+        sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
     });
 
     document.getElementById("west").addEventListener("click", (e) => {
-        // wst is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let wst = e.target.classList.toggle("btn-toggle");
-        if (wst) {
-            // implement west direction logic
-            fleetType = "west";
-            fleetsUsed++;
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
 
-            sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
-                game = data;
-                redrawGrid();
-            })
-            isFleet = false;
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
+        // implement west direction logic
+        fleetType = "west";
+        fleetsUsed++;
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
         }
+
+        sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
+        }
+
     });
 
 
