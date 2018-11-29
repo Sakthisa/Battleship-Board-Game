@@ -33,9 +33,9 @@ public class Board {
 		int shipSize = ship.getShipSize();
 		//List<Square> occupiedSquares = getBoardOccupiedSquares();
 
-		System.out.println(x);
-		System.out.println(y);
-		System.out.println("\n");
+		//System.out.println(x);
+		//System.out.println(y);
+		//System.out.println("\n");
 		// Check for the user trying to place multiple of the same ship type
 		for(Ship item : shipList){
 			if(item.getShipSize() == ship.getShipSize()){
@@ -224,8 +224,8 @@ public class Board {
 	}
 
 	private boolean SubOutBounds(int x, char y, boolean isVertical) {
-		System.out.println(x);
-		System.out.println(y);
+		//System.out.println(x);
+		//System.out.println(y);
 		if(isVertical){
 			if((char)(y+1) == 'L'){
 				return true;
@@ -442,8 +442,8 @@ public class Board {
 
 		char minY = 'B';
 
-		System.out.println("X: " + this.getXDimension());
-		System.out.println("Y: " + this.getYDimension());
+		//System.out.println("X: " + this.getXDimension());
+		//System.out.println("Y: " + this.getYDimension());
 		if(x < minX || x > minX + this.getXDimension() - 1){
 			return false;
 		}
@@ -554,12 +554,13 @@ public class Board {
 			}
 			if(isAdded){continue;}
 	        for(Square square : ship.getOccupiedSquares()){
-	            if(square.getColumn() < max){
+	            if(square.getColumn() <= max){
 	                leftmost = ship;
 	                max = square.getColumn();
                 }
             }
         }
+		System.out.println(leftmost);
         return leftmost;
     }
 
@@ -573,12 +574,13 @@ public class Board {
 			}
 			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
-				if(square.getColumn() > min){
+				if(square.getColumn() >= min){
 					rightmost = ship;
 					min = square.getColumn();
 				}
 			}
 		}
+		System.out.println(rightmost);
 		return rightmost;
 	}
 
@@ -592,7 +594,7 @@ public class Board {
 			}
 			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
-				if(square.getRow() < min){
+				if(square.getRow() <= min){
 					northernmost = ship;
 					min = square.getRow();
 				}
@@ -607,11 +609,12 @@ public class Board {
 		for(Ship ship : shipList){
 			boolean isAdded = false;
 			for(Ship added : newShipList){
+
 				if(ship == added){isAdded = true;}
 			}
 			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
-				if(square.getRow() > max){
+				if(square.getRow() >= max){
 					southernmost = ship;
 					max = square.getRow();
 				}
@@ -625,10 +628,6 @@ public class Board {
 		List <Ship> newShipList = new ArrayList<>();
 		Ship tempShip;
 		boolean underWater = false;
-
-//        for(Ship ship : shipList){
-//            oldShipList.add(new Ship(ship));
-//        }
 
 		for(Ship ship : shipList){
 			switch(direction) {
@@ -647,6 +646,7 @@ public class Board {
 				case("north"):
 					tempShip = northernMostShip(newShipList);
 					if(tempShip.getKind().equals("SUBMARINE") && tempShip.getUnderwater()){
+						System.out.println("SHIPS: " + tempShip.getKind());
 						underWater = true;
 					}
 					break;
@@ -677,6 +677,7 @@ public class Board {
 			switch(direction) {
 				case("east"):
 					if(tempShip.getKind().equals("SUBMARINE") && underWater){
+						System.out.println("UNDERWATER");
 						if(placeSubShip(tempShip, ship.getInitrow(), (char)(ship.getInitcol() + 1), ship.isVertical(), true)){
 
 						}
