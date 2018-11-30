@@ -482,7 +482,7 @@ public class Board {
 	    	for(Ship added : newShipList){
 	    		if(ship == added){isAdded = true;}
 			}
-			//if(isAdded){continue;}
+			if(isAdded){continue;}
 	        for(Square square : ship.getOccupiedSquares()){
 	            if(square.getColumn() <= max){
 	                leftmost = ship;
@@ -502,7 +502,7 @@ public class Board {
 			for(Ship added : newShipList){
 				if(ship == added){isAdded = true;}
 			}
-			//if(isAdded){continue;}
+			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getColumn() >= min){
 					rightmost = ship;
@@ -522,7 +522,7 @@ public class Board {
 			for(Ship added : newShipList){
 				if(ship == added){isAdded = true;}
 			}
-			//if(isAdded){continue;}
+			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getRow() <= min){
 					northernmost = ship;
@@ -542,7 +542,7 @@ public class Board {
 
 				if(ship == added){isAdded = true;}
 			}
-			//if(isAdded){continue;}
+			if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getRow() >= max){
 					southernmost = ship;

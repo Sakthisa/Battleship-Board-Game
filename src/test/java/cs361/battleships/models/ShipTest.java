@@ -136,8 +136,8 @@ public class ShipTest {
         assertEquals(1, s.getInitrow());
         assertTrue(s.moveDown(2, 'A'));
         assertTrue(s.moveUp(1, 'A'));
-        assertTrue(s.moveRight(1, 'B'));
-        assertTrue(s.moveLeft(1, 'A'));
+        assertFalse(s.moveRight(1, 'B'));
+        assertFalse(s.moveLeft(1, 'A'));
         assertTrue(s.containsSquare(1, 'A'));
         assertFalse(s.moveLeft(1, 'A'));
         List<Square> os1 = new ArrayList<>();

@@ -182,10 +182,10 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertTrue(board.moveShips("north"));
         assertTrue(board.moveShips("east"));
         assertTrue(board.moveShips("west"));
-        assertEquals(board.getShips().get(0), board.easternMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.westernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.northernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.southernMostShip(board.getShips()));
+        assertEquals(null, board.easternMostShip(board.getShips()));
+        assertEquals(null, board.westernMostShip(board.getShips()));
+        assertEquals(null, board.northernMostShip(board.getShips()));
+        assertEquals(null, board.southernMostShip(board.getShips()));
         board = new Board();
         board.placeShip(new Destroyer(), 2, 'F', false);
         board.placeShip(new Minesweeper(), 3, 'B', true);
@@ -195,9 +195,5 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertTrue(board.moveShips("north"));
         assertTrue(board.moveShips("east"));
         assertTrue(board.moveShips("west"));
-        assertEquals(board.getShips().get(0), board.easternMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.westernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.northernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(0), board.southernMostShip(board.getShips()));
     }
 }
