@@ -195,6 +195,5 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         assertEquals(board.getShips().get(3), board.westernMostShip(board.getShips()));
         assertEquals(board.getShips().get(3), board.northernMostShip(board.getShips()));
         assertEquals(board.getShips().get(2), board.southernMostShip(board.getShips()));
-        board.setShips(board.getShips());
     }
 }
