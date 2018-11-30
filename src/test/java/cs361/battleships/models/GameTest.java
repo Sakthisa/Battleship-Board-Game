@@ -142,7 +142,7 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         game.placeShip(new Minesweeper(), 3, 'B', false);
         game.placeShip(new Battleship(), 5, 'B', false);
         assertTrue(game.attack(2, 'B'));
-        //assertFalse(game.radarAttack(2, 'C'));
+        assertFalse(game.radarAttack(2, 'C'));
     }
 
     @Test
@@ -178,22 +178,26 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
         board.placeShip(new Minesweeper(), 3, 'B', true);
         board.placeShip(new Battleship(), 5, 'B', false);
         board.placeSubShip(new Submarine(), 3, 'B', false, true);
-        assertTrue(game.moveShips("south"));
-        assertTrue(game.moveShips("north"));
-        assertTrue(game.moveShips("east"));
-        assertTrue(game.moveShips("west"));
+        assertTrue(board.moveShips("south"));
+        assertTrue(board.moveShips("north"));
+        assertTrue(board.moveShips("east"));
+        assertTrue(board.moveShips("west"));
+        assertEquals(board.getShips().get(0), board.easternMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.westernMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.northernMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.southernMostShip(board.getShips()));
         board = new Board();
         board.placeShip(new Destroyer(), 2, 'F', false);
         board.placeShip(new Minesweeper(), 3, 'B', true);
         board.placeShip(new Battleship(), 5, 'B', false);
         board.placeSubShip(new Submarine(), 3, 'B', false, true);
-        assertTrue(game.moveShips("south"));
-        assertTrue(game.moveShips("north"));
-        assertTrue(game.moveShips("east"));
-        assertTrue(game.moveShips("west"));
+        assertTrue(board.moveShips("south"));
+        assertTrue(board.moveShips("north"));
+        assertTrue(board.moveShips("east"));
+        assertTrue(board.moveShips("west"));
         assertEquals(board.getShips().get(0), board.easternMostShip(board.getShips()));
-        assertEquals(board.getShips().get(3), board.westernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(3), board.northernMostShip(board.getShips()));
-        assertEquals(board.getShips().get(2), board.southernMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.westernMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.northernMostShip(board.getShips()));
+        assertEquals(board.getShips().get(0), board.southernMostShip(board.getShips()));
     }
 }
