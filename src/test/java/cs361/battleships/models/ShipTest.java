@@ -108,4 +108,61 @@ public class ShipTest {
         assertEquals(3, su.getHits());
     }
 
+    @Test
+    public void testVertical(){
+        Ship s = new Ship();
+        s.setVertical(true);
+        assertTrue(s.isVertical());
+        s.setVertical(false);
+        assertFalse(s.isVertical());
+    }
+
+    @Test
+    public void testMoves(){
+        Ship s = new Ship();
+        s.setInitcol('A');
+        s.setInitrow(1);
+        List<Square> os = new ArrayList<>();
+        Square sq1 = new Square(1, 'A');
+        os.add(sq1);
+        Square sq2 = new Square(1, 'B');
+        os.add(sq2);
+        Square sq3 = new Square(1, 'C');
+        os.add(sq3);
+        Square sq4 = new Square(1, 'D');
+        os.add(sq4);
+        s.setOccupiedSquares(os);
+        assertEquals('A', s.getInitcol());
+        assertEquals(1, s.getInitrow());
+        assertTrue(s.moveDown(2, 'A'));
+        assertTrue(s.moveUp(1, 'A'));
+        assertTrue(s.moveRight(1, 'B'));
+        assertTrue(s.moveLeft(1, 'A'));
+        assertTrue(s.containsSquare(1, 'A'));
+        assertFalse(s.moveLeft(1, 'A'));
+        List<Square> os1 = new ArrayList<>();
+        Square sq11 = new Square(0, 'A');
+        os1.add(sq11);
+        Square sq21 = new Square(0, 'B');
+        os1.add(sq21);
+        Square sq31 = new Square(0, 'C');
+        os1.add(sq31);
+        Square sq41 = new Square(0, 'D');
+        os1.add(sq41);
+        s.setOccupiedSquares(os1);
+        assertFalse(s.moveUp(0, 'A'));
+        List<Square> os2 = new ArrayList<>();
+        Square sq12 = new Square(10, 'E');
+        os2.add(sq12);
+        Square sq22 = new Square(10, 'F');
+        os2.add(sq22);
+        Square sq32 = new Square(10, 'G');
+        os2.add(sq32);
+        Square sq42 = new Square(10, 'H');
+        os2.add(sq42);
+        s.setOccupiedSquares(os2);
+        assertFalse(s.moveDown(10, 'A'));
+        assertFalse(s.moveRight(1, 'F'));
+    }
+
 }
