@@ -88,7 +88,7 @@ public class Ship {
 
 	public boolean moveDown(int row, char col){
 		for(Square square : occupiedSquares){
-			if(square.getRow() >= row){
+			if(square.getRow() >= 10){
 				return false;
 			}
 		}
@@ -112,7 +112,7 @@ public class Ship {
 
 	public boolean moveRight(int row, char col){
 		for(Square square : occupiedSquares){
-			if(square.getColumn() >= col){
+			if(square.getColumn() >= 'F'){
 				return false;
 			}
 		}
