@@ -115,6 +115,7 @@ function markHits(board, elementId, surrenderText) {
                 for (square of ship.occupiedSquares) {
                     if (square.type == "CQ") {
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("miss");
+                        document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("hit");
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("cq_place");
                         document.getElementById(elementId).rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("cq_sink");
 
@@ -305,7 +306,7 @@ function redrawGrid() {
 
     let resultHTML = "<span class='attack-detail'><span class='laser-detail'>SPACE LASER ENGAGED</span></span></div>";
     let html = "<div class='result'><span";
-    console.log("in here");
+
     if (numSunkBefore === 0 && numSunk === 1 && numSunkOppBefore === numSunkOpp) {
         html += " class='player-name'>PLAYER: </span>" + resultHTML;
         document.getElementById("player-results").insertAdjacentHTML("afterbegin", html);
@@ -436,7 +437,7 @@ function cellClick() {
                     document.getElementById("place_submarine").style.display = "none";
                     document.getElementById("place_minesweeper").style.display = "none";
                     document.getElementById("restart").style.visibility = "visible";
-                    document.getElementById("move-fleet").style.display = "block"
+                    document.getElementById("move-fleet").style.display = "inline-block"
                     document.getElementById("restart").addEventListener("click", function (e) {
                         location.reload();
                     });
@@ -496,10 +497,6 @@ function sendXhr(method, url, data, handler) {
 
                 document.getElementById("opponent-results").insertAdjacentHTML("afterbegin", html);
                 document.body.insertAdjacentHTML("afterend", req.response);
-                console.log(req.response);
-            }
-            else if(url === "/move"){
-                console.log(req.response);
             }
             //Displays an invalid placement if there is an error
             else {
@@ -515,8 +512,6 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
-    console.log(url);
-    console.log(data);
     req.send(JSON.stringify(data));
 }
 
@@ -597,42 +592,42 @@ function place(size, submarine) {
                     }
                     break;
                 }
-                if(submarine == true && i === 2 && table.rows[row - 1].cells[col + i] != undefined) {
-                    cell = table.rows[row-1].cells[col+i];
+                if (submarine == true && i === 2 && table.rows[row - 1].cells[col + i] != undefined) {
+                    cell = table.rows[row - 1].cells[col + i];
                     cell.classList.toggle("placed");
                 }
                 cell = table.rows[row].cells[col + i];
-            }
 
-            if (cell === undefined) {
-                // ship is over the edge, so mark visible squares with red X's
-                for (let j = (col + i - 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                    if (submarine == true) {
-                        if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
-                            table.rows[row - 1].cells[j].classList.toggle("error-place");
+                if (cell === undefined) {
+                    // ship is over the edge, so mark visible squares with red X's
+                    for (let j = (col + i - 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
+                        cell.classList.toggle("error-place");
+                        if (submarine == true) {
+                            if (j === 10 && i === 3 && table.rows[row - 1].cells[j] != undefined) {
+                                table.rows[row - 1].cells[j].classList.toggle("error-place");
+                            }
                         }
                     }
-                }
-                break;
-            } else if (submarine == true && submerged != true && i === 2 && table.rows[row - 1].cells[col + i].classList.contains("occupied")) {
-                for (let j = (col + i + 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                }
-                break;
-            } else if (cell.classList.contains('occupied') && !(submerged == true || cell.classList.contains("submerged"))) {
-                // If cell is occupied, then we can't place there either, so mark visible square with red X's
-                for (let j = (col + i - 1); j >= col; j--) {
-                    cell = table.rows[row].cells[j];
-                    cell.classList.toggle("error-place");
-                    if (submarine == true && j - col === 2) {
-                        cell = table.rows[row - 1].cells[j];
+                    break;
+                } else if (submarine == true && submerged != true && i === 2 && table.rows[row - 1].cells[col + i].classList.contains("occupied")) {
+                    for (let j = (col + i + 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
                         cell.classList.toggle("error-place");
                     }
+                    break;
+                } else if (cell.classList.contains('occupied') && !(submerged == true || cell.classList.contains("submerged"))) {
+                    // If cell is occupied, then we can't place there either, so mark visible square with red X's
+                    for (let j = (col + i - 1); j >= col; j--) {
+                        cell = table.rows[row].cells[j];
+                        cell.classList.toggle("error-place");
+                        if (submarine == true && j - col === 2) {
+                            cell = table.rows[row - 1].cells[j];
+                            cell.classList.toggle("error-place");
+                        }
+                    }
+                    break;
                 }
-                break;
             }
             cell.classList.toggle("placed");
         }
@@ -752,28 +747,18 @@ function initGame() {
     });
 
     document.getElementById("move-fleet").addEventListener("click", (e) => {
-        // flt is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let flt = e.target.classList.toggle("btn-toggle");
-        if (flt) {
             isFleet = true;
             document.getElementById("move-fleet").style.display = "none";
-            document.getElementById("north").style.display = "block";
-            document.getElementById("east").style.display = "block";
-            document.getElementById("south").style.display = "block";
-            document.getElementById("west").style.display = "block";
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
+            document.getElementById("north").style.display = "inline-block";
+            document.getElementById("east").style.display = "inline-block";
+            document.getElementById("south").style.display = "inline-block";
+            document.getElementById("west").style.display = "inline-block";
     });
 
     document.getElementById("north").addEventListener("click", (e) => {
-        // nth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let nth = e.target.classList.toggle("btn-toggle");
-        if (nth) {
             // implement north direction logic here
             fleetsUsed++;
+            fleetType = "north";
             document.getElementById("move-fleet").style.display = "block";
             document.getElementById("north").style.display = "none";
             document.getElementById("east").style.display = "none";
@@ -782,86 +767,74 @@ function initGame() {
             if (fleetsUsed === 2) {
                 document.getElementById("move-fleet").style.display = "none";
             }
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
-    });
-
-    document.getElementById("east").addEventListener("click", (e) => {
-        // est is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let est = e.target.classList.toggle("btn-toggle");
-        if (est) {
-            // implement east direction logic here
-            fleetsUsed++;
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
-    });
-
-    document.getElementById("south").addEventListener("click", (e) => {
-        // sth is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let sth = e.target.classList.toggle("btn-toggle");
-        if (sth) {
-            // implement south direction logic here
-            fleetsUsed++;
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
-        }
-    });
-
-    document.getElementById("west").addEventListener("click", (e) => {
-        // wst is true if adding btn-toggle class to the radar button, meaning we want to use radar, else false
-        let wst = e.target.classList.toggle("btn-toggle");
-        if (wst) {
-            // implement west direction logic
-            fleetType = "west";
-            fleetsUsed++;
-            document.getElementById("move-fleet").style.display = "block";
-            document.getElementById("north").style.display = "none";
-            document.getElementById("east").style.display = "none";
-            document.getElementById("south").style.display = "none";
-            document.getElementById("west").style.display = "none";
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-            console.log("Posting move req");
-
-            sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
+            sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
                 game = data;
                 redrawGrid();
             })
-            console.log("passes move req");
             isFleet = false;
-            if (fleetsUsed === 2) {
-                document.getElementById("move-fleet").style.display = "none";
-            }
-        } else {
-            isFleet = false;
-            registerCellListener((e) => {
-            }, "none");
+    });
+
+    document.getElementById("east").addEventListener("click", (e) => {
+        // implement east direction logic here
+        fleetType = "east";
+        fleetsUsed++;
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
         }
+        sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
+    });
+
+    document.getElementById("south").addEventListener("click", (e) => {
+        // implement south direction logic here
+        fleetsUsed++;
+        fleetType = "south";
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
+        }
+        sendXhr("POST", "/move", {game: game, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
+    });
+
+    document.getElementById("west").addEventListener("click", (e) => {
+
+        // implement west direction logic
+        fleetType = "west";
+        fleetsUsed++;
+        document.getElementById("move-fleet").style.display = "block";
+        document.getElementById("north").style.display = "none";
+        document.getElementById("east").style.display = "none";
+        document.getElementById("south").style.display = "none";
+        document.getElementById("west").style.display = "none";
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
+        }
+
+        sendXhr("POST", "/move", {game: game, y: "B", x: 2, radar: false, fleet: fleetType}, function (data) {
+            game = data;
+            redrawGrid();
+        })
+        isFleet = false;
+        if (fleetsUsed === 2) {
+            document.getElementById("move-fleet").style.display = "none";
+        }
+
     });
 
 

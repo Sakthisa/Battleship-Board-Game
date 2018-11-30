@@ -170,5 +170,30 @@ public class GameTest { // This class has 100% coverage of all lines in Game.jav
 
     }
 
-
+    @Test
+    public void testMovementGame() {
+        Game game = new Game();
+        Board board = new Board();
+        board.placeShip(new Destroyer(), 2, 'B', false);
+        board.placeShip(new Minesweeper(), 3, 'B', true);
+        board.placeShip(new Battleship(), 5, 'B', false);
+        board.placeSubShip(new Submarine(), 3, 'B', false, true);
+        assertTrue(board.moveShips("south"));
+        assertTrue(board.moveShips("north"));
+        assertTrue(board.moveShips("east"));
+        assertTrue(board.moveShips("west"));
+        assertEquals(null, board.easternMostShip(board.getShips()));
+        assertEquals(null, board.westernMostShip(board.getShips()));
+        assertEquals(null, board.northernMostShip(board.getShips()));
+        assertEquals(null, board.southernMostShip(board.getShips()));
+        board = new Board();
+        board.placeShip(new Destroyer(), 2, 'F', false);
+        board.placeShip(new Minesweeper(), 3, 'B', true);
+        board.placeShip(new Battleship(), 5, 'B', false);
+        board.placeSubShip(new Submarine(), 3, 'B', false, true);
+        assertTrue(board.moveShips("south"));
+        assertTrue(board.moveShips("north"));
+        assertTrue(board.moveShips("east"));
+        assertTrue(board.moveShips("west"));
+    }
 }

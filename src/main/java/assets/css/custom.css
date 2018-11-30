@@ -9,6 +9,21 @@ table{
     margin-left:30px;
 }
 
+table::after {
+  background-image: url("../150px-Compass-wheel-black-white-letters-400.png");
+  background-size: cover;
+  content: "";
+  display: block;
+  position: absolute;
+  top: 80px;
+  left: 84px;
+  width: 200px;
+  height: 200px;
+  size: fill;
+  z-index: -2;
+  opacity: 0.1;
+}
+
 caption{
     font-size: 25px;
     font-weight: bold;
@@ -186,7 +201,7 @@ th {
 }
 
 .occupied {
-    background-image: url(https://i.gyazo.com/8bd2dea369e33c76a9e89f60e434bca4.png);
+    background-image: url("../ship_pleb.png");
     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center;
@@ -194,7 +209,7 @@ th {
 }
 
 .hit {
-        background-image: url(https://i.gyazo.com/d017b472b30552859c7156773ba5c7ff.png);
+        background-image: url("../splodey_boi.png");
         background-size:     cover;
         background-repeat:   no-repeat;
         background-position: center center;
@@ -202,28 +217,28 @@ th {
 }
 
 .sink {
-    background-image: url(https://i.gyazo.com/163b826db507278a57706c194932ce32.png);
+    background-image: url("../explosion.png");
     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center;
 }
 
 .cq_sink{
-    background-image: url(https://i.gyazo.com/b203d9f15d4924ffccd88ffda057364a.png);
+    background-image: url("../cq_death.png");
     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center;
 }
 
 .cq_place{
-    background-image: url(https://i.gyazo.com/0daa54730e3ced74fcc6c2cedb039b2e.png);
+    background-image: url("../cq.png");
     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center;
 }
 
 .miss {
-    background-image: url(http://2.bp.blogspot.com/-S_9dNop-3V0/Uk_2YlzXBDI/AAAAAAAACU8/oo4F2FJpo-4/s640/AnimatedWater_005.png);
+    background-image: url("../miss.png");
     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center;
@@ -433,5 +448,9 @@ th {
 
 .btn-toggle {
     background-color: #333333;
+}
+
+#move-fleet{
+    visibility: hidden;
 }
 

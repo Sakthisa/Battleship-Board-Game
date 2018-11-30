@@ -14,5 +14,9 @@ public class CaptainQuarterTest {
         assertEquals(0, cq.getTimesHit());
         assertEquals(2, cq.getMaxHits());
         assertEquals("CQ", cq.getType());
+        CaptainQuarter cq1 = new CaptainQuarter(cq);
+        assertEquals(0, cq1.getTimesHit());
+        assertEquals(2, cq1.getMaxHits());
+        assertEquals("CQ", cq1.getType());
     }
 }

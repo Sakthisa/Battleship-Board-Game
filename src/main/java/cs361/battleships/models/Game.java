@@ -43,7 +43,6 @@ public class Game {
     public boolean attack(int x, char  y) {
         Result playerAttack;
         playerAttack = opponentsBoard.attack(x, y);
-
         if (!isValid(playerAttack)) {
             return false;
         }
@@ -71,17 +70,13 @@ public class Game {
  
 
     public boolean moveShips(String direction){
-        if(direction.equals("west")){
-            moveShipsWest();
+        if(playersBoard.moveShips(direction)){
             return true;
         }
         return false;
     }
 
-    public void moveShipsWest(){
-        playersBoard.moveShipsWest();
-    }
-  
+
     // Opponent's turn to place a ship
     private void opponentPlace(Ship ship) {
         boolean opponentPlacedSuccessfully;
@@ -96,7 +91,7 @@ public class Game {
         } while (!opponentPlacedSuccessfully);
     }
 
-    private void opponentAttack() {
+    public void opponentAttack() {
         Result opponentAttackResult;
         do {
             // AI does random attacks, so it might attack the same spot twice

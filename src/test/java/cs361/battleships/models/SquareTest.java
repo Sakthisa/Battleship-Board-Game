@@ -66,4 +66,18 @@ public class SquareTest { // Covers 66% of lines within the Square.java class.
         assertTrue(1 == sq.getMaxHits()); //See if 1 is the hit count for normal square type
         assertTrue(2 == cq.getMaxHits()); //See if 2 is the hit count for captain quarter
     }
+
+    @Test
+    public void NewInit(){
+        Square sq = new Square(1, 'A', "N", 4, 0);
+        assertEquals(4, sq.getMaxHits());
+        assertEquals(0, sq.getTimesHit());
+        assertEquals(1, sq.getRow());
+        assertEquals('A', sq.getColumn());
+        assertEquals("N", sq.getType());
+        Square sq2 = new Square(1, 'B', "N", 4, 0);
+        sq.makeCopy(sq2);
+        assertEquals(4, sq.getMaxHits());
+        assertEquals(0, sq.getTimesHit());
+    }
 }

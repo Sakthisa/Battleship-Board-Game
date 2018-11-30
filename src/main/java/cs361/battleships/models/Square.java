@@ -28,6 +28,10 @@ public class Square {
 		this.maxHits = maxHits;
 	}
 
+	public void makeCopy (Square sq) {
+		this.timesHit = sq.getTimesHit();
+		this.maxHits = sq.getMaxHits();
+	}
 
 
 	public int getMaxHits(){
@@ -40,6 +44,9 @@ public class Square {
 	public void setTimesHit(){
 		this.timesHit++;
 	}
+
+	public void changeTimesHit(int timesHit){this.timesHit = timesHit;}
+
 	public int getTimesHit(){
 		return timesHit;
 	}
