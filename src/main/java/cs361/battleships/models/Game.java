@@ -43,7 +43,6 @@ public class Game {
     public boolean attack(int x, char  y) {
         Result playerAttack;
         playerAttack = opponentsBoard.attack(x, y);
-
         if (!isValid(playerAttack)) {
             return false;
         }

@@ -474,7 +474,7 @@ public class Board {
 		}
 	}
 
-    private Ship westernMostShip(List <Ship> newShipList){
+    public Ship westernMostShip(List <Ship> newShipList){
 	    Ship leftmost = null;
 	    char max = (char) ('A' + xDimension);
 	    for(Ship ship : shipList){
@@ -482,7 +482,7 @@ public class Board {
 	    	for(Ship added : newShipList){
 	    		if(ship == added){isAdded = true;}
 			}
-			if(isAdded){continue;}
+			//if(isAdded){continue;}
 	        for(Square square : ship.getOccupiedSquares()){
 	            if(square.getColumn() <= max){
 	                leftmost = ship;
@@ -494,7 +494,7 @@ public class Board {
         return leftmost;
     }
 
-	private Ship easternMostShip(List <Ship> newShipList){
+	public Ship easternMostShip(List <Ship> newShipList){
 		Ship rightmost = null;
 		char min = 'B';
 		for(Ship ship : shipList){
@@ -502,7 +502,7 @@ public class Board {
 			for(Ship added : newShipList){
 				if(ship == added){isAdded = true;}
 			}
-			if(isAdded){continue;}
+			//if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getColumn() >= min){
 					rightmost = ship;
@@ -514,7 +514,7 @@ public class Board {
 		return rightmost;
 	}
 
-	private Ship northernMostShip(List <Ship> newShipList){
+	public Ship northernMostShip(List <Ship> newShipList){
 		Ship northernmost = null;
 		int min = 11;
 		for(Ship ship : shipList){
@@ -522,7 +522,7 @@ public class Board {
 			for(Ship added : newShipList){
 				if(ship == added){isAdded = true;}
 			}
-			if(isAdded){continue;}
+			//if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getRow() <= min){
 					northernmost = ship;
@@ -533,7 +533,7 @@ public class Board {
 		return northernmost;
 	}
 
-	private Ship southernMostShip(List <Ship> newShipList){
+	public Ship southernMostShip(List <Ship> newShipList){
 		Ship southernmost = null;
 		int max = 2;
 		for(Ship ship : shipList){
@@ -542,7 +542,7 @@ public class Board {
 
 				if(ship == added){isAdded = true;}
 			}
-			if(isAdded){continue;}
+			//if(isAdded){continue;}
 			for(Square square : ship.getOccupiedSquares()){
 				if(square.getRow() >= max){
 					southernmost = ship;
